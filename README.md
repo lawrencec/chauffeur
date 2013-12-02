@@ -5,7 +5,7 @@ Status: Experimental
 A cross browser library for writing functional tests.
 
 This is a wrapper around [webdriverjs](https://github.com/camme/webdriverjs/), a webdriver module for js, hoping to provide a
-different api in which to write functional tests using webdriver.
+different api in which to write functional tests using webdriver. Currently the only example provided is for Mocha, though it should work fine in any test runner.
 
 ## Installation
 
