@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html>
+    <!-- Found at http://snipplr.com/view/8121/html-test-page-for-css-style-guide -->
+    <!-- Amended and added to by Lawrence Carvalho for horace tests usage -->
+    <head>
+        <title>chauffeur Test Page</title>
+        <style type="text/css">
+            h1 {
+                width: 200px;
+                height: 3em;
+            }
+            #hiddenElement {
+                display: none;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>CSS Basic Elements</h1>
+
+        <p>The purpose of this HTML is to help determine what default settings are with
+            CSS and to make sure that all possible HTML Elements are included in this
+            HTML so as to not miss any possible Elements when designing a site.</p>
+
+        <hr/>
+
+        <h2 id="headings">Headings</h2>
+
+        <h2>Heading 2</h2>
+        <h3>Heading 3</h3>
+        <h4>Heading 4</h4>
+        <h5>Heading 5</h5>
+        <h6>Heading 6</h6>
+
+        <hr/>
+        <h2 id="paragraph">Paragraph</h2>
+        <div id="paragraphsSection">
+
+            <img style="width:250px;height:125px;float:right"
+                 src="" alt=""/>
+            <p>Lorem ipsum dolor sit amet, <a href="#" title="test link">test link</a>
+                adipiscing elit. Nullam dignissim convallis est. Quisque aliquam. Donec
+                faucibus. Nunc iaculis suscipit dui. Nam sit amet sem. Aliquam libero nisi,
+                imperdiet at, tincidunt nec, gravida vehicula, nisl. Praesent mattis, massa
+                quis luctus fermentum, turpis mi volutpat justo, eu volutpat enim diam eget
+                metus. Maecenas ornare tortor. Donec sed tellus eget sapien fringilla
+                nonummy. Mauris a ante. Suspendisse quam sem, consequat at, commodo vitae,
+                feugiat in, nunc. Morbi imperdiet augue quis tellus.</p>
+
+            <p id="second">Lorem ipsum dolor sit amet, <em>emphasis</em> consectetuer adipiscing elit.
+                Nullam dignissim convallis est. Quisque aliquam. Donec faucibus. Nunc
+                iaculis suscipit dui. Nam sit amet sem. Aliquam libero nisi, imperdiet at,
+                tincidunt nec, gravida vehicula, nisl. Praesent mattis, massa quis luctus
+                fermentum, turpis mi volutpat justo, eu volutpat enim diam eget metus.
+                Maecenas ornare tortor. Donec sed tellus eget sapien fringilla nonummy.
+                Mauris a ante. Suspendisse quam sem, consequat at, commodo vitae, feugiat
+                in, nunc. Morbi imperdiet augue quis tellus.</p>
+
+        </div>
+        <hr/>
+
+        <h2 id="list_types">List Types</h2>
+
+        <h3>Definition List</h3>
+        <dl>
+            <dt>Definition List Title</dt>
+            <dd>This is a definition list division.</dd>
+        </dl>
+
+        <h3>Ordered List</h3>
+        <ol>
+            <li>List Item 1</li>
+            <li>List Item 2</li>
+            <li>List Item 3</li>
+        </ol>
+
+        <h3>Unordered List</h3>
+        <ul>
+            <li>List Item 1</li>
+            <li>List Item 2</li>
+            <li>List Item 3</li>
+        </ul>
+
+
+        <hr/>
+
+        <h2 id="form_elements">Fieldsets, Legends, and Form Elements</h2>
+
+        <fieldset>
+            <legend>Legend</legend>
+
+            <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Nullam
+                dignissim convallis est. Quisque aliquam. Donec faucibus. Nunc iaculis
+                suscipit dui. Nam sit amet sem. Aliquam libero nisi, imperdiet at,
+                tincidunt nec, gravida vehicula, nisl. Praesent mattis, massa quis
+                luctus fermentum, turpis mi volutpat justo, eu volutpat enim diam eget
+                metus.</p>
+
+            <form action="/" id="formSection">
+                <h2>Form Element</h2>
+
+                <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Nullam
+                    dignissim convallis est. Quisque aliquam. Donec faucibus. Nunc
+                    iaculis suscipit dui.</p>
+
+                <p><label for="text_field">Text Field:</label>
+                    <input type="text" id="text_field"/></p>
+
+                <p><label for="text_area">Text Area:</label>
+                    <textarea id="text_area" cols="80" rows="20"></textarea></p>
+
+                <p><label for="select_element">Select Element:</label>
+                    <select name="select_element" id="select_element">
+                        <optgroup label="Option Group 1">
+                            <option value="1">Option 1</option>
+                            <option value="2">Option 2</option>
+                            <option value="3">Option 3</option>
+                        </optgroup>
+                        <optgroup label="Option Group 2">
+                            <option value="1">Option 1</option>
+                            <option value="2">Option 2</option>
+                            <option value="3">Option 3</option>
+                        </optgroup>
+                    </select></p>
+
+                <p>Radio Buttons:
+                    <input type="radio" class="radio" name="radio_button1" id="radio_button1"
+                           value="radio_1"/>
+                    <label for="radio_button1"> Radio 1</label>
+                     <input type="radio" class="radio" name="radio_button2" id="radio_button2"
+                           value="radio_1"/>
+                    <label for="radio_button2"> Radio 1</label>
+                    <input type="radio" class="radio" name="radio_button3" id="radio_button3"
+                           value="radio_3"/>
+                    <label for="radio_button3"> Radio 3</label>
+                </p>
+
+                <p>Checkboxes:
+
+                    <input type="checkbox" class="checkbox" name="checkbox1" id="checkbox1"
+                           value="check_1"/>
+                    <label for="checkbox1">Radio 1</label>
+                    <input type="checkbox" class="checkbox" name="checkbox2" id="checkbox2"
+                           value="check_1"/>
+                    <label for="checkbox2">Radio 2</label>
+                    <input type="checkbox" class="checkbox" name="checkbox3" id="checkbox3"
+                           value="check_1"/>
+                    <label for="checkbox3">Radio 3</label>
+
+                </p>
+
+                <p><label for="password">Password:</label>
+                    <input type="password" class="password" name="password" id="password"/>
+                </p>
+
+                <p><label for="file">File Input:</label>
+                    <input type="file" class="file" name="file" id="file"/>
+                </p>
+
+
+                <p><input class="button" type="reset" value="Clear"/> <input
+                        class="button" type="submit" value="Submit"/>
+                </p>
+
+
+            </form>
+
+        </fieldset>
+
+
+        <hr/>
+
+        <h2 id="tables">Tables</h2>
+
+        <table>
+            <tr>
+                <th>Table Header 1</th>
+                <th>Table Header 2</th>
+                <th>Table Header 3</th>
+            </tr>
+            <tr>
+                <td>Division 1</td>
+                <td>Division 2</td>
+                <td>Division 3</td>
+            </tr>
+            <tr class="even">
+                <td>Division 1</td>
+                <td>Division 2</td>
+                <td>Division 3</td>
+            </tr>
+            <tr>
+                <td>Division 1</td>
+                <td>Division 2</td>
+                <td>Division 3</td>
+            </tr>
+
+        </table>
+
+
+        <hr/>
+
+        <h2 id="misc">Misc Stuff - abbr, acronym, pre, code, sub, sup, etc.</h2>
+
+        <p>Lorem <sup>superscript</sup> dolor <sub>subscript</sub> amet, consectetuer
+            adipiscing elit. Nullam dignissim convallis est. Quisque aliquam.
+            <cite>cite</cite>. Nunc iaculis suscipit dui. Nam sit amet sem. Aliquam
+            libero nisi, imperdiet at, tincidunt nec, gravida vehicula, nisl. Praesent
+            mattis, massa quis luctus fermentum, turpis mi volutpat justo, eu volutpat
+            enim diam eget metus. Maecenas ornare tortor. Donec sed tellus eget sapien
+            fringilla nonummy. <acronym
+                    title="National Basketball Association">NBA</acronym> Mauris a ante.
+            Suspendisse quam sem, consequat at, commodo vitae, feugiat in, nunc. Morbi
+            imperdiet augue quis tellus. <abbr title="Avenue">AVE</abbr></p>
+
+        <pre>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Nullam
+            dignissim convallis est. Quisque aliquam. Donec faucibus. Nunc iaculis
+            suscipit dui. Nam sit amet sem. Aliquam libero nisi, imperdiet at, tincidunt
+            nec, gravida vehicula, nisl. Praesent mattis, massa quis luctus fermentum,
+            turpis mi volutpat justo, eu volutpat enim diam eget metus. Maecenas ornare
+            tortor. Donec sed tellus eget sapien fringilla nonummy. <acronym
+                    title="National Basketball Association">NBA</acronym> Mauris a ante.
+            Suspendisse quam sem, consequat at, commodo vitae, feugiat in, nunc. Morbi
+            imperdiet augue quis tellus. <abbr title="Avenue">AVE</abbr></pre>
+
+        <blockquote>
+            "This stylesheet is going to help so freaking much." -Blockquote
+        </blockquote>
+        <div id="hiddenElement">
+            This is hidden via CSS.
+        </div>
+
+        <h2>Iframe</h2>
+        <iframe id="anIFrame" src="iframe.html" frameborder="0" height="180" width="500"></iframe>
+    </body>
+</html>
+
+<!-- End of Sample Content -->

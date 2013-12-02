@@ -1,0 +1,39 @@
+{
+  "name": "chauffeur",
+  "version": "0.0.1",
+  "description": "A cross browser library for writing functional tests using webdriver",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha --recursive -R spec test/unit",
+    "test-int": "mocha --recursive -R spec test/integration",
+    "coverage": "mkdir -p ./target; istanbul cover --report lcov --dir ./target node_modules/.bin/_mocha -- -R spec --recursive test/unit/*Spec.js",
+    "complexity": "node_modules/.bin/grunt complexity"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lawrencec/chauffeur"
+  },
+  "keywords": [
+    "webdriver browser test"
+  ],
+  "author": "Lawrence Carvalho",
+  "license": "BSD-3-Clause",
+  "bugs": {
+    "url": "https://github.com/lawrencec/chauffeur/issues"
+  },
+  "dependencies": {
+    "webdriverjs": "0.7.14",
+    "chai": "1.8.1",
+    "sinon-chai": "~2.4.0",
+    "mocha": "~1.14.0",
+    "unroll": "0.0.2"
+  },
+  "devDependencies": {
+    "grunt-contrib-jshint": "~0.6.4",
+    "grunt-contrib-watch": "~0.5.3",
+    "grunt": "~0.4.1",
+    "grunt-mocha-cli": "~1.1.0",
+    "grunt-complexity": "~0.1.3",
+    "grunt-cli": "~0.1.9"
+  }
+}
