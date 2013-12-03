@@ -1,5 +1,5 @@
 {
-  "name": "chauffeur",
+  "name": "page-chauffeur",
   "version": "0.0.1",
   "description": "A cross browser library for writing functional tests using webdriver",
   "main": "index.js",
@@ -17,7 +17,7 @@
     "webdriver browser test"
   ],
   "author": "Lawrence Carvalho",
-  "license": "BSD-3-Clause",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/lawrencec/chauffeur/issues"
   },

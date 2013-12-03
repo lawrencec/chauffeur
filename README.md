@@ -13,7 +13,7 @@ This module can be installed via npm:
 
 ``` bash
 
-$ npm install chauffeur
+$ npm install page-chauffeur
 
 ```
 
