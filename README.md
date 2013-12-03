@@ -5,7 +5,7 @@ Status: Experimental
 A cross browser library for writing functional tests.
 
 This is a wrapper around [webdriverjs](https://github.com/camme/webdriverjs/), a webdriver module for js, hoping to provide a
-different api in which to write functional tests using webdriver. Currently the only example provided is for Mocha, though it should work fine in any test runner.
+different api (using page objects) in which to write functional tests using webdriver. Currently the only example provided is for Mocha, though it should work fine in any test runner.
 
 ## Installation
 
@@ -27,8 +27,73 @@ $ npm install .
 
 ## Examples
 
-### Github
+### Github example
 
+The following is an example of what the current api looks like using existing webdriverjs callbacks
+
+``` js
+
+client
+    .to(GithubPage)
+    .at(GithubPage, function(err) {
+      if(err) {
+        return;
+      }
+      this.headerLogo()
+          .size(function(err, result) {
+            expect(err).to.be.null;
+            assert.strictEqual(result.height , 32);
+            assert.strictEqual(result.width, 89);
+          })
+          .width(function(err, result){
+            expect(err).to.be.null;
+            assert.strictEqual(result, '89px');
+          })
+          .color(function(err, result) {
+            expect(err).to.be.null;
+            assert.strictEqual(result, 'rgba(51,51,51,1)');
+          })
+          .visible()
+          .cssProperty('a[href="/plans"]', 'color', function(err, result) {
+            expect(err).to.be.null;
+            assert.strictEqual(result, 'rgba(65,131,196,1)');
+          })
+          .getTitle(function(err, title) {
+            expect(err).to.be.null;
+            assert.strictEqual(title,'GitHub · Build software better, together.');
+          })
+      .signUpForm()
+          .size(function(err, result) {
+            expect(err).to.be.null;
+            assert.strictEqual(result.width, 320);
+            assert.strictEqual(result.height , 296);
+          })
+          .call(done);
+    });
+
+``` js
+
+And with no callbacks:
+
+``` js
+
+ client
+    .to(GithubPage)
+    .at(GithubPage, function(err) {
+      if(err) {
+        return;
+      }
+      this.headerLogo()
+          .size({width:89, height: 32})
+          .width('89px')
+          .color('rgba(51,51,51,1)')
+          .visible()
+          .signUpForm()
+          .size({width: 320, height: 296})
+          .call(done);
+    });
+
+```
 Requires selenium to be running and phantomjs if no other browser is specified (see integration tests section).
 
 ``` bash
@@ -83,4 +148,11 @@ A coverage report can be found in target/lcov-report/index.html after the follow
 $ npm run coverage
 
 ```
+
+## Todo
+
+- Expose more of the webdriver api
+- Allow nested page modules
+- Provide examples using test runners other than Mocha
+
 
