@@ -70,8 +70,7 @@ client
           })
           .call(done);
     });
-
-``` js
+```
 
 And with no callbacks:
 
