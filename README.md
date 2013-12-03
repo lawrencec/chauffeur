@@ -25,6 +25,14 @@ $ npm install .
 
 ```
 
+Once installed, require it like so:
+
+``` js
+
+var chauffeur = require('page-chauffeur');
+
+```
+
 ## Examples
 
 ### Github example
