@@ -148,7 +148,7 @@ $ MOCHA_BROWSER=chrome npm run test-int
 
 ### Coverage
 
-A coverage report can be found in target/lcov-report/index.html after the following command
+A coverage report can be found in target/lcov-report/index.html after the following command (requires global and non-global install of mocha)
 
 ``` bash
 
