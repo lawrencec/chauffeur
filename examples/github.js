@@ -10,7 +10,7 @@ describe('my webdriverjs tests', function() {
   this.timeout(99999999);
   var client = {};
 
-  before(function(){
+  before(function(done){
     var config = {
       desiredCapabilities: {
         browserName:  process.env.MOCHA_BROWSER || 'phantomjs'
@@ -18,10 +18,10 @@ describe('my webdriverjs tests', function() {
       logLevel: 'silent'
     };
     client = new Driver(webdriver.remote(config));
-    client.init();
+    client.init(done);
   });
-  after(function() {
-    client.endAll();
+  after(function(done) {
+    client.endAll(done);
   });
 
   it('Github test (with callbacks)', function(done) {
@@ -86,11 +86,3 @@ describe('my webdriverjs tests', function() {
     client.end(done);
   });
 });
-
-//TODO: write tests
-//TODO: put methods on context object, perhaps using a mixin
-//TODO: expand api to match webdriver
-//TODO: change api to use is() as a option. Assertion library should be able to
-//        be specifed
-//        i.e .size().is({width:x, y: height});
-//        i.e .color().is('#fff');

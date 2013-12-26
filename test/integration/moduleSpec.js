@@ -8,19 +8,22 @@ var chai        = require('chai'),
 chai.should();
 
 describe('Module', function() {
-  this.timeout(99999999);
   var remoteDriver,
       driver;
-  beforeEach(function(){
+
+  this.timeout(99999999);
+
+  beforeEach(function(done){
     remoteDriver = webdriver.remote({
       desiredCapabilities: {
         browserName: browser
       },
-      logLevel: 'silent'
+      logLevel: 'silent',
+      singleton: false
     });
 
     driver = new Driver(remoteDriver);
-    driver.init();
+    driver.init(done);
   });
 
   afterEach(function(done) {
@@ -41,6 +44,7 @@ describe('Module', function() {
             this.table().should.be.an('object');
             this.h1().should.be.an('object');
             this.headingTwos().should.be.an('object');
+            this.endAll(done);
           });
     });
   });

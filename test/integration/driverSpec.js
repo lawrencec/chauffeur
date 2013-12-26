@@ -6,23 +6,26 @@ var chai        = require('chai'),
     CSSTestPage  = require('./../fixtures/CSSTest/pages/cssTestPage.js');
 
 describe('Driver()', function() {
-  this.timeout(99999999);
   var remoteDriver,
       driver;
-  beforeEach(function(){
+
+  this.timeout(99999999);
+
+  beforeEach(function(done){
     remoteDriver = webdriver.remote({
       desiredCapabilities: {
         browserName: browser
       },
-      logLevel: 'silent'
+      logLevel: 'silent',
+      singleton: false
     });
 
     driver = new Driver(remoteDriver);
-    driver.init();
+    driver.init(done);
   });
 
   afterEach(function(done) {
-    driver.end(done);
+    driver.endAll(done);
   });
 
   describe('at()', function() {
@@ -31,7 +34,7 @@ describe('Driver()', function() {
         .to(CSSTestPage)
         .at(CSSTestPage, function(err) {
             expect(err).to.equal(undefined);
-            this.call(done);
+            this.endAll(done);
           });
     });
 
@@ -40,7 +43,7 @@ describe('Driver()', function() {
           .to('https://duckduckgo.com')
           .at(CSSTestPage, function(err) {
             expect(err).to.equal('Not at correct page. Expected "chauffeur Test Page" but found "Search DuckDuckGo "');
-            this.call(done);
+            this.endAll(done);
           });
     });
   });
