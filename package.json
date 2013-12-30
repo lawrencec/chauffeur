@@ -30,7 +30,7 @@
     "url": "https://github.com/lawrencec/chauffeur/issues"
   },
   "dependencies": {
-    "webdriverjs": "0.7.14",
+    "webdriverjs": "~1.0.6",
     "chai": "1.8.1",
     "sinon-chai": "~2.4.0",
     "mocha": "~1.14.0",
