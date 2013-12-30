@@ -1,5 +1,6 @@
 var Page = require('../../../').Page,
     SignUpForm = require('../modules/signupForm.js'),
+    CommandBar = require('../modules/commandBar.js'),
     inherits = require('util').inherits;
 
 function GithubPage() {
@@ -11,6 +12,9 @@ function GithubPage() {
     },
     'signUpForm': {
       module: SignUpForm
+    },
+    'commandBar' : {
+      module: CommandBar
     }
   };
 }

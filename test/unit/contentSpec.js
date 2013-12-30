@@ -74,7 +74,8 @@ describe('Content', function() {
             getElementSize: function() {},
             isVisible: function(){},
             getElementCssProperty: function(){},
-            getCssProperty: function(){}
+            getCssProperty: function(){},
+            buttonClick: function(){}
           };
 
           function ContentThing() {
@@ -106,7 +107,8 @@ describe('Content', function() {
           ['cssProperty', 'getElementCssProperty'],
           ['visible'    , 'isVisible'],
           ['visible'    , 'isVisible'],
-          ['invisible'  , 'isVisible']
+          ['invisible'  , 'isVisible'],
+          ['click'      , 'buttonClick']
         ]
     );
   });

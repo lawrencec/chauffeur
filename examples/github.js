@@ -15,11 +15,13 @@ describe('my webdriverjs tests', function() {
       desiredCapabilities: {
         browserName:  process.env.MOCHA_BROWSER || 'phantomjs'
       },
-      logLevel: 'silent'
+      logLevel: 'silent',
+      singleton: false
     };
     client = new Driver(webdriver.remote(config));
     client.init(done);
   });
+
   after(function(done) {
     client.endAll(done);
   });
@@ -32,15 +34,6 @@ describe('my webdriverjs tests', function() {
             return;
           }
           this.headerLogo()
-              .size(function(err, result) {
-                expect(err).to.be.null;
-                assert.strictEqual(result.height , 32);
-                assert.strictEqual(result.width, 89);
-              })
-              .width(function(err, result){
-                expect(err).to.be.null;
-                assert.strictEqual(result, '89px');
-              })
               .color(function(err, result) {
                 expect(err).to.be.null;
                 assert.strictEqual(result, 'rgba(51,51,51,1)');
@@ -75,10 +68,20 @@ describe('my webdriverjs tests', function() {
               .size({width:89, height: 32})
               .width('89px')
               .color('rgba(51,51,51,1)')
-              .visible()
-              .signUpForm()
-              .size({width: 320, height: 296})
-              .call(done);
+              .visible();
+
+          this.signUpForm()
+              .size({width: 320, height: 296});
+
+          this.commandBar()
+              .field().click()
+              .wait(500)
+              .topNav()
+              .cssProperty(null, 'opacity', function(err, result) {
+                expect(err).to.be.null;
+                assert.strictEqual(result, '0');
+              });
+            this.call(done);
         });
   });
 
