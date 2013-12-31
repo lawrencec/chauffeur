@@ -29,59 +29,58 @@ describe('Github.com', function() {
 
   it('homepage (with callbacks)', function(done) {
     client
-        .to(GithubPage)
-        .at(GithubPage, function(err) {
-          if(err) {
-            return;
-          }
-          this.headerLogo()
-              .color(function(err, result) {
-                expect(err).to.be.null;
-                expect(result).to.equal('rgba(51,51,51,1)');
-              })
-              .visible()
-              .cssProperty('a[href="/plans"]', 'color', function(err, result) {
-                expect(err).to.be.null;
-                expect(result).to.equal('rgba(65,131,196,1)');
-              })
-              .getTitle(function(err, title) {
-                expect(err).to.be.null;
-                expect(title).to.equal('GitHub · Build software better, together.');
-              })
-          .signUpForm()
-              .size(function(err, result) {
-                expect(err).to.be.null;
-                expect(result.width).to.equal(320);
-                expect(result.height).to.equal(296);
-              })
-          .call(done);
-        });
+      .to(GithubPage)
+      .at(GithubPage, function(err) {
+        if(err) {
+          return;
+        }
+        this.headerLogo()
+          .color(function(err, result) {
+            expect(err).to.be.null;
+            expect(result).to.equal('rgba(51,51,51,1)');
+          })
+          .visible()
+          .cssProperty('a[href="/plans"]', 'color', function(err, result) {
+            expect(err).to.be.null;
+            expect(result).to.equal('rgba(65,131,196,1)');
+          })
+          .getTitle(function(err, title) {
+            expect(err).to.be.null;
+            expect(title).to.equal('GitHub · Build software better, together.');
+          })
+        .signUpForm()
+          .width(function(err, width) {
+            expect(err).to.be.null;
+            expect(width).to.equal('320px');
+          })
+        .call(done);
+      });
   });
 
   it('homepage (without callbacks)', function(done) {
     client
-        .to(GithubPage)
-        .at(GithubPage, function(err) {
-          if(err) {
-            return;
-          }
-          this.headerLogo()
-              .size({width:89, height: 32})
-              .width('89px')
-              .color('rgba(51,51,51,1)')
-              .visible()
-          .signUpForm()
-              .size({width: 320, height: 296})
-          .commandBar()
-              .field().click()
-              .wait(500)
-              .topNav()
-              .cssProperty(null, 'opacity', function(err, result) {
-                expect(err).to.be.null;
-                expect(result).to.equal('0');
-              })
-          .call(done);
-        });
+      .to(GithubPage)
+      .at(GithubPage, function(err) {
+        if(err) {
+          return;
+        }
+        this.headerLogo()
+          .size({width:89, height: 32})
+          .width('89px', parseInt)
+          .color('rgba(51,51,51,1)')
+          .visible()
+        .signUpForm()
+          .width('320px')
+        .commandBar()
+          .field().click()
+          .wait(500)
+          .topNav()
+          .cssProperty(null, 'opacity', function(err, result) {
+            expect(err).to.be.null;
+            expect(result).to.equal('0');
+          })
+        .call(done);
+      });
   });
 
   after(function(done) {

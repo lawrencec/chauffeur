@@ -119,6 +119,16 @@ cd examples
 CHAUFFEUR_BROWSER=firefox mocha github-with-mocha.js
 ```
 
+There is a single command, defined in the scripts section of <code>examples/package.json</code> which will run all the examples in a specific browser(s).
+
+``` bash
+$ cd examples
+$ npm run examples
+$ npm run examples-ff
+$ npm run examples-chrome
+$ npm run examples-all # all the above
+```
+
 ## Tests
 
 ### Unit tests
@@ -149,6 +159,16 @@ To run the integration tests using a different browser i.e Chrome
 ``` bash
 $ CHAUFFEUR_BROWSER=chrome npm run test-int
 ```
+
+Like the examples, there is a single command, defined in the scripts section of <code>package.json</code> which will run all the examples in a specific browser(s).
+
+``` bash
+$ npm run test-int
+$ npm run test-int-ff
+$ npm run test-chrome
+$ npm run test-int-all # all the above
+```
+
 
 ### Coverage
 

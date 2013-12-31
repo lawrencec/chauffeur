@@ -6,6 +6,9 @@
   "scripts": {
     "test": "mocha --recursive -R spec test/unit",
     "test-int": "mocha --recursive -R spec test/integration",
+    "test-int-ff": "CHAUFFEUR_BROWSER=firefox npm run test-int",
+    "test-int-chrome": "CHAUFFEUR_BROWSER=chrome npm run test-int",
+    "test-int-all": "npm run test-int && npm run test-int-ff && npm run test-int-chrome",
     "coverage": "mkdir -p ./target; istanbul cover --report lcov --dir ./target node_modules/.bin/_mocha -- -R spec --recursive test/unit/*Spec.js",
     "complexity": "node_modules/.bin/grunt complexity"
   },

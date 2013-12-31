@@ -23,13 +23,12 @@ describe('Driver()', function() {
       },
       logLevel: 'silent'
     });
-//    mockRemoteDriver = mock(remoteDriver);
-//
   });
 
   afterEach(function() {
-//    remoteDriver.endAll();
+    remoteDriver.endAll();
   });
+
   describe('constructor', function () {
     it('should instantiate correctly return an object instance', function() {
       var driver = new Driver(remoteDriver);
@@ -250,11 +249,11 @@ describe('Driver()', function() {
             callback: function callbackFunc() {}
           };
           spyCallback = spy(callbackObject, 'callback');
-          mockContext = mock(driver);
+          mockDriver = mock(driver);
           driver.at(CSSTestPage, spyCallback);
           spyCallback.callCount.should.equal(1);
           spyCallback.firstCall.args[0].should.equal(testArgs.errorMessage);
-          mockContext.verify();
+          mockDriver.verify();
           done();
         },
       [
@@ -286,11 +285,11 @@ describe('Driver()', function() {
             callback: function callbackFunc() {}
           };
           spyCallback = spy(callbackObject, 'callback');
-          mockContext = mock(driver);
+          mockDriver = mock(driver);
           driver.at(CSSTestPage, spyCallback);
           spyCallback.callCount.should.equal(1);
           spyCallback.firstCall.args.length.should.equal(0);
-          mockContext.verify();
+          mockDriver.verify();
           done();
         }
     );
