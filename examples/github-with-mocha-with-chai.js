@@ -1,0 +1,88 @@
+var chai        = require('chai'),
+    expect      = chai.expect,
+    webdriver   = require('webdriverjs'),
+    Driver      = require('../lib/driver.js'),
+    GithubPage  = require('./Github/pages/homepage.js');
+
+describe('Github.com', function() {
+
+  this.timeout(99999999);
+  var client;
+
+  before(function(done){
+    var config = {
+      desiredCapabilities: {
+        browserName:  process.env.MOCHA_BROWSER || 'phantomjs'
+      },
+      logLevel: 'silent',
+      singleton: false
+    };
+    client = new Driver(webdriver.remote(config));
+    client.init(done);
+  });
+
+  after(function(done) {
+    client.endAll(done);
+  });
+
+  it('homepage (with callbacks)', function(done) {
+    client
+        .to(GithubPage)
+        .at(GithubPage, function(err) {
+          if(err) {
+            return;
+          }
+          this.headerLogo()
+              .color(function(err, result) {
+                expect(err).to.be.null;
+                expect(result).to.equal('rgba(51,51,51,1)');
+              })
+              .visible()
+              .cssProperty('a[href="/plans"]', 'color', function(err, result) {
+                expect(err).to.be.null;
+                expect(result).to.equal('rgba(65,131,196,1)');
+              })
+              .getTitle(function(err, title) {
+                expect(err).to.be.null;
+                expect(title).to.equal('GitHub · Build software better, together.');
+              })
+          .signUpForm()
+              .size(function(err, result) {
+                expect(err).to.be.null;
+                expect(result.width).to.equal(320);
+                expect(result.height).to.equal(296);
+              })
+          .call(done);
+        });
+  });
+
+  it('homepage (without callbacks)', function(done) {
+    client
+        .to(GithubPage)
+        .at(GithubPage, function(err) {
+          if(err) {
+            return;
+          }
+          this.headerLogo()
+              .size({width:89, height: 32})
+              .width('89px')
+              .color('rgba(51,51,51,1)')
+              .visible()
+          .signUpForm()
+              .size({width: 320, height: 296})
+          .commandBar()
+              .field().click()
+              .wait(500)
+              .topNav()
+              .cssProperty(null, 'opacity', function(err, result) {
+                expect(err).to.be.null;
+                expect(result).to.equal('0');
+              })
+          .call(done);
+        });
+  });
+
+  after(function(done) {
+    client.end(done);
+  });
+});

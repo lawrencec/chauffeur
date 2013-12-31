@@ -1,16 +1,13 @@
-var chai        = require('chai'),
-    assert      = chai.assert,
-    expect      = chai.expect,
+var buster = require("buster"),
+    assert      = buster.referee.assert,
     webdriver   = require('webdriverjs'),
     Driver      = require('../lib/driver.js'),
-    GithubPage  = require('./Github/pages/homepage.js');
+    GithubPage  = require('./Github/pages/homepage.js'),
+    client;
 
-describe('my webdriverjs tests', function() {
+buster.testCase("my webdriverjs tests", {
 
-  this.timeout(99999999);
-  var client = {};
-
-  before(function(done){
+  'setUp': function(done) {
     var config = {
       desiredCapabilities: {
         browserName:  process.env.MOCHA_BROWSER || 'phantomjs'
@@ -18,15 +15,12 @@ describe('my webdriverjs tests', function() {
       logLevel: 'silent',
       singleton: false
     };
+    this.timeout = 9999999;
     client = new Driver(webdriver.remote(config));
     client.init(done);
-  });
+  },
 
-  after(function(done) {
-    client.endAll(done);
-  });
-
-  it('Github test (with callbacks)', function(done) {
+  'homepage (with callbacks)': function (done) {
     client
         .to(GithubPage)
         .at(GithubPage, function(err) {
@@ -35,29 +29,29 @@ describe('my webdriverjs tests', function() {
           }
           this.headerLogo()
               .color(function(err, result) {
-                expect(err).to.be.null;
-                assert.strictEqual(result, 'rgba(51,51,51,1)');
+                assert(err, null);
+                assert(result, 'rgba(51,51,51,1)');
               })
               .visible()
               .cssProperty('a[href="/plans"]', 'color', function(err, result) {
-                expect(err).to.be.null;
-                assert.strictEqual(result, 'rgba(65,131,196,1)');
+                assert(err, null);
+                assert(result, 'rgba(65,131,196,1)');
               })
               .getTitle(function(err, title) {
-                expect(err).to.be.null;
-                assert.strictEqual(title,'GitHub · Build software better, together.');
+                assert(err, null);
+                assert(title, 'GitHub · Build software better, together.');
               })
-          .signUpForm()
+              .signUpForm()
               .size(function(err, result) {
-                expect(err).to.be.null;
-                assert.strictEqual(result.width, 320);
-                assert.strictEqual(result.height , 296);
+                assert(err, null);
+                assert(result.width, 320);
+                assert(result.height, 296);
               })
               .call(done);
         });
-  });
+  },
 
-  it('Github test (without callbacks)', function(done) {
+  'homepage (without callbacks)': function(done) {
     client
         .to(GithubPage)
         .at(GithubPage, function(err) {
@@ -68,24 +62,22 @@ describe('my webdriverjs tests', function() {
               .size({width:89, height: 32})
               .width('89px')
               .color('rgba(51,51,51,1)')
-              .visible();
-
-          this.signUpForm()
-              .size({width: 320, height: 296});
-
-          this.commandBar()
+              .visible()
+              .signUpForm()
+              .size({width: 320, height: 296})
+              .commandBar()
               .field().click()
               .wait(500)
               .topNav()
               .cssProperty(null, 'opacity', function(err, result) {
-                expect(err).to.be.null;
-                assert.strictEqual(result, '0');
-              });
-            this.call(done);
+                assert(err, null);
+                assert(result, '0');
+              })
+              .call(done);
         });
-  });
+  },
 
-  after(function(done) {
+  'tearDown': function(done) {
     client.end(done);
-  });
+  }
 });
