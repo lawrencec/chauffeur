@@ -5,42 +5,33 @@ Status: Experimental
 A cross browser library for writing functional tests.
 
 This is a wrapper around [webdriverjs](https://github.com/camme/webdriverjs/), a webdriver module for js, hoping to provide a
-different api (using page objects) in which to write functional tests using webdriver. Currently the only example provided is for Mocha, though it should work fine in any test runner.
+different api (using page objects) in which to write functional tests using webdriver.
 
 ## Installation
 
 This module can be installed via npm:
 
 ``` bash
-
 $ npm install page-chauffeur
-
 ```
 
 or via a git clone :
 
 ``` bash
-
 $ npm install .
-
 ```
 
 Once installed, require it like so:
 
 ``` js
-
 var chauffeur = require('page-chauffeur');
-
 ```
 
-## Examples
-
-### Github example
+## Github example
 
 The following is an example of what the current api looks like using existing webdriverjs callbacks
 
 ``` js
-
 client
     .to(GithubPage)
     .at(GithubPage, function(err) {
@@ -83,7 +74,6 @@ client
 And with no callbacks:
 
 ``` js
-
  client
     .to(GithubPage)
     .at(GithubPage, function(err) {
@@ -99,14 +89,34 @@ And with no callbacks:
           .size({width: 320, height: 296})
           .call(done);
     });
-
 ```
 Requires selenium to be running and phantomjs if no other browser is specified (see integration tests section).
 
 ``` bash
+$ mocha -R spec ./examples/github-with-mocha.js
+```
 
-$ mocha -R spec ./examples/github.js
+## Examples
 
+The examples directory, following the example given by the webdriverjs project, provides a few examples of how to run tests using various test frameworks. See the following code snippet for information on how to run each:
+
+``` bash
+$ cd examples
+$ npm install
+$ node github-with-buster.js 
+$ mocha github-with-jasmine.js
+$ mocha github-with-mocha.js
+$ mocha github-with-mocha-with-chai.js
+```
+
+## Running under other browsers
+
+By default these examples (and the integration tests for chauffeur) will run under phantomjs. Other browsers can be specified using the <code>CHAUFFEUR_BROWSER</code> environment variable.
+
+``` bash
+CHAUFFEUR_BROWSER=firefox npm run test-int
+cd examples
+CHAUFFEUR_BROWSER=firefox mocha github-with-mocha.js
 ```
 
 ## Tests
@@ -114,36 +124,30 @@ $ mocha -R spec ./examples/github.js
 ### Unit tests
 
 ``` bash
-
 $ npm run test
-
 ```
 
 ### Integration tests
 
-The integration tests run against a browser using running instance of selenium server.
-Download the selenium server standalone jar and run like so:
+The integration tests run against a browser using a running instance of selenium server.
+
+Using the selenium-standalone package, start a selenium server
 
 ``` bash
-
-java -jar path/to/your/selenium-server-standalone-2.35.0.jar
-
+$ npm install --production selenium-standalone -g
+$ start-selenium
 ```
 
 Then in a separate terminal run the following to run the integration tests against the default browser, Firefox.
 
 ``` bash
-
 $ npm run test-int
-
 ```
 
 To run the integration tests using a different browser i.e Chrome
 
 ``` bash
-
-$ MOCHA_BROWSER=chrome npm run test-int
-
+$ CHAUFFEUR_BROWSER=chrome npm run test-int
 ```
 
 ### Coverage
@@ -151,15 +155,13 @@ $ MOCHA_BROWSER=chrome npm run test-int
 A coverage report can be found in target/lcov-report/index.html after the following command (requires global and non-global install of mocha)
 
 ``` bash
-
 $ npm run coverage
-
 ```
 
 ## Todo
 
-- Expose more of the webdriver api
-- Allow nested page modules
-- Provide examples using test runners other than Mocha
+- Expose more of the webdriver api with nicer syntax
+- <del>Allow nested page modules</del>
+- <del>Provide examples using test runners other than Mocha</del>
 
 
