@@ -3,6 +3,7 @@ var buster = require("buster"),
     webdriver   = require('webdriverjs'),
     Driver      = require('../lib/driver.js'),
     GithubPage  = require('./Github/pages/homepage.js'),
+    browserName = process.env.CHAUFFEUR_BROWSER || 'phantomjs',
     client;
 
 buster.testCase("my webdriverjs tests", {
@@ -10,7 +11,7 @@ buster.testCase("my webdriverjs tests", {
   'setUp': function(done) {
     var config = {
       desiredCapabilities: {
-        browserName:  process.env.MOCHA_BROWSER || 'phantomjs'
+        browserName:  browserName
       },
       logLevel: 'silent',
       singleton: false

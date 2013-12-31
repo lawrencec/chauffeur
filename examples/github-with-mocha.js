@@ -1,7 +1,8 @@
 var assert      = require('assert'),
     webdriver   = require('webdriverjs'),
     Driver      = require('../lib/driver.js'),
-    GithubPage  = require('./Github/pages/homepage.js');
+    GithubPage  = require('./Github/pages/homepage.js'),
+    browserName = process.env.CHAUFFEUR_BROWSER || 'phantomjs';
 
 describe('Github.com', function() {
   var client;
@@ -11,7 +12,7 @@ describe('Github.com', function() {
   before(function(done){
     var config = {
       desiredCapabilities: {
-        browserName:  process.env.MOCHA_BROWSER || 'phantomjs'
+        browserName:  browserName
       },
       logLevel: 'silent',
       singleton: false

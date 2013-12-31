@@ -1,3 +1,3 @@
 module.exports = {
-  "browser": process.env.MOCHA_BROWSER || 'firefox'
+  "browser": process.env.CHAUFFEUR_BROWSER || 'firefox'
 };
