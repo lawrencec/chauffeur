@@ -1,8 +1,8 @@
 var buster = require("buster"),
     assert      = buster.referee.assert,
     webdriver   = require('webdriverjs'),
-    Driver      = require('../lib/driver.js'),
-    GithubPage  = require('./Github/pages/homepage.js'),
+    Driver      = require('../../lib/driver.js'),
+    GithubPage  = require('./pages/homepage.js'),
     browserName = process.env.CHAUFFEUR_BROWSER || 'phantomjs',
     client;
 

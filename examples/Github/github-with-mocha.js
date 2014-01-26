@@ -1,12 +1,10 @@
-var chai        = require('chai'),
-    expect      = chai.expect,
+var assert      = require('assert'),
     webdriver   = require('webdriverjs'),
-    Driver      = require('../lib/driver.js'),
-    GithubPage  = require('./Github/pages/homepage.js'),
+    Driver      = require('../../lib/driver.js'),
+    GithubPage  = require('./pages/homepage.js'),
     browserName = process.env.CHAUFFEUR_BROWSER || 'phantomjs';
 
 describe('Github.com', function() {
-
   var client;
 
   this.timeout(99999999);
@@ -36,22 +34,22 @@ describe('Github.com', function() {
         }
         this.headerLogo()
           .color(function(err, result) {
-            expect(err).to.be.null;
-            expect(result).to.equal('rgba(51,51,51,1)');
+            assert.equal(err, null);
+            assert.equal(result, 'rgba(51,51,51,1)');
           })
           .visible()
           .cssProperty('a[href="/plans"]', 'color', function(err, result) {
-            expect(err).to.be.null;
-            expect(result).to.equal('rgba(65,131,196,1)');
+            assert.equal(err, null);
+            assert.equal(result, 'rgba(65,131,196,1)');
           })
           .getTitle(function(err, title) {
-            expect(err).to.be.null;
-            expect(title).to.equal('GitHub · Build software better, together.');
+            assert.equal(err, null);
+            assert.equal(title, 'GitHub · Build software better, together.');
           })
         .signUpForm()
           .width(function(err, width) {
-            expect(err).to.be.null;
-            expect(width).to.equal('320px');
+            assert.equal(err, null);
+            assert.equal(width, '320px');
           })
         .call(done);
       });
@@ -76,14 +74,10 @@ describe('Github.com', function() {
           .wait(500)
           .topNav()
           .cssProperty(null, 'opacity', function(err, result) {
-            expect(err).to.be.null;
-            expect(result).to.equal('0');
+            assert.equal(err, null);
+            assert.equal(result, '0');
           })
         .call(done);
       });
-  });
-
-  after(function(done) {
-    client.end(done);
   });
 });

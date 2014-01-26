@@ -1,9 +1,9 @@
 {
   "scripts": {
-    "examples": "mocha github-*mocha*.js github*jasmine*.js -R spec; node github-with-buster.js",
-    "examples-ff": "CHAUFFEUR_BROWSER=firefox mocha github-*mocha*.js github*jasmine*.js -R spec; CHAUFFEUR_BROWSER=firefox node github-with-buster.js",
-    "examples-chrome": "CHAUFFEUR_BROWSER=chrome mocha github-*mocha*.js github*jasmine*.js -R spec; CHAUFFEUR_BROWSER=chrome node github-with-buster.js",
-    "examples-all": "npm run examples && npm run examples-ff && npm run examples-chrome"
+    "examples-github": "mocha github/github-*mocha*.js github/github*jasmine*.js -R spec; node github/github-with-buster.js",
+    "examples-ff-github": "CHAUFFEUR_BROWSER=firefox npm run examples-github",
+    "examples-chrome-github": "CHAUFFEUR_BROWSER=chrome npm run examples-github",
+    "examples-all-github": "npm run examples && npm run examples-ff-github && npm run examples-chrome-github"
   },
   "devDependencies": {
     "buster": "~0.7.6",
