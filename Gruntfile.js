@@ -22,7 +22,7 @@ module.exports = function (grunt) {
       }
     },
     mochacli: {
-      all: ['test/**/*Spec.js'],
+      all: ['test/unit/*Spec.js', 'test/integration/*Spec.js'],
       unit: ['test/unit/*Spec.js'],
       int: ['test/integration/*Spec.js'],
       options: {
@@ -47,7 +47,8 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-mocha-cli');
 
 
-  grunt.registerTask('test', ['complexity', 'jshint', 'mochacli:unit', 'watch']);
-  grunt.registerTask('ci', ['complexity', 'jshint', 'mochacli:all']);
+  grunt.registerTask('test', ['mochacli:unit', 'complexity', 'jshint', 'watch']);
+  grunt.registerTask('test-int', ['mochacli:int', 'complexity', 'jshint', 'watch']);
+  grunt.registerTask('ci', ['mochacli:all', 'complexity', 'jshint']);
   grunt.registerTask('default', ['test']);
 };

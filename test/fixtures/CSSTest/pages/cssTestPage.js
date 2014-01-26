@@ -20,7 +20,25 @@ function CssTestPage() {
       selector: 'h2',
       required: true
     },
-    'table': TableModule
+    'table': TableModule,
+    'hidden': {
+      selector: '#hiddenElement'
+    },
+    'textField': {
+      selector: '#text_field'
+    },
+    'checkbox': {
+      selector: '#checkbox1'
+    },
+    'clearButton': {
+      selector: '#clearButton'
+    },
+    'submitButton': {
+      selector: '#submitButton'
+    },
+    'form': {
+      selector: '#formSection'
+    }
   };
 }
 

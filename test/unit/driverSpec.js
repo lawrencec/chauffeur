@@ -25,8 +25,8 @@ describe('Driver()', function() {
     });
   });
 
-  afterEach(function() {
-    remoteDriver.endAll();
+  after(function() {
+    remoteDriver = null;
   });
 
   describe('constructor', function () {
@@ -105,9 +105,9 @@ describe('Driver()', function() {
         function(done, testArgs) {
           var result,
               expectationCallback = Driver._getExpectationCallback(
-                testArgs.expectation,
-                testArgs.msg,
-                testArgs.keys
+                  testArgs.expectation,
+                  testArgs.msg,
+                  testArgs.keys
               );
           expectationCallback.should.be.a('function');
           result = expectationCallback(null, testArgs.result);
@@ -155,10 +155,10 @@ describe('Driver()', function() {
     unroll('should throw error when result does not match expectation',
         function(done, testArgs) {
           var expectationCallback = Driver._getExpectationCallback(
-                testArgs.expectation,
-                testArgs.msg,
-                testArgs.keys
-              );
+              testArgs.expectation,
+              testArgs.msg,
+              testArgs.keys
+          );
 
           try {
             expectationCallback(null, testArgs.result);

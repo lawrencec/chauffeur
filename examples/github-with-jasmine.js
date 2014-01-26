@@ -71,7 +71,7 @@ describe('Github.com', function() {
         .signUpForm()
           .width('320px')
         .commandBar()
-          .field().click()
+          .field().klick()
           .wait(500)
           .topNav()
           .cssProperty(null, 'opacity', function(err, result) {

@@ -2,6 +2,7 @@ var sinonChai = require('sinon-chai'),
     chai        = require('chai'),
     mock = require('sinon').mock,
     spy = require('sinon').spy,
+    stub = require('sinon').stub,
     unroll = require('unroll'),
     Content      = require('../../lib/content.js'),
     Driver = require('../../lib/driver.js');
@@ -54,6 +55,38 @@ describe('Content', function() {
 });
 
 describe('Content', function() {
+  var ct,
+      ContentThing,
+      ctxt = {
+        getElementSize:         function(){},
+        isVisible:              function(){},
+        getElementCssProperty:  function(){},
+        getCssProperty:         function(){},
+        buttonClick:            function(){},
+        clearElement:           function(){},
+        pause:                  function(){},
+        getLocation:            function(){},
+        getTagName:             function(){},
+        getText:                function(){},
+        getValue:               function(){},
+        setValue:               function(){},
+        isSelected:             function(){},
+        submitForm:             function(){},
+        currentScope:           '.selector'
+      };
+
+  ContentThing = function ContentThing() {
+    this._content = {
+      aModule: {
+        module: 'aModule'
+      }
+    };
+  };
+  ContentThing.prototype = {};
+  Content.mixin(ContentThing);
+
+  ct = new ContentThing();
+  ct._mixinApi(ctxt);
   describe('mixin()', function() {
     it('should add existing Content properties and methods to target', function() {
       var destObject = {};
@@ -64,36 +97,14 @@ describe('Content', function() {
     });
   });
 
-  describe('_mixinApi()', function() {
-    unroll('mixed in #method should delegate to #delegate correctly',
+  describe('delegation occurs correctly', function() {
+
+    describe('_mixinApi()', function() {
+      unroll('mixed in #method should delegate to #delegate correctly',
         function(done, testArgs) {
-          var ctxt,
-              ct;
+          var mockContext = mock(ctxt);
 
-          ctxt = {
-            getElementSize: function() {},
-            isVisible: function(){},
-            getElementCssProperty: function(){},
-            getCssProperty: function(){},
-            buttonClick: function(){}
-          };
-
-          function ContentThing() {
-            this._content = {
-              aModule: {
-                module: testArgs.module
-              }
-            };
-          }
-
-          ContentThing.prototype = {};
-          Content.mixin(ContentThing);
-
-          ct = new ContentThing();
-          ct._mixinApi(ctxt);
           ctxt[testArgs.method].should.be.a('function');
-          mock(Driver);
-          mockContext = mock(ctxt);
           mockContext.expects(testArgs.delegate).once();
           ctxt[testArgs.method]();
           mockContext.verify();
@@ -108,8 +119,35 @@ describe('Content', function() {
           ['visible'    , 'isVisible'],
           ['visible'    , 'isVisible'],
           ['invisible'  , 'isVisible'],
-          ['click'      , 'buttonClick']
+          ['wait'       , 'pause'],
+          ['klick'      , 'buttonClick'],
+          ['clear'      , 'clearElement'],
+          ['location'   , 'getLocation'],
+          ['nodeName'   , 'getTagName'],
+          ['text'       , 'getText'],
+          ['selected'   , 'isSelected'],
+          ['value'      , 'getValue'],
+          ['submit'     , 'submitForm']
         ]
-    );
+      );
+    });
+
+    it('value() should delegate correctly when getting value', function() {
+      var mockContext = mock(ctxt);
+
+      ctxt.value.should.be.a('function');
+      mockContext.expects('getValue').once().withArgs('.selector');
+      ctxt.value();
+      mockContext.verify();
+    });
+
+   it('value() should delegate correctly when setting value', function() {
+      var mockContext = mock(ctxt);
+
+      ctxt.value.should.be.a('function');
+      mockContext.expects('setValue').once().withArgs('.selector', 'newValue');
+      ctxt.value('newValue', null, true);
+      mockContext.verify();
+    });
   });
 });

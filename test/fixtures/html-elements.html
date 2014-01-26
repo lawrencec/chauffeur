@@ -95,7 +95,7 @@
                 luctus fermentum, turpis mi volutpat justo, eu volutpat enim diam eget
                 metus.</p>
 
-            <form action="/" id="formSection">
+            <form action="/" id="formSection" onsubmit="return stopSubmit()">
                 <h2>Form Element</h2>
 
                 <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Nullam
@@ -137,7 +137,7 @@
                 <p>Checkboxes:
 
                     <input type="checkbox" class="checkbox" name="checkbox1" id="checkbox1"
-                           value="check_1"/>
+                           value="check_1" checked/>
                     <label for="checkbox1">Radio 1</label>
                     <input type="checkbox" class="checkbox" name="checkbox2" id="checkbox2"
                            value="check_1"/>
@@ -157,8 +157,8 @@
                 </p>
 
 
-                <p><input class="button" type="reset" value="Clear"/> <input
-                        class="button" type="submit" value="Submit"/>
+                <p><input id="clearButton" class="button" type="reset" value="Clear"/> <input
+                        id="submitButton" class="button" type="submit" value="Submit"/>
                 </p>
 
 
@@ -230,6 +230,12 @@
 
         <h2>Iframe</h2>
         <iframe id="anIFrame" src="iframe.html" frameborder="0" height="180" width="500"></iframe>
+        <script>
+            function stopSubmit() {
+                document.getElementById('submitButton').value = 'Submitted!';
+                return false;
+            };
+        </script>
     </body>
 </html>
 
