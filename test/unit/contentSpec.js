@@ -72,6 +72,8 @@ describe('Content', function() {
         setValue:               function(){},
         isSelected:             function(){},
         submitForm:             function(){},
+        getAttribute:           function(){},
+        keys:                   function(){},
         currentScope:           '.selector'
       };
 
@@ -127,7 +129,9 @@ describe('Content', function() {
           ['text'       , 'getText'],
           ['selected'   , 'isSelected'],
           ['value'      , 'getValue'],
-          ['submit'     , 'submitForm']
+          ['submit'     , 'submitForm'],
+          ['attr'       , 'getAttribute'],
+          ['enter'       , 'keys']
         ]
       );
     });
@@ -149,5 +153,24 @@ describe('Content', function() {
       ctxt.value('newValue', null, true);
       mockContext.verify();
     });
+
+    it('hasValue() should delegate correctly', function() {
+      var mockContext = mock(ctxt);
+
+      ctxt.value.should.be.a('function');
+      mockContext.expects('value').once().withArgs('newValue');
+      ctxt.hasValue('newValue');
+      mockContext.verify();
+    });
+
+    it('keys() should delegate correctly when called', function () {
+      var mockContext = mock(ctxt);
+
+      ctxt.value.should.be.a('function');
+      mockContext.expects('keys').once().withArgs('enteredInput');
+      ctxt.enter('enteredInput');
+      mockContext.verify();
+    });
+
   });
 });
