@@ -1,107 +1,55 @@
 var sinonChai   = require('sinon-chai'),
     chai        = require('chai'),
-    mock        = require('sinon').mock,
-    spy         = require('sinon').spy,
-    unroll      = require('unroll'),
     expect      = chai.expect,
-    webdriver   = require('webdriverjs'),
-    browser     = require('../testConfig.js').browser,
+    unroll      = require('unroll'),
+    Browser     = require('../../lib/browser.js'),
     Driver      = require('../../lib/driver.js'),
-    Module      = require('../../lib/module.js'),
-    CSSTestPage = require('../fixtures/CSSTest/pages/cssTestPage.js');
+    Module      = require('../../lib/module.js');
 
 chai.use(sinonChai);
-chai.should();
 
 describe('Driver()', function() {
-  var remoteDriver;
-
-  before(function(){
-    remoteDriver = webdriver.remote({
-      desiredCapabilities: {
-        browserName: browser
-      },
-      logLevel: 'silent'
-    });
-  });
-
-  after(function() {
-    remoteDriver = null;
-  });
+  var config = {
+        webDriverClass: 'webdriverio',
+        webDriverConfig: {
+          'foo': 'blah'
+        }
+      };
 
   describe('constructor', function () {
-    it('should instantiate correctly return an object instance', function() {
-      var driver = new Driver(remoteDriver);
-      driver.should.be.an('object');
-      driver._remoteDriver.should.be.an('object');
-      driver._remoteDriver.should.equal(remoteDriver);
+    it('should instantiate correctly and return an object instance', function() {
+      var driver = new Driver(config);
+
+      expect(driver).to.be.an('object');
     });
   });
 
+  describe('unimplemented methods', function () {
+    //dynamically determine methods to test
+    var driverPrototypeMethods = function getDriverPrototypeMethods() {
+      var unrollValues = [['method']];
+      Object.keys(Driver.prototype).forEach(function(item) {
+            unrollValues.push([item]);
+          }
+      );
+      return unrollValues;
+    }();
 
-  describe('Driver.init()', function () {
-    it('should initialise correctly', function() {
-      var mockRemoteDriver = mock(remoteDriver);
-      var driver = new Driver(remoteDriver);
-
-      mockRemoteDriver.expects('init').once();
-
-      driver.init();
-
-      mockRemoteDriver.verify();
-      mockRemoteDriver.restore();
-    });
-  });
-
-  describe('Driver._resolveProperty()', function() {
-
-    unroll('should resolve propertyName #propertyName with value of #value for #parameter',
+    unroll('#method should throw a NOT_IMPLEMENTED_EXCEPTION',
         function(done, testArgs) {
-          var driver = new Driver(remoteDriver);
-              var result = driver._resolveProperty(
-                  testArgs.parameter,
-                  testArgs.propertyName);
+          var driver = new Driver();
 
-          result.should.equal(testArgs.value);
+          expect(function() {
+            driver[testArgs.method]();
+          }).to.throw('NOT_IMPLEMENTED_EXCEPTION');
           done();
         },
-        [
-          ['parameter',               'propertyName',       'value'],
-          [ 'aString',                'aProperty',          'aString' ],
-          [ {aProperty: true},        'aProperty',          true ],
-          [ (function() {
-              var o = {};
-              o.prototype = {
-                prototypeProperty: true
-              };
-            return o;
-          })(),                        'prototypeProperty',  true ]
-        ]
+        driverPrototypeMethods
     );
   });
 
-  describe('Driver.to()', function() {
-    unroll('should open browser at #url when a #type object',
-        function(done, testArgs) {
-
-          var mockRemoteDriver = mock(remoteDriver);
-          var driver = new Driver(remoteDriver);
-          mockRemoteDriver.expects('url').withArgs('aUrl');
-          driver.to(testArgs.url);
-          mockRemoteDriver.verify();
-          mockRemoteDriver.restore();
-          done();
-        },
-        [
-          ['url',         'type'],
-          [{url: 'aUrl'}, 'page'],
-          ['aUrl',        'string']
-        ]
-    );
-  });
-
-  describe('Driver._getExpectationCallback', function() {
-    unroll('should not throw error when result matches expectation',
+  describe('_getExpectationCallback()', function() {
+    unroll('should not throw error when result #result matches expectation #expectation',
         function(done, testArgs) {
           var result,
               expectationCallback = Driver._getExpectationCallback(
@@ -109,7 +57,7 @@ describe('Driver()', function() {
                   testArgs.msg,
                   testArgs.keys
               );
-          expectationCallback.should.be.a('function');
+          expect(expectationCallback).to.be.a('function');
           result = expectationCallback(null, testArgs.result);
           expect(result).to.equal(testArgs.callbackResult);
           done();
@@ -143,7 +91,7 @@ describe('Driver()', function() {
               width: 100,
               height: 50
             },
-            undefined,
+            true,
             { width: 100,
               height: 50
             },
@@ -155,17 +103,12 @@ describe('Driver()', function() {
     unroll('should throw error when result does not match expectation',
         function(done, testArgs) {
           var expectationCallback = Driver._getExpectationCallback(
-              testArgs.expectation,
-              testArgs.msg,
-              testArgs.keys
+              testArgs.expectation, testArgs.msg, testArgs.keys
           );
 
-          try {
+          expect(function() {
             expectationCallback(null, testArgs.result);
-          }
-          catch(e) {
-            e.message.should.equal(testArgs.exceptionMessage);
-          }
+          }).to.throw(testArgs.exceptionMessage);
           done();
         },
         [
@@ -199,99 +142,37 @@ describe('Driver()', function() {
 
     it('should throw error if there was an error retrieving value', function() {
       var expectationCallback = Driver._getExpectationCallback('foo');
-      try {
+
+      expect(function() {
         expectationCallback('Error from browser', null);
-      }
-      catch(e) {
-        e.message.should.equal('Error from browser');
-      }
+      }).to.throw('Error from browser');
     });
   });
 
-  describe('Driver.end()', function () {
-    it('should close current session', function() {
-      var mockRemoteDriver = mock(remoteDriver),
-          driver = new Driver(remoteDriver);
-      mockRemoteDriver.expects('end').once();
-      driver.end();
-      mockRemoteDriver.verify();
-      mockRemoteDriver.restore();
-    });
-  });
-
-  describe('Driver.endAll()', function () {
-    it('should close all sessions', function() {
-      var mockRemoteDriver = mock(remoteDriver),
-          driver = new Driver(remoteDriver);
-      mockRemoteDriver.expects('endAll').once();
-      driver.endAll();
-      mockRemoteDriver.verify();
-      mockRemoteDriver.restore();
-    });
-  });
-
-  describe('Driver.at()', function() {
-    unroll('callback should be called correctly when at() is unsuccessful',
+  describe('getWebDriver', function () {
+    unroll('should return correct webdriver object if #wdClass exists',
         function(done, testArgs) {
-          var callbackObject,
-              spyCallback,
-              mockDriver,
-              driver;
+          var wd;
 
-          driver = new Driver(remoteDriver);
-          driver.ctxt = {
-            getTitle: function getTitleCallback(spiedCallback) {
-              spiedCallback.apply(this.ctxt, testArgs.titleCallbackArgs);
-            }
-          };
+          wd = Driver.getWebDriver(testArgs.wdClass);
 
-          callbackObject = {
-            callback: function callbackFunc() {}
-          };
-          spyCallback = spy(callbackObject, 'callback');
-          mockDriver = mock(driver);
-          driver.at(CSSTestPage, spyCallback);
-          spyCallback.callCount.should.equal(1);
-          spyCallback.firstCall.args[0].should.equal(testArgs.errorMessage);
-          mockDriver.verify();
+          expect(wd).to.be.an('function');
           done();
         },
-      [
-        ['titleCallbackArgs'      , 'errorMessage'],
-        [ //error from browser
-          ['error message']       , 'error message'
-        ],
-        [ // incorrect title
-          [null, 'title page']    , 'Not at correct page. Expected "chauffeur Test Page" but found "title page "'
+        [
+          ['wdClass'    ],
+          ['webdriverio']
         ]
-      ]
     );
 
-    it('callback should be called correctly when at() is successful',
-        function(done) {
-          var callbackObject,
-              spyCallback,
-              mockDriver,
-              driver;
-
-          driver = new Driver(remoteDriver);
-          driver.ctxt = {
-            getTitle: function getTitleCallback(spiedCallback) {
-              spiedCallback(null, 'chauffeur Test Page');
-            }
-          };
-
-          callbackObject = {
-            callback: function callbackFunc() {}
-          };
-          spyCallback = spy(callbackObject, 'callback');
-          mockDriver = mock(driver);
-          driver.at(CSSTestPage, spyCallback);
-          spyCallback.callCount.should.equal(1);
-          spyCallback.firstCall.args.length.should.equal(0);
-          mockDriver.verify();
-          done();
+    it('should throw exception when webdriver class does not exist',
+      function() {
+        try {
+          Driver.getWebDriver('unknown');
+        } catch(e) {
+          expect(e.code).to.equal("MODULE_NOT_FOUND");
         }
+      }
     );
   });
 });

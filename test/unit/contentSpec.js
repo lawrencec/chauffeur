@@ -1,15 +1,14 @@
 var sinonChai = require('sinon-chai'),
-    chai        = require('chai'),
-    mock = require('sinon').mock,
-    spy = require('sinon').spy,
-    stub = require('sinon').stub,
-    unroll = require('unroll'),
-    Content      = require('../../lib/content.js'),
-    Driver = require('../../lib/driver.js');
-    Module = require('../../lib/module.js');
+    chai      = require('chai'),
+    expect    = chai.expect,
+    mock      = require('sinon').mock,
+    stub      = require('sinon').stub,
+    unroll    = require('unroll'),
+    Content   = require('../../lib/content.js'),
+    Driver    = require('../../lib/browser.js');
+    Module    = require('../../lib/module.js');
 
 chai.use(sinonChai);
-chai.should();
 
 describe('Content', function() {
   describe('_initialiseContent()', function() {
@@ -19,11 +18,9 @@ describe('Content', function() {
         init: function init(){}
       };
     };
-    unroll('should initialise page content correctly',
+    unroll('should initialise page content correctly when module type is #moduleName',
         function(done, testArgs) {
-          var spyThing,
-              ctxt = {},
-              ct;
+          var ct;
 
           function ContentThing() {
             this._content = {
@@ -34,22 +31,16 @@ describe('Content', function() {
           }
 
           ContentThing.prototype = {};
-          Content.mixin(ContentThing);
+          Content.mixin(Content, ContentThing.prototype);
 
           ct = new ContentThing();
-          ct.initialiseContent(ctxt);
-
-          ctxt.aModule.should.be.an('function');
-          spyThing = spy(ctxt, 'aModule');
-          ctxt.aModule();
-          ctxt.currentScope = testArgs.moduleType.baseSelector;
-          spyThing.returned(ctxt);
+          ct.initialiseContent();
           done();
         },
         [
-          ['moduleType'],
-          [dummyModule],
-          [Module]
+          ['moduleType' , 'moduleName'  ],
+          [dummyModule  , 'dummyModule' ],
+          [Module       , 'aModule'     ]
         ]);
   });
 });
@@ -88,89 +79,94 @@ describe('Content', function() {
   Content.mixin(ContentThing);
 
   ct = new ContentThing();
-  ct._mixinApi(ctxt);
   describe('mixin()', function() {
     it('should add existing Content properties and methods to target', function() {
       var destObject = {};
       destObject.prototype = {};
 
-      Content.mixin(destObject);
-      destObject.prototype.initialiseContent.should.be.a('function');
+      Content.mixin(Content, destObject.prototype);
+      expect(destObject.prototype.initialiseContent).to.be.a('function');
     });
   });
 
   describe('delegation occurs correctly', function() {
 
-    describe('_mixinApi()', function() {
-      unroll('mixed in #method should delegate to #delegate correctly',
-        function(done, testArgs) {
-          var mockContext = mock(ctxt);
+    unroll('mixed in #method should delegate correctly',
+      function(done, testArgs) {
+        var contentObj = function(){},
+            contentMock;
 
-          ctxt[testArgs.method].should.be.a('function');
-          mockContext.expects(testArgs.delegate).once();
-          ctxt[testArgs.method]();
-          mockContext.verify();
-          done();
-        },
-        [
-          ['method'     , 'delegate'],
-          ['size'       , 'getElementSize'],
-          ['width'      , 'getCssProperty'],
-          ['color'      , 'getCssProperty'],
-          ['cssProperty', 'getElementCssProperty'],
-          ['visible'    , 'isVisible'],
-          ['visible'    , 'isVisible'],
-          ['invisible'  , 'isVisible'],
-          ['wait'       , 'pause'],
-          ['klick'      , 'buttonClick'],
-          ['clear'      , 'clearElement'],
-          ['location'   , 'getLocation'],
-          ['nodeName'   , 'getTagName'],
-          ['text'       , 'getText'],
-          ['selected'   , 'isSelected'],
-          ['value'      , 'getValue'],
-          ['submit'     , 'submitForm'],
-          ['attr'       , 'getAttribute'],
-          ['enter'       , 'keys']
-        ]
+        contentObj.prototype = {};
+        Content.mixin(Content, contentObj.prototype);
+
+        contentObj = new contentObj();
+
+        contentMock = mock(contentObj);
+        contentMock.expects('delegate').withExactArgs(testArgs.method).returns(function(){});
+        contentObj[testArgs.method]();
+        contentMock.verify();
+
+        done();
+      },
+      [
+        ['method'     ],
+        ['size'       ],
+        ['width'      ],
+        ['color'      ],
+        ['cssProperty'],
+        ['visible'    ],
+        ['invisible'  ],
+        ['wait'       ],
+        ['klick'      ],
+        ['clear'      ],
+        ['location'   ],
+        ['nodeName'   ],
+        ['text'       ],
+        ['selected'   ],
+        ['value'      ],
+        ['submit'     ],
+        ['attr'       ],
+        ['enter'      ]
+      ]
+    );
+
+    describe('delegate()', function () {
+      it('should delegate correctly when content has a baseSelector',
+        function () {
+          var contentObj = function(){};
+
+          contentObj.prototype = {};
+          Content.mixin(Content, contentObj.prototype);
+
+          contentObj = new contentObj();
+
+              contentObj._driver = stub({
+            method: function() {}
+          });
+
+          contentObj.baseSelector = '.selector';
+          contentObj.delegate('method')();
+          expect(contentObj._driver.method).to.have.been.calledWith('.selector');
+        }
+      );
+
+      it('should delegate correctly when content does not have a baseSelector',
+          function () {
+            var contentObj = function(){};
+
+            contentObj.prototype = {};
+            Content.mixin(Content, contentObj.prototype);
+
+            contentObj = new contentObj();
+
+            contentObj._driver = stub({
+              method: function() {}
+            });
+
+            contentObj.delegate('method')();
+            expect(contentObj._driver.method).to.have.been.calledWith();
+          }
       );
     });
-
-    it('value() should delegate correctly when getting value', function() {
-      var mockContext = mock(ctxt);
-
-      ctxt.value.should.be.a('function');
-      mockContext.expects('getValue').once().withArgs('.selector');
-      ctxt.value();
-      mockContext.verify();
-    });
-
-   it('value() should delegate correctly when setting value', function() {
-      var mockContext = mock(ctxt);
-
-      ctxt.value.should.be.a('function');
-      mockContext.expects('setValue').once().withArgs('.selector', 'newValue');
-      ctxt.value('newValue', null, true);
-      mockContext.verify();
-    });
-
-    it('hasValue() should delegate correctly', function() {
-      var mockContext = mock(ctxt);
-
-      ctxt.value.should.be.a('function');
-      mockContext.expects('value').once().withArgs('newValue');
-      ctxt.hasValue('newValue');
-      mockContext.verify();
-    });
-
-    it('keys() should delegate correctly when called', function () {
-      var mockContext = mock(ctxt);
-
-      ctxt.value.should.be.a('function');
-      mockContext.expects('keys').once().withArgs('enteredInput');
-      ctxt.enter('enteredInput');
-      mockContext.verify();
-    });
-
   });
 });

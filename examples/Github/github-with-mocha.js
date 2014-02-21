@@ -1,83 +1,87 @@
 var assert      = require('assert'),
-    webdriver   = require('webdriverjs'),
-    Driver      = require('../../lib/driver.js'),
+    Browser      = require('../../').Browser,
     GithubPage  = require('./pages/homepage.js'),
     browserName = process.env.CHAUFFEUR_BROWSER || 'phantomjs';
 
 describe('Github.com', function() {
-  var client;
+  var browser;
 
-  this.timeout(99999999);
+  this.timeout(10000);
 
-  before(function(done){
+  beforeEach(function(done){
     var config = {
-      desiredCapabilities: {
-        browserName:  browserName
-      },
-      logLevel: 'silent',
-      singleton: false
+      webDriverClass: 'webdriverio',
+      webDriverConfig: {
+        desiredCapabilities: {
+          browserName:  browserName
+        },
+        logLevel: 'silent',
+        singleton: false
+      }
     };
-    client = new Driver(webdriver.remote(config));
-    client.init(done);
+    browser = new Browser(config);
+    browser.init(done);
   });
 
   after(function(done) {
-    client.endAll(done);
+    browser.endAll(done);
+  });
+
+  afterEach(function(done) {
+    browser.end(done);
   });
 
   it('homepage (with callbacks)', function(done) {
-    client
+    browser
       .to(GithubPage)
       .at(GithubPage, function(err) {
         if(err) {
           return;
         }
-        this.headerLogo()
+
+        this.headerLogo
           .color(function(err, result) {
             assert.equal(err, null);
             assert.equal(result, 'rgba(51,51,51,1)');
           })
-          .visible()
-          .cssProperty('a[href="/plans"]', 'color', function(err, result) {
-            assert.equal(err, null);
-            assert.equal(result, 'rgba(65,131,196,1)');
-          })
-          .getTitle(function(err, title) {
-            assert.equal(err, null);
-            assert.equal(title, 'GitHub · Build software better, together.');
-          })
-        .signUpForm()
+          .visible();
+
+        this.signUpForm
           .width(function(err, width) {
             assert.equal(err, null);
             assert.equal(width, '320px');
-          })
-        .call(done);
+          });
+        this.end(done);
       });
   });
 
   it('homepage (without callbacks)', function(done) {
-    client
+    browser
       .to(GithubPage)
       .at(GithubPage, function(err) {
         if(err) {
           return;
         }
-        this.headerLogo()
+        this.headerLogo
           .size({width:89, height: 32})
           .width('89px', parseInt)
           .color('rgba(51,51,51,1)')
-          .visible()
-        .signUpForm()
-          .width('320px')
-        .commandBar()
-          .field().klick()
-          .wait(500)
-          .topNav()
-          .cssProperty(null, 'opacity', function(err, result) {
+          .visible();
+
+        this.signUpForm
+          .width('320px');
+
+        this.commandBar
+          .field
+            .klick()
+            .wait(1000);
+
+        this.commandBar.topNav
+          .cssProperty('opacity', function(err, result) {
             assert.equal(err, null);
-            assert.equal(result, '0');
-          })
-        .call(done);
+            assert.equal(parseInt(result, 10), 0);
+          });
+        this.end(done);
       });
   });
 });

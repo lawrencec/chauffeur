@@ -1,5 +1,5 @@
 module.exports = {
-  Driver: require('./lib/Driver'),
+  Browser: require('./lib/Browser'),
   Module: require('./lib/Module'),
   Page: require('./lib/Page'),
   Content: require('./lib/Content')

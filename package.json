@@ -1,6 +1,6 @@
 {
   "name": "page-chauffeur",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A cross browser library for writing functional tests using webdriver",
   "main": "index.js",
   "scripts": {
@@ -10,7 +10,7 @@
     "test-int-chrome": "CHAUFFEUR_BROWSER=chrome npm run test-int",
     "test-int-all": "npm run test-int && npm run test-int-ff && npm run test-int-chrome",
     "test-all": "mocha --recursive -R spec test/unit/*Spec.js test/integration/*Spec.js",
-    "coverage": "mkdir -p ./target/unit; istanbul cover --report lcov --dir ./target/unit node_modules/.bin/_mocha -- -R spec --recursive test/unit/*Spec.js",
+    "coverage": "mkdir -p ./target/unit; istanbul cover --report lcov --dir ./target/unit node_modules/.bin/_mocha -- --recursive -R spec test/unit",
     "coverage-int": "mkdir -p ./target/integration; istanbul cover --report lcov --dir ./target/integration node_modules/.bin/_mocha -- -R spec --recursive test/integration/*Spec.js",
     "complexity": "node_modules/.bin/grunt complexity"
   },

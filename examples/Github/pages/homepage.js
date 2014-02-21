@@ -6,10 +6,7 @@ var Page = require('../../../').Page,
 function GithubPage() {
   this.title = 'GitHub · Build software better, together.';
   this._content = {
-    'headerLogo': {
-      required: true,
-      selector: '.header-logo-wordmark'
-    },
+    'headerLogo': '.header-logo-wordmark',
     'signUpForm': {
       module: SignUpForm
     },

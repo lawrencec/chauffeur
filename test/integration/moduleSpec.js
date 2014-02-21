@@ -1,50 +1,51 @@
 var chai        = require('chai'),
-    browser     = require('../testConfig.js').browser,
-    Driver      = require('../../lib/driver.js'),
+    browserName     = require('../testConfig.js').browser,
+    Browser      = require('../../lib/browser.js'),
     Module      = require('../../lib/module.js'),
-    webdriver   = require('webdriverjs'),
     CSSTestPage  = require('./../fixtures/CSSTest/pages/cssTestPage.js');
 
 chai.should();
 
 describe('Module', function() {
-  var remoteDriver,
-      driver;
+  var browser;
 
-  this.timeout(99999999);
+  this.timeout(10000);
 
   beforeEach(function(done){
-    remoteDriver = webdriver.remote({
-      desiredCapabilities: {
-        browserName: browser
-      },
-      logLevel: 'silent',
-      singleton: false
-    });
+    var config = {
+      webDriverClass: 'webdriverio',
+      webDriverConfig: {
+        desiredCapabilities: {
+          browserName:  browserName
+        },
+        logLevel: 'silent',
+        singleton: false
+      }
+    };
+    browser = new Browser(config);
+    browser.init(done);
+  });
 
-    driver = new Driver(remoteDriver);
-    driver.init(done);
+  after(function(done) {
+    browser.endAll(done);
   });
 
   afterEach(function(done) {
-    driver.end(done);
+    browser.end(done);
   });
 
   describe('when part of a Page definition', function() {
-    it('is created correctly', function() {
-      driver
+    it('is created correctly', function(done) {
+      browser
           .to(CSSTestPage)
           .at(CSSTestPage, function(err) {
             if(err) {
               throw new Error(err);
             }
-            this.table.should.be.a('function');
-            this.h1.should.be.a('function');
-            this.headingTwos.should.be.a('function');
-            this.table().should.be.an('object');
-            this.h1().should.be.an('object');
-            this.headingTwos().should.be.an('object');
-            this.endAll(done);
+            this.table.should.be.an('object');
+            this.h1.should.be.an('object');
+            this.headingTwos.should.be.an('object');
+            this.end(done);
           });
     });
   });
