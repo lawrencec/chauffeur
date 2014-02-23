@@ -49,4 +49,19 @@ describe('Module', function() {
           });
     });
   });
+
+  describe('nested modules', function() {
+    it('should have their content use correctly nested selectors', function(done) {
+      browser
+        .to(CSSTestPage)
+        .at(CSSTestPage, function(err) {
+          if(err) {
+            throw new Error(err);
+          }
+          this.table.rows.should.be.an('object');
+          this.table.rows.data.text('Division 1.1');
+          this.end(done);
+        });
+    });
+  });
 });

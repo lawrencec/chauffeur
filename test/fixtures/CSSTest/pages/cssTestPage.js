@@ -20,7 +20,9 @@ function CssTestPage() {
       selector: 'h2',
       required: true
     },
-    'table': TableModule,
+    'table': {
+      module: TableModule
+    },
     'hidden': {
       selector: '#hiddenElement'
     },

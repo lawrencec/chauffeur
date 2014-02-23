@@ -3,7 +3,7 @@ var inherits    = require('util').inherits,
     TableRowModule = require('./tablerow.js');
 
 function TableModule() {
-  this.baseSelector = 'table';
+  this.baseSelector = 'table#primaryTable';
   this.required = true;
   this._content = {
     'rows': {

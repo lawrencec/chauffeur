@@ -20,7 +20,9 @@ describe('Module', function () {
   unroll('init should set property #property correctly from config for expectation #propertyExpectation',
     function(done, testArgs) {
       var mod = new Module(),
-          config = {};
+          config = {
+            parentSelector: ''
+          };
 
       config[testArgs.configProperty] = testArgs.value;
       mod.init({}, config);
@@ -30,7 +32,7 @@ describe('Module', function () {
     [
       ['configProperty', 'value'     , 'property'     , 'propertyExpectation' ],
       ['selector'      , 'selector'  , 'baseSelector' , 'selector'            ],
-      ['selector'      , ''          , 'baseSelector' , null                  ],
+      ['selector'      , ''          , 'baseSelector' , 'null'                ],
       ['required'      , false       , 'required'     , false                 ],
       ['required'      , true        , 'required'     , true                  ],
       ['element'       , 'aSelector' , 'baseNode'     , 'aSelector'           ]
