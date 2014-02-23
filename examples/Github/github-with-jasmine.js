@@ -76,9 +76,9 @@ describe('Github.com', function() {
             .wait(1000);
 
         this.commandBar.topNav
-          .cssProperty(null, 'opacity', function(err, result) {
+          .cssProperty('opacity', function(err, result) {
             assert(err === null);
-            assert(parseInt(result) === '0');
+            assert(parseInt(result) === 0);
           });
         this.end(done);
       });
