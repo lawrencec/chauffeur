@@ -109,6 +109,37 @@ describe('Browser()', function() {
           ['aUrl',        'aUrl',         'string']
         ]
     );
+
+    unroll('should open browser at correct #url when url parameters are #params',
+      function(done, testArgs) {
+          var driverStub = stub({
+                goTo: function goTo() {}
+              }),
+              browser;
+
+          browser = new Browser(config);
+          browser._driver = driverStub;
+
+          browser.to(testArgs.url, testArgs.params);
+          expect(driverStub.goTo).to.have.been.calledWith(testArgs.expectation);
+          done();
+        },
+        [
+          ['url',                 'params',        'expectation'],
+          [
+            'aUrl/{foo}',                {foo:'bar'},    "aUrl/bar"
+          ],
+          [
+            {url: "aUrl/{foo}"},  {foo:'bar'},     "aUrl/bar"
+          ],
+          [
+            "aUrl?foo={foo}",  {foo:'bar'}, "aUrl?foo=bar"
+          ],
+          [
+            {url: "aUrl?foo={foo}"},  {foo:'bar'}, "aUrl?foo=bar"
+          ]
+        ]
+    );
   });
 
   describe('Browser.end()', function () {
