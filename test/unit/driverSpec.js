@@ -140,13 +140,28 @@ describe('Driver()', function() {
         ]
     );
 
-    it('should throw error if there was an error retrieving value', function() {
-      var expectationCallback = Driver._getExpectationCallback('foo');
+    unroll('should throw error if there was an error retrieving value',
+        function(done,testArgs) {
+          var expectationCallback = Driver._getExpectationCallback('foo');
 
-      expect(function() {
-        expectationCallback('Error from browser', null);
-      }).to.throw('Error from browser');
-    });
+          expect(function() {
+            expectationCallback(testArgs.err, null);
+          }).to.throw(testArgs.expectation);
+          done();
+        },
+        [
+          ['err'                              , 'expectation'                ],
+          ['err'                              , 'err'                        ],
+          [
+            {
+              message: 'error from Message'
+            }                                 , 'error from Message'         ],
+          [
+            {
+              orgStatusMessage: 'error from orgStatusMessage'
+            }                                 , 'error from orgStatusMessage']
+        ]
+    );
   });
 
   describe('getWebDriver', function () {
