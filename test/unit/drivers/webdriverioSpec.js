@@ -339,4 +339,15 @@ describe('WebDriverIO', function() {
       expect(driver.ctxt.endAll).to.have.been.calledWith(callback);
     });
   });
+
+  describe('exists()', function () {
+    it('should delegate correctly', function () {
+      var driver;
+
+      driver = new WebDriverIO(config);
+      driver.ctxt = contextStub;
+      driver.exists('#notUsedSelector', false);
+      expect(driver.ctxt.getTagName).to.have.been.calledWith('#notUsedSelector');
+    });
+  });
 });

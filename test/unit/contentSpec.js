@@ -126,7 +126,8 @@ describe('Content', function() {
         ['value'      ],
         ['submit'     ],
         ['attr'       ],
-        ['enter'      ]
+        ['enter'      ],
+        ['exists'     ]
       ]
     );
 

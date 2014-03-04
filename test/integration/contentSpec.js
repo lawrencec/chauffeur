@@ -205,6 +205,20 @@ describe('Content()', function() {
     });
   });
 
+  describe('unselected()', function() {
+    it('should report on the selected value of an element correctly', function(done) {
+      browser
+          .to(CSSTestPage)
+          .at(CSSTestPage, function(err) {
+            expect(err).to.equal(undefined);
+            this.checkbox.klick();
+            this.checkbox.unselected();
+            this.end(done);
+          });
+
+    });
+  });
+
   describe('location()', function() {
     it('should report on the location of an element correctly', function(done) {
       browser
@@ -224,6 +238,28 @@ describe('Content()', function() {
           .at(CSSTestPage, function(err) {
             expect(err).to.equal(undefined);
             this.h1.nodeName('h1');
+            this.end(done);
+          });
+    });
+  });
+
+  describe('exists()', function() {
+    it('should report correctly if element exists on the page and is expected to', function(done) {
+      browser
+          .to(CSSTestPage)
+          .at(CSSTestPage, function(err) {
+            expect(err).to.equal(undefined);
+            this.h1.exists();
+            this.end(done);
+          });
+    });
+
+    it('should report correctly if element does not exists on the page and is not expected to', function(done) {
+      browser
+          .to(CSSTestPage)
+          .at(CSSTestPage, function(err) {
+            expect(err).to.equal(undefined);
+            this.notUsedElement.exists(false);
             this.end(done);
           });
     });

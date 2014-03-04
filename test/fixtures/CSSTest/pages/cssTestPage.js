@@ -40,6 +40,9 @@ function CssTestPage() {
     },
     'form': {
       selector: '#formSection'
+    },
+    'notUsedElement': {
+      selector: '#notUsedSelector'
     }
   };
 }
