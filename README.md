@@ -67,7 +67,7 @@ client
             assert.strictEqual(result.width, 320);
             assert.strictEqual(result.height , 296);
           })
-          .call(done);
+          .end(done);
     });
 ```
 
@@ -87,7 +87,7 @@ And with no callbacks:
           .visible()
           .signUpForm()
           .size({width: 320, height: 296})
-          .call(done);
+          .end(done);
     });
 ```
 Requires selenium to be running and phantomjs if no other browser is specified (see integration tests section).
@@ -128,6 +128,51 @@ $ npm run examples-ff
 $ npm run examples-chrome
 $ npm run examples-all # all the above
 ```
+
+## API
+
+The following is an example of the current supported API. This snippet is for documentation purposes only as the [ContentSpec integration test](https://github.com/lawrencec/chauffeur/blob/master/test/integration/contentSpec.js) shows working code example of every method currently supported.
+
+``` js
+ client
+    .to(MyOwnPage)
+    .at(MyOwnPage, function(err) {
+      if(err) {
+        return;
+      }
+ 	this.headerLogo()
+            .size({width:89, height: 32})
+            .width('89px')
+            .color('rgba(51,51,51,1)')
+            .visible()
+            .invisible()
+            .location({x:1, y:1})
+            .nodeName('div');
+	this.subHeading
+	      .text('text')
+	      .exists()
+            .exists(false);
+	this.checkbox
+            .selected()
+           .unselected();
+      this.textField
+            .hasValue('someValue')
+            .value('newValue')
+            .clear()
+            .attr('id', 'username')
+            .enter('some keys');
+      this.todoList(1)
+      		.text('book')
+      this.todoList(2)
+      		.text('bluray')      
+      this.actionBtn
+            .klick()
+		.wait('500');
+      this.loginForm.submit();     
+           .end(done);
+    });
+```
+
 
 ## Tests
 
@@ -180,7 +225,7 @@ $ npm run coverage
 
 ## Todo
 
-- Expose more of the webdriver api with nicer syntax
+- <del>Expose more of the webdriver api with nicer syntax</del>
 - <del>Allow nested page modules</del>
 - <del>Provide examples using test runners other than Mocha</del>
 
