@@ -38,15 +38,15 @@ buster.testCase("my webdriverjs tests", {
           this.headerLogo
             .color(function(err, result) {
               assert.isNull(err);
-              assert(result, 'rgba(51,51,51,1)');
+              assert.equals(result, 'rgba(51,51,51,1)');
             })
             .visible();
 
           this.signUpForm
               .size(function(err, result) {
                 assert.isNull(err);
-                assert(result.width, 320);
-                assert(result.height, 296);
+                assert.equals(result.width, 320);
+                assert.equals(result.height, 296);
               });
           this.end(done);
         });
@@ -74,7 +74,7 @@ buster.testCase("my webdriverjs tests", {
               .topNav
                 .cssProperty('opacity', function(err, result) {
                   assert.isNull(err);
-                  assert(parseInt(result), 0);
+                  assert.equals(parseInt(result, 10), 0);
                 });
           this.end(done);
         });
