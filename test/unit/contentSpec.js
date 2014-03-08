@@ -9,64 +9,10 @@ var sinonChai = require('sinon-chai'),
     Module    = require('../../lib/module.js');
 
 chai.use(sinonChai);
+chai.should();
 
 describe('Content', function() {
-  describe('_initialiseContent()', function() {
-    var dummyModule = function dummyModule() {
-      return {
-        baseSelector: 'h1',
-        init: function init(){}
-      };
-    };
-    unroll('should initialise page content correctly when module type is #moduleName',
-        function(done, testArgs) {
-          var ct;
-
-          function ContentThing() {
-            this._content = {
-              aModule: {
-                module: testArgs.module
-              }
-            };
-          }
-
-          ContentThing.prototype = {};
-          Content.mixin(Content, ContentThing.prototype);
-
-          ct = new ContentThing();
-          ct.initialiseContent();
-          done();
-        },
-        [
-          ['moduleType' , 'moduleName'  ],
-          [dummyModule  , 'dummyModule' ],
-          [Module       , 'aModule'     ]
-        ]);
-  });
-});
-
-describe('Content', function() {
-  var ct,
-      ContentThing,
-      ctxt = {
-        getElementSize:         function(){},
-        isVisible:              function(){},
-        getElementCssProperty:  function(){},
-        getCssProperty:         function(){},
-        buttonClick:            function(){},
-        clearElement:           function(){},
-        pause:                  function(){},
-        getLocation:            function(){},
-        getTagName:             function(){},
-        getText:                function(){},
-        getValue:               function(){},
-        setValue:               function(){},
-        isSelected:             function(){},
-        submitForm:             function(){},
-        getAttribute:           function(){},
-        keys:                   function(){},
-        currentScope:           '.selector'
-      };
+  var ContentThing;
 
   ContentThing = function ContentThing() {
     this._content = {
@@ -78,7 +24,6 @@ describe('Content', function() {
   ContentThing.prototype = {};
   Content.mixin(ContentThing);
 
-  ct = new ContentThing();
   describe('mixin()', function() {
     it('should add existing Content properties and methods to target', function() {
       var destObject = {};
@@ -168,6 +113,35 @@ describe('Content', function() {
             expect(contentObj._driver.method).to.have.been.calledWith();
           }
       );
+
+      unroll('should delegate correctly when content matches multiple elements',
+        function (done, testArgs) {
+          var contentObj = function(){};
+
+          contentObj.prototype = {};
+          Content.mixin(Content, contentObj.prototype);
+
+          contentObj = new contentObj();
+
+          contentObj._driver = stub({
+            method: function() {}
+          });
+
+          contentObj.baseSelector = '.selector';
+          contentObj.childSelectorIndex = testArgs.childSelector;
+          contentObj.delegate('method')();
+          expect(contentObj._driver.method).to.have.been.calledWith(testArgs.expectation);
+          done();
+        },
+        [
+            ['childSelector'    , 'expectation'             ],
+            [undefined          , '.selector'               ],
+            [1                  , '.selector:first-child'   ],
+            [2                  , '.selector:nth-child(2)'  ],
+            [-1                 , '.selector:last-child'    ]
+        ]
+      );
+
     });
   });
 });
