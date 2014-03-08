@@ -161,23 +161,23 @@ describe('Content()', function() {
           });
     });
   });
-//
-//  describe('submit()', function() {
-//    it('should submit the element correctly', function(done) {
-//      browser
-//          .to(CSSTestPage)
-//          .at(CSSTestPage, function(err) {
-//            expect(err).to.equal(undefined);
-//            this.form()
-//                .submit();
-//            this.submitButton()
-//                .value('Submitted');
-//            this.end(done);
-//          });
 
-//    });
-//  });
-//
+  describe('submit()', function() {
+    it('should submit the element correctly', function(done) {
+      browser
+          .to(CSSTestPage)
+          .at(CSSTestPage, function(err) {
+            expect(err).to.equal(undefined);
+            this.form()
+                .submit();
+            this.wait(1000);
+            this.submitButton()
+                .value('Submitted!');
+            this.end(done);
+          });
+    });
+  });
+
   describe('value()', function() {
     it('should set and get the value of an element correctly', function(done) {
       browser
