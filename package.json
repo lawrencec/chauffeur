@@ -1,6 +1,6 @@
 {
   "name": "page-chauffeur",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "A cross browser library for writing functional tests using webdriver",
   "main": "index.js",
   "scripts": {
