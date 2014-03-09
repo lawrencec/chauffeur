@@ -155,21 +155,21 @@ The following is an example of the current supported API. This snippet is for do
 	this.checkbox
             .selected()
            .unselected();
-      this.textField
+        this.textField
             .hasValue('someValue')
             .value('newValue')
             .clear()
             .attr('id', 'username')
             .enter('some keys');
-      this.todoList(1)
-      		.text('book')
-      this.todoList(2)
-      		.text('bluray')      
-      this.actionBtn
+        this.todoList(1)
+            .text('book')
+        this.todoList(2)
+            .text('bluray')      
+        this.actionBtn
             .klick()
-		.wait('500');
-      this.loginForm.submit();     
-           .end(done);
+	    .wait('500');
+        this.loginForm.submit();     
+            .end(done);
     });
 ```
 
