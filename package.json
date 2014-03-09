@@ -4,15 +4,15 @@
   "description": "A cross browser library for writing functional tests using webdriver",
   "main": "index.js",
   "scripts": {
-    "test": "mocha --recursive -R spec test/unit",
-    "test-int": "mocha --recursive -R spec test/integration",
-    "test-int-ff": "CHAUFFEUR_BROWSER=firefox npm run test-int",
-    "test-int-chrome": "CHAUFFEUR_BROWSER=chrome npm run test-int",
+    "test": "grunt test",
+    "test-int": "grunt test-int",
+    "test-int-ff": "CHAUFFEUR_BROWSER=firefox grunt test-int",
+    "test-int-chrome": "CHAUFFEUR_BROWSER=chrome grunttest-int",
     "test-int-all": "npm run test-int && npm run test-int-ff && npm run test-int-chrome",
-    "test-all": "mocha --recursive -R spec test/unit/*Spec.js test/integration/*Spec.js",
+    "test-all": "grunt ci",
     "coverage": "mkdir -p ./target/unit; istanbul cover --report lcov --dir ./target/unit node_modules/.bin/_mocha -- --recursive -R spec test/unit",
     "coverage-int": "mkdir -p ./target/integration; istanbul cover --report lcov --dir ./target/integration node_modules/.bin/_mocha -- -R spec --recursive test/integration/*Spec.js",
-    "complexity": "node_modules/.bin/grunt complexity"
+    "complexity": "grunt complexity"
   },
   "repository": {
     "type": "git",
@@ -44,10 +44,12 @@
   "devDependencies": {
     "grunt-contrib-jshint": "~0.6.4",
     "grunt-contrib-watch": "~0.5.3",
-    "grunt": "~0.4.1",
+    "grunt": "~0.4.2",
     "grunt-mocha-cli": "~1.1.0",
-    "grunt-complexity": "~0.1.3",
+    "grunt-complexity": "~0.1.4",
     "grunt-cli": "~0.1.9",
-    "istanbul": "~0.2.1"
+    "istanbul": "~0.2.1",
+    "grunt-contrib-connect": "~0.7.1",
+    "grunt-selenium-webdriver": "~0.2.392"
   }
 }

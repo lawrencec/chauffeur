@@ -4,8 +4,6 @@ var Page = require('../../../../lib/page.js'),
     inherits = require('util').inherits;
 
 function CssTestPage() {
-  this.url = 'file:///'+__dirname +'/../../html-elements.html';
-
   this.title = 'chauffeur Test Page';
 
   this._content = {
@@ -49,6 +47,6 @@ function CssTestPage() {
 
 inherits(CssTestPage, Page);
 
-CssTestPage.url = 'file:///'+__dirname +'/../../html-elements.html';
+CssTestPage.url = 'http://localhost:9001/html-elements.html';
 CssTestPage.wait = 0;
 module.exports = CssTestPage;

@@ -186,17 +186,15 @@ $ npm run test
 
 The integration tests run against a browser using a running instance of selenium server.
 
-Using the selenium-standalone package, start a selenium server
-
-``` bash
-$ npm install --production selenium-standalone -g
-$ start-selenium
-```
-
-Then in a separate terminal run the following to run the integration tests against the default browser, Firefox.
+The grunt task test-int runs a selenium server (via grunt-selenium-webdriver) prior to running the tests and since npm test-int is 'aliased' to grunt test-int both can be used to run the integration tests:
 
 ``` bash
 $ npm run test-int
+```
+
+or 
+``` bash
+$ grunt test-int
 ```
 
 To run the integration tests using a different browser i.e Chrome
