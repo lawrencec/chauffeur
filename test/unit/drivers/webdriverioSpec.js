@@ -10,7 +10,7 @@ var sinonChai   = require('sinon-chai'),
 chai.use(sinonChai);
 
 describe('WebDriverIO', function() {
-  var config = 'aConfig',
+  var config = {},
       webdriverStub,
       contextStub;
 
