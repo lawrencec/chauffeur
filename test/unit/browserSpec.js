@@ -60,33 +60,6 @@ describe('Browser()', function() {
     });
   });
 
-  describe('Browser._resolveProperty()', function() {
-
-    unroll('should resolve propertyName #propertyName with value of #value for #parameter',
-        function(done, testArgs) {
-          var browser = new Browser(config);
-              var result = browser._resolveProperty(
-                  testArgs.parameter,
-                  testArgs.propertyName);
-
-          expect(result).to.equal(testArgs.value);
-          done();
-        },
-        [
-          ['parameter',               'propertyName',       'value'],
-          [ 'aString',                'aProperty',          'aString' ],
-          [ {aProperty: true},        'aProperty',          true ],
-          [ (function() {
-              var o = {};
-              o.prototype = {
-                prototypeProperty: true
-              };
-            return o;
-          })(),                        'prototypeProperty',  true ]
-        ]
-    );
-  });
-
   describe('Browser.to()', function() {
     unroll('should open browser at #url when a #type object',
         function(done, testArgs) {
