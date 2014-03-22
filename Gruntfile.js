@@ -49,6 +49,13 @@ module.exports = function (grunt) {
           port: 9001,
           base: 'test/fixtures/'
         }
+      },
+      debug: {
+        options: {
+          keepalive: true,
+          port: 9001,
+          base: 'test/fixtures/'
+        }
       }
     }
   });
@@ -61,7 +68,9 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-selenium-webdriver');
 
   grunt.registerTask('test', ['mochacli:unit']);
-  grunt.registerTask('test-int', ['selenium_start','connect:server', 'mochacli:int']);
+  grunt.registerTask('fixture-server', 'connect:server');
+  grunt.registerTask('fixture-server-debug', 'connect:debug');
+  grunt.registerTask('test-int', ['selenium_start','fixture-server', 'mochacli:int']);
   grunt.registerTask('ci', ['mochacli:all', 'jshint']);
   grunt.registerTask('complex', ['complexity']);
   grunt.registerTask('jshint', ['jshint']);
