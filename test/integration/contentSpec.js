@@ -266,7 +266,7 @@ describe('Content()', function() {
   });
 
   describe('executeScript()', function() {
-    it.only('should execute a script and return results correctly', function(done) {
+    it('should execute a script and return results correctly', function(done) {
       browser
           .to(CSSTestPage)
           .at(CSSTestPage, function(err) {
