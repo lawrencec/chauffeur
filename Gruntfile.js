@@ -57,6 +57,28 @@ module.exports = function (grunt) {
           base: 'test/fixtures/'
         }
       }
+    },
+    mocha_istanbul: {
+      unit: {
+        src: 'test/unit/', // the folder, not the files,
+        options: {
+          root: 'lib',
+          recursive: true,
+          mask: '**/*Spec.js',
+          coverageFolder: 'target/unit/',
+          reportFormats: ['lcov', 'text']
+        }
+      },
+      integration: {
+        src: 'test/integration/', // the folder, not the files,
+        options: {
+          root: 'lib',
+          recursive: true,
+          mask: '**/*Spec.js',
+          coverageFolder: 'target/integration/',
+          reportFormats: ['lcov', 'text']
+        }
+      }
     }
   });
 
@@ -66,6 +88,7 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-mocha-cli');
   grunt.loadNpmTasks('grunt-selenium-webdriver');
+  grunt.loadNpmTasks('grunt-mocha-istanbul');
 
   grunt.registerTask('test', ['mochacli:unit']);
   grunt.registerTask('fixture-server', 'connect:server');
@@ -73,6 +96,8 @@ module.exports = function (grunt) {
   grunt.registerTask('test-int', ['selenium_start','fixture-server', 'mochacli:int']);
   grunt.registerTask('ci', ['mochacli:all', 'jshint']);
   grunt.registerTask('complex', ['complexity']);
+  grunt.registerTask('coverage', ['mocha_istanbul:unit']);
+  grunt.registerTask('coverage-int', ['selenium_start','fixture-server','mocha_istanbul:integration']);
   grunt.registerTask('jshint', ['jshint']);
   grunt.registerTask('default', ['test']);
 };

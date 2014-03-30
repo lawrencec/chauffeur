@@ -10,8 +10,8 @@
     "test-int-chrome": "CHAUFFEUR_BROWSER=chrome grunttest-int",
     "test-int-all": "npm run test-int && npm run test-int-ff && npm run test-int-chrome",
     "test-all": "grunt ci",
-    "coverage": "mkdir -p ./target/unit; istanbul cover --report lcov --dir ./target/unit node_modules/.bin/_mocha -- --recursive -R spec test/unit",
-    "coverage-int": "mkdir -p ./target/integration; istanbul cover --report lcov --dir ./target/integration node_modules/.bin/_mocha -- -R spec --recursive test/integration/*Spec.js",
+    "coverage": "grunt coverage",
+    "coverage-int": "grunt coverage-int",
     "complexity": "grunt complexity"
   },
   "repository": {
