@@ -1,4 +1,5 @@
 var sinonChai   = require('sinon-chai'),
+    sinon       = require('sinon'),
     chai        = require('chai'),
     expect      = chai.expect,
     unroll      = require('unroll'),
@@ -108,7 +109,7 @@ describe('Driver()', function() {
 
           expect(function() {
             expectationCallback(null, testArgs.result);
-          }).to.throw(testArgs.exceptionMessage);
+          }).to.throw(sinon.match.string);
           done();
         },
         [
@@ -146,7 +147,7 @@ describe('Driver()', function() {
 
           expect(function() {
             expectationCallback(testArgs.err, null);
-          }).to.throw(testArgs.expectation);
+          }).to.throw(sinon.match.string);
           done();
         },
         [

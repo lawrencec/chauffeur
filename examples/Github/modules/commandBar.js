@@ -1,5 +1,5 @@
 var Module = require('../../../').Module,
-    TopNav = require('../modules/topNav.js'),
+    TopNav = require('./topNav'),
     inherits = require('util').inherits;
 
 function CommandBar() {

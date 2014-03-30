@@ -1,7 +1,7 @@
 var chai        = require('chai'),
     expect      = chai.expect,
     Browser      = require('../../').Browser,
-    GithubPage  = require('./pages/homepage.js'),
+    GithubPage  = require('./pages/homepage'),
     browserName = process.env.CHAUFFEUR_BROWSER || 'phantomjs';
 
 describe('Github.com', function() {

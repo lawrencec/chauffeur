@@ -141,7 +141,7 @@ describe('Content()', function() {
           .at(CSSTestPage, function(err) {
             expect(err).to.equal(undefined);
             this.textField
-                .value('text that should not be here', null, true)
+                .value('text that should not be here', null, null, true)
                 .clear()
                 .value('');
             this.end(done);
@@ -185,7 +185,7 @@ describe('Content()', function() {
           .at(CSSTestPage, function(err) {
             expect(err).to.equal(undefined);
             this.textField
-                .value('a test value', null, true)
+                .value('a test value', null, null, true)
                 .value('a test value');
             this.end(done);
           });

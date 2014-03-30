@@ -18,6 +18,6 @@ function GithubPage() {
 
 inherits(GithubPage, Page);
 
-GithubPage.prototype.url = 'https://github.com/';
+GithubPage.url = 'https://github.com/';
 GithubPage.wait = 0;
 module.exports = GithubPage;

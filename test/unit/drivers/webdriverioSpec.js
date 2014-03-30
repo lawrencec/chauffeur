@@ -43,7 +43,9 @@ describe('WebDriverIO', function() {
       isVisible:              function(){},
       getElementCssProperty:  function(){},
       getCssProperty:         function(){},
-      buttonClick:            function(){},
+      click:                  function(){},
+      doubleClick:            function(){},
+      moveToObject:           function(){},
       clearElement:           function(){},
       pause:                  function(){},
       getLocation:            function(){},
@@ -53,13 +55,17 @@ describe('WebDriverIO', function() {
       value:                  function(){},
       getValue:               function(){},
       setValue:               function(){},
+      addValue:               function(){},
       hasValue:               function(){},
       isSelected:             function(){},
       submitForm:             function(){},
       getAttribute:           function(){},
       keys:                   function(){},
       end:                    function(){},
-      endAll:                 function(){}
+      endAll:                 function(){},
+      elements:               function(){},
+      back:                   function(){},
+      forward:                function(){}
     });
 
     webdriverStub = sinon.stub({
@@ -112,20 +118,19 @@ describe('WebDriverIO', function() {
 
       driver = new WebDriverIO(config);
       driver.ctxt = contextStub;
-      driver.value('.selector', 'newValue', null, true);
-      expect(driver.ctxt.setValue).to.have.been.calledWith('.selector', 'newValue');
+      driver.value('.selector', 'newValue', null, null, true);
+      expect(driver.ctxt.addValue).to.have.been.calledWith('.selector', 'newValue');
     });
 
   });
   describe('hasValue()', function () {
-
     it('should delegate correctly', function() {
         var driver;
 
         driver = new WebDriverIO(config);
         driver.ctxt = contextStub;
         driver.hasValue('.selector', 'newValue');
-        expect(driver.ctxt.value).to.have.been.calledWith('.selector', 'newValue');
+        expect(driver.ctxt.getValue).to.have.been.calledWith('.selector');
     });
   });
 
@@ -135,8 +140,8 @@ describe('WebDriverIO', function() {
 
       driver = new WebDriverIO(config);
       driver.ctxt = contextStub;
-      driver.enter('.selector','enteredInput');
-      expect(driver.ctxt.keys).to.have.been.calledWith('.selector', 'enteredInput');
+      driver.setValue('.selector','enteredInput');
+      expect(driver.ctxt.setValue).to.have.been.calledWith('.selector', 'enteredInput');
     });
   });
 
@@ -158,7 +163,51 @@ describe('WebDriverIO', function() {
       driver = new WebDriverIO(config);
       driver.ctxt = contextStub;
       driver.klick('.selector');
-      expect(driver.ctxt.buttonClick).to.have.been.calledWith('.selector');
+      expect(driver.ctxt.click).to.have.been.calledWith('.selector');
+    });
+  });
+
+  describe('doubleklick()', function () {
+    it('should delegate correctly', function () {
+      var driver;
+
+      driver = new WebDriverIO(config);
+      driver.ctxt = contextStub;
+      driver.doubleklick('.selector');
+      expect(driver.ctxt.doubleClick).to.have.been.calledWith('.selector');
+    });
+  });
+
+  describe('moveTo()', function () {
+    it('should delegate correctly', function () {
+      var driver;
+
+      driver = new WebDriverIO(config);
+      driver.ctxt = contextStub;
+      driver.moveTo('.selector');
+      expect(driver.ctxt.moveToObject).to.have.been.calledWith('.selector');
+    });
+  });
+
+  describe('hover()', function () {
+    it('should delegate correctly', function () {
+      var driver;
+
+      driver = new WebDriverIO(config);
+      driver.ctxt = contextStub;
+      driver.hover('.selector');
+      expect(driver.ctxt.moveToObject).to.have.been.calledWith('.selector');
+    });
+  });
+
+  describe('submit()', function () {
+    it('should delegate correctly', function () {
+      var driver;
+
+      driver = new WebDriverIO(config);
+      driver.ctxt = contextStub;
+      driver.submit('.selector');
+      expect(driver.ctxt.submitForm).to.have.been.calledWith('.selector');
     });
   });
 
@@ -196,6 +245,18 @@ describe('WebDriverIO', function() {
   });
 
   describe('selected()', function () {
+    it('should delegate correctly', function () {
+      var driver;
+
+      driver = new WebDriverIO(config);
+      driver.ctxt = contextStub;
+      driver.selected('.selector');
+      expect(driver.ctxt.isSelected).to.have.been.calledWith('.selector');
+    });
+  });
+
+
+  describe('unselected()', function () {
     it('should delegate correctly', function () {
       var driver;
 
@@ -311,8 +372,8 @@ describe('WebDriverIO', function() {
 
       driver = new WebDriverIO(config);
       driver.ctxt = contextStub;
-      driver.getTitle(null, 'title');
-      expect(driver.ctxt.getTitle).to.have.been.calledWith(null, 'title');
+      driver.getTitle('title');
+      expect(driver.ctxt.getTitle).to.have.been.calledWith('title');
     });
   });
 
@@ -348,6 +409,79 @@ describe('WebDriverIO', function() {
       driver.ctxt = contextStub;
       driver.exists('#notUsedSelector', false);
       expect(driver.ctxt.getTagName).to.have.been.calledWith('#notUsedSelector');
+    });
+
+    unroll('should handle results correctly when expected to exist is #mustExist',
+        function (done, testArgs) {
+          var driver;
+
+          driver = new WebDriverIO(config);
+          driver.ctxt = contextStub;
+          driver.exists('#notUsedSelector', testArgs.mustExist);
+          driver.ctxt.getTagName.yield(null, testArgs.mustExist);
+          expect(driver.ctxt.getTagName).to.have.been.calledWith('#notUsedSelector');
+          done();
+        },
+        [
+          ['mustExist'],
+          [true],
+          [false]
+        ]
+    );
+  });
+
+  describe('elements()', function () {
+    it('should delegate correctly', function () {
+      var driver;
+
+      driver = new WebDriverIO(config);
+      driver.ctxt = contextStub;
+      driver.elements('#selector');
+      expect(driver.ctxt.elements).to.have.been.calledWith('#selector');
+    });
+  });
+
+  describe('back()', function () {
+    it('should delegate correctly', function () {
+      var driver;
+
+      driver = new WebDriverIO(config);
+      driver.ctxt = contextStub;
+      driver.back();
+      expect(driver.ctxt.back).to.have.been.calledWith();
+    });
+  });
+
+  describe('forward()', function () {
+    it('should delegate correctly', function () {
+      var driver;
+
+      driver = new WebDriverIO(config);
+      driver.ctxt = contextStub;
+      driver.forward();
+      expect(driver.ctxt.forward).to.have.been.calledWith();
+    });
+  });
+
+  describe('hasClass()', function () {
+    it('should delegate correctly', function () {
+      var driver;
+
+      driver = new WebDriverIO(config);
+      driver.ctxt = contextStub;
+      driver.hasClass('selector');
+      expect(driver.ctxt.getAttribute).to.have.been.calledWith('selector', 'className');
+    });
+  });
+
+  describe('hasntClass()', function () {
+    it('should delegate correctly', function () {
+      var driver;
+
+      driver = new WebDriverIO(config);
+      driver.ctxt = contextStub;
+      driver.hasntClass('selector');
+      expect(driver.ctxt.getAttribute).to.have.been.calledWith('selector', 'className');
     });
   });
 });

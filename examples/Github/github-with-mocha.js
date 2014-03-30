@@ -1,6 +1,6 @@
 var assert      = require('assert'),
     Browser      = require('../../').Browser,
-    GithubPage  = require('./pages/homepage.js'),
+    GithubPage  = require('./pages/homepage'),
     browserName = process.env.CHAUFFEUR_BROWSER || 'phantomjs';
 
 describe('Github.com', function() {

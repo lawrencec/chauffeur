@@ -71,7 +71,7 @@ describe('Content', function() {
         ['value'      ],
         ['submit'     ],
         ['attr'       ],
-        ['enter'      ],
+        ['setValue'   ],
         ['exists'     ]
       ]
     );

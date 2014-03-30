@@ -1,7 +1,7 @@
 var buster = require("buster"),
     assert      = buster.referee.assert,
     Browser      = require('../../').Browser,
-    GithubPage  = require('./pages/homepage.js'),
+    GithubPage  = require('./pages/homepage'),
     browserName = process.env.CHAUFFEUR_BROWSER || 'phantomjs',
     browser;
 
