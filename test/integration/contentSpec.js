@@ -265,4 +265,15 @@ describe('Content()', function() {
     });
   });
 
+  describe('executeScript()', function() {
+    it.only('should execute a script and return results correctly', function(done) {
+      browser
+          .to(CSSTestPage)
+          .at(CSSTestPage, function(err) {
+            expect(err).to.equal(undefined);
+            this.executeScript('return document.title', 'chauffeur Test Page');
+            this.end(done);
+          });
+    });
+  });
 });

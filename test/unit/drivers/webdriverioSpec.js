@@ -65,7 +65,8 @@ describe('WebDriverIO', function() {
       endAll:                 function(){},
       elements:               function(){},
       back:                   function(){},
-      forward:                function(){}
+      forward:                function(){},
+      execute:                function(){}
     });
 
     webdriverStub = sinon.stub({
@@ -482,6 +483,17 @@ describe('WebDriverIO', function() {
       driver.ctxt = contextStub;
       driver.hasntClass('selector');
       expect(driver.ctxt.getAttribute).to.have.been.calledWith('selector', 'className');
+    });
+  });
+
+  describe('executeScript()', function () {
+    it('should delegate correctly', function () {
+      var driver;
+
+      driver = new WebDriverIO(config);
+      driver.ctxt = contextStub;
+      driver.executeScript('function() { return 1;}', 2);
+      expect(driver.ctxt.execute).to.have.been.calledWith('function() { return 1;}');
     });
   });
 });
