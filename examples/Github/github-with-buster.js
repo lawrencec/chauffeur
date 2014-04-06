@@ -70,12 +70,6 @@ buster.testCase("my webdriverjs tests", {
             .field.klick()
             .wait(1000);
 
-          this.commandBar
-              .topNav
-                .cssProperty('opacity', function(err, result) {
-                  assert.isNull(err);
-                  assert.equals(parseInt(result, 10), 0);
-                });
           this.end(done);
         });
   }

@@ -54,7 +54,7 @@ describe('Github.com', function() {
         });
   });
 
-  it('homepage (without callbacks)', function(done) {
+  it.only('homepage (without callbacks)', function(done) {
     browser
       .to(GithubPage)
       .at(GithubPage, function(err) {
@@ -64,8 +64,7 @@ describe('Github.com', function() {
         this.headerLogo
           .size({width:89, height: 32})
           .width('89px', parseInt)
-          .color('rgba(51,51,51,1)')
-          .visible();
+          .color('rgba(51,51,51,1)');
 
         this.signUpForm
           .width('320px');
@@ -75,11 +74,6 @@ describe('Github.com', function() {
             .klick()
             .wait(1000);
 
-        this.commandBar.topNav
-          .cssProperty('opacity', function(err, result) {
-            assert(err === null);
-            assert(parseInt(result) === 0);
-          });
         this.end(done);
       });
   });
