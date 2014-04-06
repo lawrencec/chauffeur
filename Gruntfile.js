@@ -94,10 +94,10 @@ module.exports = function (grunt) {
   grunt.registerTask('fixture-server', 'connect:server');
   grunt.registerTask('fixture-server-debug', 'connect:debug');
   grunt.registerTask('test-int', ['selenium_start','fixture-server', 'mochacli:int']);
-  grunt.registerTask('ci', ['mochacli:all', 'jshint']);
+  grunt.registerTask('ci', ['mochacli:all', 'hint']);
   grunt.registerTask('complex', ['complexity']);
   grunt.registerTask('coverage', ['mocha_istanbul:unit']);
   grunt.registerTask('coverage-int', ['selenium_start','fixture-server','mocha_istanbul:integration']);
-  grunt.registerTask('jshint', ['jshint']);
+  grunt.registerTask('hint', ['jshint']);
   grunt.registerTask('default', ['test']);
 };

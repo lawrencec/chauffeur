@@ -11,15 +11,16 @@ module.exports = function (grunt) {
     jshint: {
       all: [
         'Gruntfile.js',
-        'lib/**/*.js',
-        'test/**/*.js'
+        'Github/**/*.js',
+        'TodoMVC/**/*.js',
       ],
       options: {
         jshintrc: ".jshintrc"
       }
     },
     mochacli: {
-      github: ['github/github-*mocha*.js', 'github/github*jasmine*.js'],
+      github: ['Github/github-*mocha*.js', 'Github/github*jasmine*.js'],
+      todomvc: ['TodoMVC/tests/*Spec.js'],
       options: {
         reporter: 'spec',
         ui: 'bdd'
@@ -72,31 +73,34 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-git');
 
   grunt.registerTask(
-      'todomvc',
+      'todomvc-dev',
       [
+        'hint',
         'clean:todomvc',
         'gitclone:todomvc',
         'jekyll:serve',
         'connect:todomvc',
         'selenium_start',
-        'mochacli:github'
+        'mochacli:todomvc'
       ]
   );
   grunt.registerTask(
-      'todomvc-dev',
+      'todomvc',
       [
-        'jekyll:serve',
-        'connect:todomvc-dev'
+        'hint',
+        'selenium_start',
+        'mochacli:todomvc'
       ]
   );
 
   grunt.registerTask(
-      'test',
+      'github',
       [
-        'mochacli:github',
-        'jshint'
+        'hint',
+        'selenium_start',
+        'mochacli:github'
       ]
   );
-  grunt.registerTask('jshint', 'jshint');
-  grunt.registerTask('default', 'test');
+  grunt.registerTask('hint', 'jshint');
+  grunt.registerTask('default', 'hint');
 };
