@@ -114,9 +114,13 @@ $ mocha github-with-mocha-with-chai.js
 By default these examples (and the integration tests for chauffeur) will run under phantomjs. Other browsers can be specified using the <code>CHAUFFEUR_BROWSER</code> environment variable.
 
 ``` bash
-CHAUFFEUR_BROWSER=firefox npm run test-int
+CHAUFFEUR_BROWSER=firefox grunt test-int
 cd examples
-CHAUFFEUR_BROWSER=firefox mocha github-with-mocha.js
+CHAUFFEUR_BROWSER=firefox grunt github
+# by default backbone example
+CHAUFFEUR_BROWSER=firefox grunt todomvc
+# angularjs
+CHAUFFEUR_BROWSER=firefox mvcLib=architecture-examples/angularjs/ grunt todomvc
 ```
 
 There is a single command, defined in the scripts section of <code>examples/package.json</code> which will run all the examples in a specific browser(s).
@@ -179,7 +183,7 @@ The following is an example of the current supported API. This snippet is for do
 ### Unit tests
 
 ``` bash
-$ npm run test
+$ grunt test
 ```
 
 ### Integration tests
@@ -215,16 +219,15 @@ $ npm run test-int-all # all the above
 
 ### Coverage
 
-A coverage report can be found in target/lcov-report/index.html after the following command (requires global and non-global install of mocha)
+A coverage report can be found in target/unit/lcov-report/index.html after the following command (requires global and non-global install of mocha)
 
 ``` bash
-$ npm run coverage
+$ grunt coverage
 ```
 
 ## Todo
 
-- <del>Expose more of the webdriver api with nicer syntax</del>
-- <del>Allow nested page modules</del>
-- <del>Provide examples using test runners other than Mocha</del>
+- Provide CucumberJS examples
+- Provide alternative to webdriverjs.io (selenium webdriverjs)
 
 
