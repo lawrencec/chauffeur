@@ -2,34 +2,28 @@
 
 Status: Experimental
 
-A cross browser library for writing functional tests.
+A cross browser library for writing functional tests. Based around the page object pattern, it improves the ease of writing functional tests. The general priniciple is that instead of explicity asserting on a specific value, you pass in the values you expect and the assertation is done implicitly. If you prefer callback syntax chauffeur allows that too.
 
-This is a wrapper around [webdriverjs](https://github.com/camme/webdriverjs/), a webdriver module for js, hoping to provide a
-different api (using page objects) in which to write functional tests using webdriver.
-
-## Installation
-
-This module can be installed via npm:
-
-``` bash
-$ npm install page-chauffeur
-```
-
-or via a git clone :
-
-``` bash
-$ npm install .
-```
-
-Once installed, require it like so:
-
+An example of what a functional test can look like with chauffeur:
 ``` js
-var chauffeur = require('page-chauffeur');
+ client
+    .to(GithubPage)
+    .at(GithubPage, function(err) {
+      if(err) {
+        return;
+      }
+      this.headerLogo()
+          .size({width:89, height: 32})
+          .width('89px')
+          .color('rgba(51,51,51,1)')
+          .visible()
+          .signUpForm()
+          .size({width: 320, height: 296})
+          .end(done);
+    });
 ```
 
-## Github example
-
-The following is an example of what the current api looks like using existing webdriverjs callbacks
+and with callbacks:
 
 ``` js
 client
@@ -71,38 +65,42 @@ client
     });
 ```
 
-And with no callbacks:
+## Installation
 
-``` js
- client
-    .to(GithubPage)
-    .at(GithubPage, function(err) {
-      if(err) {
-        return;
-      }
-      this.headerLogo()
-          .size({width:89, height: 32})
-          .width('89px')
-          .color('rgba(51,51,51,1)')
-          .visible()
-          .signUpForm()
-          .size({width: 320, height: 296})
-          .end(done);
-    });
-```
-Requires selenium to be running and phantomjs if no other browser is specified (see integration tests section).
+This module can be installed via npm:
 
 ``` bash
-$ mocha -R spec ./examples/github-with-mocha.js
+$ npm install page-chauffeur
+```
+
+or via a git clone :
+
+``` bash
+$ cd page-chauffeur
+$ npm install .
+```
+
+Once installed, require it like so:
+
+``` js
+var chauffeur = require('page-chauffeur');
 ```
 
 ## Examples
 
-The examples directory, following the example given by the webdriverjs project, provides a few examples of how to run tests using various test frameworks. See the following code snippet for information on how to run each:
+The examples are setup with their own package.json file and dependecies. First install the dependencies.
 
 ``` bash
 $ cd examples
 $ npm install
+```
+
+## Github example
+
+The examples/Github directory, following the example given by the webdriverjs project, provides a few examples of how to run tests using various test frameworks. See the following code snippet for information on how to run each:
+
+``` bash
+$ cd Github
 $ node github-with-buster.js 
 $ mocha github-with-jasmine.js
 $ mocha github-with-mocha.js
@@ -117,20 +115,32 @@ By default these examples (and the integration tests for chauffeur) will run und
 CHAUFFEUR_BROWSER=firefox grunt test-int
 cd examples
 CHAUFFEUR_BROWSER=firefox grunt github
-# by default backbone example
-CHAUFFEUR_BROWSER=firefox grunt todomvc
-# angularjs
-CHAUFFEUR_BROWSER=firefox mvcLib=architecture-examples/angularjs/ grunt todomvc
 ```
 
 There is a single command, defined in the scripts section of <code>examples/package.json</code> which will run all the examples in a specific browser(s).
 
 ``` bash
-$ cd examples
+$ cd examples/Github
 $ npm run examples
 $ npm run examples-ff
 $ npm run examples-chrome
 $ npm run examples-all # all the above
+```
+
+### TodoMVC
+
+The TodoMVC subdirectory is an ported example of the tests that exist for the [TodoMVC](http://todomvc.com/) project. Running the todomvc grunt task runs the tests against the default library, Backbone. At the time of writing, phantomjs does not support localstorage so the tests need to run in something other than phantomjs eg firefox:
+
+``` bash
+cd examples/TodoMVC
+CHAUFFEUR_BROWSER=firefox grunt todomvc
+```
+
+The tests can also be setup to run against another framework supported by the TodoMVC project. Just set the *mvcLib* property to the relevant url (without the domain):
+
+``` bash
+cd examples/TodoMVC
+CHAUFFEUR_BROWSER=firefox mvcLib=mvcLib=architecture-examples/angularjs/ grunt todomvc
 ```
 
 ## API
@@ -204,18 +214,8 @@ $ grunt test-int
 To run the integration tests using a different browser i.e Chrome
 
 ``` bash
-$ CHAUFFEUR_BROWSER=chrome npm run test-int
+$ CHAUFFEUR_BROWSER=chrome grunt test-int
 ```
-
-Like the examples, there is a single command, defined in the scripts section of <code>package.json</code> which will run all the examples in a specific browser(s).
-
-``` bash
-$ npm run test-int
-$ npm run test-int-ff
-$ npm run test-chrome
-$ npm run test-int-all # all the above
-```
-
 
 ### Coverage
 
