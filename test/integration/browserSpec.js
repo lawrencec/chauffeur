@@ -46,7 +46,9 @@ describe('Browser()', function() {
         browser
           .to('https://duckduckgo.com')
           .at(CSSTestPage, function(err) {
-            expect(err).to.equal('Not at correct page. Expected "chauffeur Test Page" but found "Search DuckDuckGo "');
+            expect(err.message).to.equal('Not at correct page.');
+            expect(err.expected).to.equal('chauffeur Test Page');
+            expect(err.actual).to.equal('Search DuckDuckGo');
             this.endAll(done);
           });
     });

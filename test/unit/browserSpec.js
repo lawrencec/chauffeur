@@ -167,17 +167,17 @@ describe('Browser()', function() {
           browser.at(CSSTestPage, spyCallback);
 
           expect(spyCallback.callCount).to.equal(1);
-          expect(spyCallback).to.have.been.calledWithExactly(testArgs.errorMessage);
+          expect(spyCallback.args[0][0].toString()).to.equal(testArgs.errorMessage);
 
           done();
         },
         [
           ['titleCallbackErrorArgument', 'titleCallbackTitleArgument'      , 'errorMessage'],
           [ //error from browser
-            'error message'             , null                             , 'error message'
+            'error message'             , null                             , 'Error: error message'
           ],
           [ // incorrect title
-            null                        ,'title page'                      , 'Not at correct page. Expected "chauffeur Test Page" but found "title page "'
+            null                        ,'title page'                      , 'Error: Not at correct page.'
           ]
         ]
     );

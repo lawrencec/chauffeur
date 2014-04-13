@@ -46,7 +46,7 @@ buster.testCase("my webdriverjs tests", {
               .size(function(err, result) {
                 assert.isNull(err);
                 assert.equals(result.width, 320);
-                assert.equals(result.height, 296);
+                assert.equals(result.height, 281);
               });
           this.end(done);
         });

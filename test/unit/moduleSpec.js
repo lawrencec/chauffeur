@@ -1,4 +1,5 @@
 var Module = require('../../lib/module.js'),
+    sinon = require('sinon'),
     sinonChai = require('sinon-chai'),
     chai   = require('chai'),
     expect = chai.expect,
@@ -38,4 +39,22 @@ describe('Module', function () {
       ['element'       , 'aSelector' , 'baseNode'     , 'aSelector'           ]
     ]
   );
+
+  describe('getIndex()', function () {
+    it('should return correctly', function () {
+      var mod = new Module();
+      mod.childSelectorIndex = 1;
+      expect(mod.getIndex()).to.equal(1);
+    });
+  });
+
+  describe('count()', function () {
+    it('should return correctly', function () {
+      var mod = new Module();
+      mod.childSelectorIndex = 1;
+      mod.elements = sinon.spy();
+      mod.count(2);
+      expect(mod.elements).to.have.been.calledWithExactly(2);
+    });
+  });
 });
