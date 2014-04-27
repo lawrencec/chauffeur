@@ -20,7 +20,7 @@ function expectToFailWithError(action, expectations) {
     //re-add original listeners
     listeners.forEach(function(item) {
       process.on('uncaughtException', item);
-    })
+    });
     //run our expectations
     process.nextTick(function() {
       expectations(error);
@@ -34,7 +34,7 @@ function expectedError(message, expected, actual) {
     message: message,
     expected: expected,
     actual: actual
-  }
+  };
 }
 describe('WebDriverIO', function() {
   var config = {},
@@ -179,7 +179,7 @@ describe('WebDriverIO', function() {
                 expect(error.actual).to.equal(testArgs.expectation.actual);
                 next();
               }
-          )
+          );
         },
         [
           ['result'   , 'expectation'],
@@ -216,7 +216,7 @@ describe('WebDriverIO', function() {
                 expect(error.actual).to.equal(testArgs.expectation.actual);
                 next();
               }
-          )
+          );
         },
         [
           ['result'   , 'expectation'],
@@ -264,7 +264,7 @@ describe('WebDriverIO', function() {
                 expect(error.actual).to.equal(testArgs.expectation.actual);
                 next();
               }
-          )
+          );
         },
         [
           ['result'                                                                       , 'expectation'],
@@ -303,7 +303,7 @@ describe('WebDriverIO', function() {
                 expect(error.actual).to.equal(testArgs.expectation.actual);
                 next();
               }
-          )
+          );
         },
         [
           ['result'                                                                              , 'expectation'],
@@ -340,7 +340,7 @@ describe('WebDriverIO', function() {
                 expect(error.actual).to.equal(testArgs.expectation.actual);
                 next();
               }
-          )
+          );
         },
         [
           ['result'                                                                          , 'expectation'],
@@ -377,7 +377,7 @@ describe('WebDriverIO', function() {
                 expect(error.actual).to.equal(testArgs.expectation.actual);
                 next();
               }
-          )
+          );
         },
         [
           ['result'                                                                          , 'expectation'],
@@ -414,11 +414,11 @@ describe('WebDriverIO', function() {
                 expect(error.actual).to.equal(testArgs.expectation.actual);
                 next();
               }
-          )
+          );
         },
         [
           ['result'    , 'expectation'],
-          [{status:1}  , expectedError('Form not submitted successfully with selector ".selector".', true, false)],
+          [{status:1}  , expectedError('Form not submitted successfully with selector ".selector".', true, false)]
         ]
     );
   });
@@ -451,11 +451,11 @@ describe('WebDriverIO', function() {
                 expect(error.actual).to.equal(testArgs.expectation.actual);
                 next();
               }
-          )
+          );
         },
         [
           ['result'    , 'expectation'],
-          [{status:1}  , expectedError('Values not cleared for element with selector ".selector".', true, false)],
+          [{status:1}  , expectedError('Values not cleared for element with selector ".selector".', true, false)]
         ]
     );
   });
@@ -488,11 +488,11 @@ describe('WebDriverIO', function() {
                 expect(error.actual).to.equal(testArgs.expectation.actual);
                 next();
               }
-          )
+          );
         },
         [
           ['result' , 'expectation'],
-          ['aValue' , expectedError('Attribute value does not match for selector ".selector".', 'expectedValue', 'aValue')],
+          ['aValue' , expectedError('Attribute value does not match for selector ".selector".', 'expectedValue', 'aValue')]
         ]
     );
   });
@@ -525,11 +525,11 @@ describe('WebDriverIO', function() {
                 expect(error.actual).to.equal(testArgs.expectation.actual);
                 next();
               }
-          )
+          );
         },
         [
           ['result' , 'expectation'],
-          [false     , expectedError('Element with selector ".selector" was expected to be selected. It was not.', true, false)],
+          [false     , expectedError('Element with selector ".selector" was expected to be selected. It was not.', true, false)]
         ]
     );
   });
@@ -563,11 +563,11 @@ describe('WebDriverIO', function() {
                 expect(error.actual).to.equal(testArgs.expectation.actual);
                 next();
               }
-          )
+          );
         },
         [
           ['result' , 'expectation'],
-          [true     , expectedError('Element with selector ".selector" was expected to be unselected. It was not.', false, true)],
+          [true     , expectedError('Element with selector ".selector" was expected to be unselected. It was not.', false, true)]
         ]
     );
   });
@@ -600,11 +600,11 @@ describe('WebDriverIO', function() {
                 expect(error.actual).to.equal(testArgs.expectation.actual);
                 next();
               }
-          )
+          );
         },
         [
           ['result'             , 'expectation'],
-          ['someincorrectText'  , expectedError('Text does not match for selector ".selector".', 'text', 'someincorrectText')],
+          ['someincorrectText'  , expectedError('Text does not match for selector ".selector".', 'text', 'someincorrectText')]
         ]
     );
   });
@@ -637,11 +637,11 @@ describe('WebDriverIO', function() {
                 expect(error.actual).to.equal(testArgs.expectation.actual);
                 next();
               }
-          )
+          );
         },
         [
           ['result'             , 'expectation'],
-          ['incorrectNodeName'  , expectedError('Node name does not match for selector ".selector".', 'nodeName', 'incorrectNodeName')],
+          ['incorrectNodeName'  , expectedError('Node name does not match for selector ".selector".', 'nodeName', 'incorrectNodeName')]
         ]
     );
   });
@@ -674,13 +674,13 @@ describe('WebDriverIO', function() {
                 expect(error.actual).to.eql(testArgs.expectation.actual);
                 next();
               }
-          )
+          );
         },
         [
           ['result'   , 'expectation'],
           [{x:0,y:0}  , expectedError('Location values for selector ".selector" do not match.', {x:3,y:43}, {x:0,y:0})],
           [{x:3,y:0}  , expectedError('Location values for selector ".selector" do not match.', {x:3,y:43}, {x:3,y:0})],
-          [{x:0,y:43} , expectedError('Location values for selector ".selector" do not match.', {x:3,y:43}, {x:0,y:43})],
+          [{x:0,y:43} , expectedError('Location values for selector ".selector" do not match.', {x:3,y:43}, {x:0,y:43})]
         ]
     );
   });
@@ -713,11 +713,11 @@ describe('WebDriverIO', function() {
                 expect(error.actual).to.equal(testArgs.expectation.actual);
                 next();
               }
-          )
+          );
         },
         [
           ['result'  , 'expectation'],
-          [false     , expectedError('Element with selector ".selector" was expected to be visible. It was not.', true, false)],
+          [false     , expectedError('Element with selector ".selector" was expected to be visible. It was not.', true, false)]
         ]
     );
   });
@@ -750,11 +750,11 @@ describe('WebDriverIO', function() {
                 expect(error.actual).to.equal(testArgs.expectation.actual);
                 next();
               }
-          )
+          );
         },
         [
           ['result'  , 'expectation'],
-          [ true     , expectedError('Element with selector ".selector" was expected to be invisible. It was not.', false, true)],
+          [ true     , expectedError('Element with selector ".selector" was expected to be invisible. It was not.', false, true)]
         ]
     );
   });
@@ -798,12 +798,12 @@ describe('WebDriverIO', function() {
                 expect(error.actual).to.equal(testArgs.expectation.actual);
                 next();
               }
-          )
+          );
         },
         [
           ['result'           , 'expectation'],
           ["rgb(0,0,0,0)"     , expectedError('Color values do not match for selector ".selector".','#fff', 'rgb(0,0,0,0)')],
-          ["#ffe"             , expectedError('Color values do not match for selector ".selector".','#fff', '#ffe')],
+          ["#ffe"             , expectedError('Color values do not match for selector ".selector".','#fff', '#ffe')]
         ]
     );
   });
@@ -835,11 +835,11 @@ describe('WebDriverIO', function() {
                 expect(error.actual).to.eql(testArgs.expected.actual);
                 next();
               }
-          )
+          );
         },
         [
           ['result' , 'expected'],
-          [1000   , expectedError('Width values do not match for selector ".selector".', 100, 1000)],
+          [1000   , expectedError('Width values do not match for selector ".selector".', 100, 1000)]
         ]
     );
   });
@@ -871,7 +871,7 @@ describe('WebDriverIO', function() {
             expect(error.actual).to.eql(testArgs.expected.actual);
             next();
           }
-        )
+        );
       },
       [
           ['result'                          , 'expected'],
@@ -902,7 +902,7 @@ describe('WebDriverIO', function() {
       driver.ctxt = contextStub;
       driver.end(callback);
       expect(driver.ctxt.end).to.have.been.calledWith(callback);
-    })
+    });
   });
 
   describe('endAll()', function () {
@@ -944,7 +944,7 @@ describe('WebDriverIO', function() {
                 expect(error.actual).to.equal(testArgs.expected.actual);
                 next();
               }
-          )
+          );
         },
         [
           ['mustExist'  , 'result'    ,   'expected'],
@@ -982,11 +982,11 @@ describe('WebDriverIO', function() {
                 expect(error.actual).to.equal(testArgs.expected.actual);
                 next();
               }
-          )
+          );
         },
         [
           ['result'   , 'expected'],
-          [{status: 0, value:{length: 3}}   , expectedError('Found incorrect number of elements matching ".selector".', 2, 3)],
+          [{status: 0, value:{length: 3}}   , expectedError('Found incorrect number of elements matching ".selector".', 2, 3)]
         ]
     );
   });
@@ -1041,12 +1041,12 @@ describe('WebDriverIO', function() {
                 expect(error.actual).to.equal(testArgs.expectation.actual);
                 next();
               }
-          )
+          );
         },
         [
           ['result'          , 'expectation'],
           [".incorrect"      , expectedError('Class name does not exist for selector ".selector".',true, false)],
-          [".incorrect .foo" , expectedError('Class name does not exist for selector ".selector".',true, false)],
+          [".incorrect .foo" , expectedError('Class name does not exist for selector ".selector".',true, false)]
         ]
     );
   });
@@ -1079,12 +1079,12 @@ describe('WebDriverIO', function() {
                 expect(error.actual).to.equal(testArgs.expectation.actual);
                 next();
               }
-          )
+          );
         },
         [
           ['result'                 , 'expectation'],
           [".className"             , expectedError('Class name exists for selector ".selector".', true, false)],
-          [".incorrect .className"  , expectedError('Class name exists for selector ".selector".', true, false)],
+          [".incorrect .className"  , expectedError('Class name exists for selector ".selector".', true, false)]
         ]
     );
   });
