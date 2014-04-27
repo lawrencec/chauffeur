@@ -1,0 +1,7 @@
+image: node0.10
+env:
+  - CHAUFFEUR_BROWSER=firefox
+script:
+  - sudo start xvfb
+  - npm install
+  - npm run test-ci

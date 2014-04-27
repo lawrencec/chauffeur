@@ -1,4 +1,4 @@
-# Chauffeur [![build status](https://secure.travis-ci.org/lawrencec/chauffeur.png)](http://travis-ci.org/lawrencec/chauffeur)
+# Chauffeur [![Build Status](https://drone.io/github.com/lawrencec/chauffeur/status.png)](https://drone.io/github.com/lawrencec/chauffeur/latest)
 
 Status: Experimental
 
