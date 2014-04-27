@@ -90,11 +90,11 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-selenium-webdriver');
   grunt.loadNpmTasks('grunt-mocha-istanbul');
 
-  grunt.registerTask('test', ['mochacli:unit']);
+  grunt.registerTask('test', ['mochacli:unit','hint']);
   grunt.registerTask('fixture-server', 'connect:server');
   grunt.registerTask('fixture-server-debug', 'connect:debug');
   grunt.registerTask('test-int', ['selenium_start','fixture-server', 'mochacli:int']);
-  grunt.registerTask('ci', ['mochacli:all', 'hint']);
+  grunt.registerTask('ci', ['hint','coverage', 'coverage-int']);
   grunt.registerTask('complex', ['complexity']);
   grunt.registerTask('coverage', ['mocha_istanbul:unit']);
   grunt.registerTask('coverage-int', ['selenium_start','fixture-server','mocha_istanbul:integration']);

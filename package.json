@@ -9,7 +9,7 @@
     "test-int-ff": "CHAUFFEUR_BROWSER=firefox grunt test-int",
     "test-int-chrome": "CHAUFFEUR_BROWSER=chrome grunttest-int",
     "test-int-all": "npm run test-int && npm run test-int-ff && npm run test-int-chrome",
-    "test-all": "grunt ci",
+    "test-ci": "grunt ci",
     "coverage": "grunt coverage",
     "coverage-int": "grunt coverage-int",
     "complexity": "grunt complexity"
