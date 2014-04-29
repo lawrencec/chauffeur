@@ -59,7 +59,7 @@ describe('Github.com', function() {
         .resolveWith(done);
   });
 
-  it.only('homepage (without callbacks)', function(done) {
+  it('homepage (without callbacks)', function(done) {
     browser
       .to(GithubPage)
       .at(GithubPage, function(err) {
