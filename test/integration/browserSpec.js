@@ -25,11 +25,15 @@ describe('Browser()', function() {
   });
 
   after(function(done) {
-    browser.endAll(done);
+    browser
+        .resolveWith(done)
+        .endAll();
   });
 
   afterEach(function(done) {
-    browser.end(done);
+    browser
+        .resolveWith(done)
+        .end();
   });
 
   describe('at()', function() {
@@ -38,8 +42,9 @@ describe('Browser()', function() {
         .to(CSSTestPage)
         .at(CSSTestPage, function(err) {
             expect(err).to.equal(undefined);
-            this.endAll(done);
-          });
+            this.end();
+          })
+          .resolveWith(done);
     });
 
     it('should throw an error if browser is not at correct page', function(done) {
@@ -49,8 +54,9 @@ describe('Browser()', function() {
             expect(err.message).to.equal('Not at correct page.');
             expect(err.expected).to.equal('chauffeur Test Page');
             expect(err.actual).to.equal('Search DuckDuckGo');
-            this.endAll(done);
-          });
+              this.end();
+            })
+            .resolveWith(done);
     });
   });
 });

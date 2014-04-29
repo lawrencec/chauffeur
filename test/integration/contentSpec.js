@@ -26,11 +26,15 @@ describe('Content()', function() {
   });
 
   after(function(done) {
-    browser.endAll(done);
+    browser
+        .resolveWith(done)
+        .endAll();
   });
 
   afterEach(function(done) {
-    browser.end(done);
+    browser
+        .resolveWith(done)
+        .end();
   });
 
   describe('size()', function() {
@@ -40,8 +44,9 @@ describe('Content()', function() {
         .at(CSSTestPage, function(err) {
             expect(err).to.equal(undefined);
             this.h1.size({width:200, height: 96});
-            this.end(done);
-          });
+            this.end();
+          })
+          .resolveWith(done);
     });
   });
 
@@ -52,8 +57,9 @@ describe('Content()', function() {
           .at(CSSTestPage, function(err) {
             expect(err).to.equal(undefined);
             this.h1.width('200');
-            this.end(done);
-          });
+            this.end();
+          })
+          .resolveWith(done);
     });
   });
 
@@ -64,8 +70,9 @@ describe('Content()', function() {
           .at(CSSTestPage, function(err) {
             expect(err).to.equal(undefined);
             this.h1.color('rgba(0,0,0,1)');
-            this.end(done);
-          });
+            this.end();
+          })
+          .resolveWith(done);
 
     });
   });
@@ -79,8 +86,9 @@ describe('Content()', function() {
             this.h1.cssProperty('display', function(err, displayValue) {
                 expect(displayValue).to.equal('block');
               });
-            this.end(done);
-          });
+            this.end();
+          })
+          .resolveWith(done);
 
     });
 
@@ -92,8 +100,9 @@ describe('Content()', function() {
             this.cssProperty('h1', 'display', function(err, displayValue) {
               expect(displayValue).to.equal('block');
             });
-            this.end(done);
-          });
+            this.end();
+          })
+          .resolveWith(done);
     });
   });
 
@@ -104,8 +113,9 @@ describe('Content()', function() {
           .at(CSSTestPage, function(err) {
             expect(err).to.equal(undefined);
             this.h1.visible();
-            this.end(done);
-          });
+            this.end();
+          })
+          .resolveWith(done);
 
     });
   });
@@ -117,8 +127,9 @@ describe('Content()', function() {
           .at(CSSTestPage, function(err) {
             expect(err).to.equal(undefined);
             this.hidden.invisible();
-            this.end(done);
-          });
+            this.end();
+          })
+          .resolveWith(done);
     });
   });
 
@@ -129,8 +140,10 @@ describe('Content()', function() {
           .at(CSSTestPage, function(err) {
             expect(err).to.equal(undefined);
             this.h1.text('CSS Basic Elements');
-            this.end(done);
-          });
+            this.end();
+          })
+          .resolveWith(done);
+
     });
   });
 
@@ -144,8 +157,9 @@ describe('Content()', function() {
                 .value('text that should not be here', null, null, true)
                 .clear()
                 .value('');
-            this.end(done);
-          });
+            this.end();
+          })
+          .resolveWith(done);
     });
   });
 
@@ -157,8 +171,9 @@ describe('Content()', function() {
             expect(err).to.equal(undefined);
             this.clearButton
                 .klick();
-            this.end(done);
-          });
+            this.end();
+          })
+          .resolveWith(done);
     });
   });
 
@@ -173,8 +188,9 @@ describe('Content()', function() {
             this.wait(1000);
             this.submitButton()
                 .value('Submitted!');
-            this.end(done);
-          });
+            this.end();
+          })
+          .resolveWith(done);
     });
   });
 
@@ -187,8 +203,9 @@ describe('Content()', function() {
             this.textField
                 .value('a test value', null, null, true)
                 .value('a test value');
-            this.end(done);
-          });
+            this.end();
+          })
+          .resolveWith(done);
     });
   });
 
@@ -199,8 +216,9 @@ describe('Content()', function() {
           .at(CSSTestPage, function(err) {
             expect(err).to.equal(undefined);
             this.checkbox.selected();
-            this.end(done);
-          });
+            this.end();
+          })
+          .resolveWith(done);
 
     });
   });
@@ -213,8 +231,9 @@ describe('Content()', function() {
             expect(err).to.equal(undefined);
             this.checkbox.klick();
             this.checkbox.unselected();
-            this.end(done);
-          });
+            this.end();
+          })
+          .resolveWith(done);
 
     });
   });
@@ -226,8 +245,9 @@ describe('Content()', function() {
           .at(CSSTestPage, function(err) {
             expect(err).to.equal(undefined);
             this.h1.location({x: 8, y: 21});
-            this.end(done);
-          });
+            this.end();
+          })
+          .resolveWith(done);
     });
   });
 
@@ -238,8 +258,9 @@ describe('Content()', function() {
           .at(CSSTestPage, function(err) {
             expect(err).to.equal(undefined);
             this.h1.nodeName('h1');
-            this.end(done);
-          });
+            this.end();
+          })
+          .resolveWith(done);
     });
   });
 
@@ -250,8 +271,9 @@ describe('Content()', function() {
           .at(CSSTestPage, function(err) {
             expect(err).to.equal(undefined);
             this.h1.exists();
-            this.end(done);
-          });
+            this.end();
+          })
+          .resolveWith(done);
     });
 
     it('should report correctly if element does not exists on the page and is not expected to', function(done) {
@@ -260,8 +282,9 @@ describe('Content()', function() {
           .at(CSSTestPage, function(err) {
             expect(err).to.equal(undefined);
             this.notUsedElement.exists(false);
-            this.end(done);
-          });
+            this.end();
+          })
+          .resolveWith(done);
     });
   });
 
@@ -272,8 +295,9 @@ describe('Content()', function() {
           .at(CSSTestPage, function(err) {
             expect(err).to.equal(undefined);
             this.executeScript('return document.title', 'chauffeur Test Page');
-            this.end(done);
-          });
+            this.end();
+          })
+          .resolveWith(done);
     });
   });
 });

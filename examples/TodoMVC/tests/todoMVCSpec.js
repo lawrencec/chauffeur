@@ -43,13 +43,15 @@ describe('TodoMVC', function() {
   });
 
   after(function(done) {
-    browser.endAll();
-    done();
+    browser
+        .resolveWith(done)
+        .endAll();
   });
 
   afterEach(function(done) {
-    browser.end();
-    done();
+    browser
+        .resolveWith(done)
+        .end();
   });
 
   describe(mvcLib.mvcLibUrl.toString(), function() {
@@ -64,8 +66,9 @@ describe('TodoMVC', function() {
               this.todoList.items.exists(false);
               this.mainSection.invisible();
               this.footerSection.invisible();
-              this.end(done);
-            });
+              this.end();
+            })
+            .resolveWith(done);
       });
     });
 
@@ -82,8 +85,9 @@ describe('TodoMVC', function() {
 
               this.newTodo.setValue(TODO_ITEM_TWO + Keys.RETURN);
               this.todoList.items(2).text(TODO_ITEM_TWO);
-              this.end(done);
-            });
+              this.end();
+            })
+            .resolveWith(done);
       });
 
       it('should clear text input field when an item is added', function (done) {
@@ -95,8 +99,9 @@ describe('TodoMVC', function() {
               }
               this.newTodo.setValue(TODO_ITEM_ONE + Keys.RETURN);
               this.newTodo.hasValue('');
-              this.end(done);
-            });
+              this.end();
+            })
+            .resolveWith(done);
       });
 
       it('should append new items to the bottom of the list', function (done) {
@@ -111,8 +116,9 @@ describe('TodoMVC', function() {
               this.todoList.items(1).text(TODO_ITEM_ONE);
               this.todoList.items(2).text(TODO_ITEM_TWO);
               this.todoList.items(3).text(TODO_ITEM_THREE);
-              this.end(done);
-            });
+              this.end();
+            })
+            .resolveWith(done);
       });
 
       it('should trim text input', function (done) {
@@ -124,8 +130,9 @@ describe('TodoMVC', function() {
               }
               this.newTodo.setValue('   ' + TODO_ITEM_ONE + '  ' + Keys.RETURN);
               this.todoList.items(1).text(TODO_ITEM_ONE);
-              this.end(done);
-            });
+              this.end();
+            })
+            .resolveWith(done);
       });
 
       it('should show #main and #footer when items added', function (done) {
@@ -138,8 +145,9 @@ describe('TodoMVC', function() {
               this.newTodo.setValue(TODO_ITEM_ONE + Keys.RETURN);
               this.mainSection.visible();
               this.footerSection.visible();
-              this.end(done);
-            });
+              this.end();
+            })
+            .resolveWith(done);
       });
     });
     describe('Mark all as completed', function () {
@@ -155,8 +163,9 @@ describe('TodoMVC', function() {
               this.todoList.items(1).isCompleted();
               this.todoList.items(2).isCompleted();
               this.todoList.items(3).isCompleted();
-              this.end(done);
-            });
+              this.end();
+            })
+            .resolveWith(done);
       });
 
       it('should allow me to clear the completion state of all items', function (done) {
@@ -173,8 +182,9 @@ describe('TodoMVC', function() {
               this.todoList.items(1).isNotCompleted();
               this.todoList.items(2).isNotCompleted();
               this.todoList.items(3).isNotCompleted();
-              this.end(done);
-            });
+              this.end();
+            })
+            .resolveWith(done);
       });
 
       it('complete all checkbox should update state when items are completed / cleared', function (done) {
@@ -198,8 +208,9 @@ describe('TodoMVC', function() {
               // now mark as complete, so that once again all items are completed
               this.todoList.items(1).toggleStatus();
               this.toggleAll.selected();
-              this.end(done);
-            });
+              this.end();
+            })
+            .resolveWith(done);
       });
     });
 
@@ -222,8 +233,9 @@ describe('TodoMVC', function() {
               this.todoList.items(2).toggleStatus();
               this.todoList.items(1).isCompleted();
               this.todoList.items(2).isCompleted();
-              this.end(done);
-            });
+              this.end();
+            })
+            .resolveWith(done);
       });
 
       it('should allow me to un-mark items as complete', function (done) {
@@ -244,8 +256,9 @@ describe('TodoMVC', function() {
               this.todoList.items(1).toggleStatus();
               this.todoList.items(1).isNotCompleted();
               this.todoList.items(2).isNotCompleted();
-              this.end(done);
-            });
+              this.end();
+            })
+            .resolveWith(done);
       });
 
       it('should allow me to edit an item', function (done) {
@@ -261,8 +274,9 @@ describe('TodoMVC', function() {
               this.todoList.items(1).text('buy some sausages');
               this.todoList.items(2).text(TODO_ITEM_TWO);
               this.todoList.items(3).text(TODO_ITEM_THREE);
-              this.end(done);
-            });
+              this.end();
+            })
+            .resolveWith(done);
       });
 
       it('should show the remove button on hover', function (done) {
@@ -277,8 +291,9 @@ describe('TodoMVC', function() {
               this.todoList.items(1).remove.invisible();
               this.todoList.items(1).moveTo();
               this.todoList.items(1).remove.visible();
-              this.end(done);
-            });
+              this.end();
+            })
+            .resolveWith(done);
       });
     });
 
@@ -296,8 +311,9 @@ describe('TodoMVC', function() {
               this.todoList.items(1).label.doubleklick();
               this.todoList.items(1).toggle.invisible();
               this.todoList.items(1).label.invisible();
-              this.end(done);
-            });
+              this.end();
+            })
+            .resolveWith(done);
       });
 
       it('should save edits on enter', function (done) {
@@ -314,8 +330,9 @@ describe('TodoMVC', function() {
               this.todoList.items(1).text('buy some sausages');
               this.todoList.items(2).text(TODO_ITEM_TWO);
               this.todoList.items(3).text(TODO_ITEM_THREE);
-              this.end(done);
-            });
+              this.end();
+            })
+            .resolveWith(done);
       });
 
       it('should save edits on blur', function (done) {
@@ -334,8 +351,9 @@ describe('TodoMVC', function() {
               this.todoList.items(1).text('buy some sausages');
               this.todoList.items(2).text(TODO_ITEM_TWO);
               this.todoList.items(3).text(TODO_ITEM_THREE);
-              this.end(done);
-            });
+              this.end();
+            })
+            .resolveWith(done);
       });
 
       it('should trim entered text', function (done) {
@@ -353,8 +371,9 @@ describe('TodoMVC', function() {
               this.todoList.items(1).text('buy some sausages');
               this.todoList.items(2).text(TODO_ITEM_TWO);
               this.todoList.items(3).text(TODO_ITEM_THREE);
-              this.end(done);
-            });
+              this.end();
+            })
+            .resolveWith(done);
       });
 
       it('should remove the item if an empty text string was entered', function (done) {
@@ -370,8 +389,9 @@ describe('TodoMVC', function() {
 
               this.todoList.items(1).text(TODO_ITEM_TWO);
               this.todoList.items(2).text(TODO_ITEM_THREE);
-              this.end(done);
-            });
+              this.end();
+            })
+            .resolveWith(done);
       });
 
       it('should cancel edits on escape', function (done) {
@@ -390,8 +410,9 @@ describe('TodoMVC', function() {
               this.todoList.items(1).text(TODO_ITEM_ONE);
               this.todoList.items(2).text(TODO_ITEM_TWO);
               this.todoList.items(3).text(TODO_ITEM_THREE);
-              this.end(done);
-            });
+              this.end();
+            })
+            .resolveWith(done);
       });
     });
 
@@ -407,8 +428,9 @@ describe('TodoMVC', function() {
               this.todoCount.text('1 item left');
               this.newTodo.setValue(TODO_ITEM_TWO + Keys.RETURN);
               this.todoCount.text('2 items left');
-              this.end(done);
-            });
+              this.end();
+            })
+            .resolveWith(done);
       });
     });
 
@@ -426,8 +448,9 @@ describe('TodoMVC', function() {
               this.clearCompleted.text('Clear completed (1)');
               this.todoList.items(2).toggleStatus();
               this.clearCompleted.text('Clear completed (2)');
-              this.end(done);
-            });
+              this.end();
+            })
+            .resolveWith(done);
       });
 
       it('should remove completed items when clicked', function (done) {
@@ -443,8 +466,9 @@ describe('TodoMVC', function() {
               this.todoList.items.count(2);
               this.todoList.items(1).text(TODO_ITEM_TWO);
               this.todoList.items(2).text(TODO_ITEM_THREE);
-              this.end(done);
-            });
+              this.end();
+            })
+            .resolveWith(done);
       });
 
       it('should be hidden when there are no items that are completed', function (done) {
@@ -459,8 +483,9 @@ describe('TodoMVC', function() {
               this.clearCompleted.visible();
               this.clearCompleted.klick();
               this.clearCompleted.exists(false);
-              this.end(done);
-            });
+              this.end();
+            })
+            .resolveWith(done);
       });
     });
 
@@ -478,8 +503,9 @@ describe('TodoMVC', function() {
               this.todoList.items(1).text(TODO_ITEM_ONE);
               this.todoList.items(3).text(TODO_ITEM_THREE);
               this.todoList.items(2).invisible();
-              this.end(done);
-            });
+              this.end();
+            })
+            .resolveWith(done);
       });
 
       it('should respect the back button', function (done) {
@@ -511,8 +537,9 @@ describe('TodoMVC', function() {
               this.todoList.items(2).text(TODO_ITEM_TWO);
               this.todoList.items(3).text(TODO_ITEM_THREE);
               this.todoList.items(2).visible();
-              this.end(done);
-            });
+              this.end();
+            })
+            .resolveWith(done);
       });
 
       it('should allow me to display completed items', function (done) {
@@ -530,8 +557,9 @@ describe('TodoMVC', function() {
               this.todoList.items(1).invisible();
               this.todoList.items(2).visible();
               this.todoList.items(3).invisible();
-              this.end(done);
-            });
+              this.end();
+            })
+            .resolveWith(done);
       });
 
       it('should allow me to display all items', function (done) {
@@ -552,8 +580,9 @@ describe('TodoMVC', function() {
               this.todoList.items(1).text(TODO_ITEM_ONE);
               this.todoList.items(2).text(TODO_ITEM_TWO);
               this.todoList.items(3).text(TODO_ITEM_THREE);
-              this.end(done);
-            });
+              this.end();
+            })
+            .resolveWith(done);
       });
 
       it('should highlight the currently applied filter', function (done) {
@@ -577,8 +606,9 @@ describe('TodoMVC', function() {
               this.completedFilter.hasClass('selected');
               this.activeFilter.hasntClass('selected');
               this.allFilter.hasntClass('selected');
-              this.end(done);
-            });
+              this.end();
+            })
+            .resolveWith(done);
       });
     });
   });

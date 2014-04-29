@@ -10,32 +10,17 @@ var sinonChai   = require('sinon-chai'),
 chai.use(sinonChai);
 
 function expectToFailWithError(action, expectations) {
-  var listeners = process.listeners('uncaughtException');
-  //remove all current listeners
-  process.removeAllListeners('uncaughtException');
-  //provide our own
-  process.on("uncaughtException", function (error) {
-    //remove our own
-    process.removeAllListeners('uncaughtException');
-    //re-add original listeners
-    listeners.forEach(function(item) {
-      process.on('uncaughtException', item);
-    });
-    //run our expectations
-    process.nextTick(function() {
-      expectations(error);
-    });
-  });
-  process.nextTick(action);
+  Driver.resolveWith(expectations);
+  action();
 }
 
 function expectedError(message, expected, actual) {
-  return {
-    message: message,
-    expected: expected,
-    actual: actual
-  };
+  var error = new Error(message);
+  error.expected = expected;
+  error.actual = actual;
+  return error;
 }
+
 describe('WebDriverIO', function() {
   var config = {},
       webdriverStub,
@@ -161,7 +146,7 @@ describe('WebDriverIO', function() {
         expect(driver.ctxt.getValue).to.have.been.calledWith('.selector');
     });
 
-    unroll('should throw error correctly for result #result',
+    unroll('should errback correctly for result #result',
         function (next, testArgs) {
           var driver;
 
@@ -198,7 +183,7 @@ describe('WebDriverIO', function() {
       expect(driver.ctxt.setValue).to.have.been.calledWith('.selector', 'enteredInput');
     });
 
-    unroll('should throw error correctly for result #result',
+    unroll('should errback correctly for result #result',
         function (next, testArgs) {
           var driver;
 
@@ -246,7 +231,7 @@ describe('WebDriverIO', function() {
       expect(driver.ctxt.click).to.have.been.calledWith('.selector');
     });
 
-    unroll('should throw error correctly for result #result',
+    unroll('should errback correctly for result #result',
         function (next, testArgs) {
           var driver;
 
@@ -285,7 +270,7 @@ describe('WebDriverIO', function() {
       driver.ctxt.doubleClick.yield(null, {status:0, orgStatusMessage:'The command executed successfully.'});
     });
 
-    unroll('should throw error correctly for result #result',
+    unroll('should errback correctly for result #result',
         function (next, testArgs) {
           var driver;
 
@@ -322,7 +307,7 @@ describe('WebDriverIO', function() {
       expect(driver.ctxt.moveToObject).to.have.been.calledWith('.selector');
     });
 
-    unroll('should throw error correctly for result #result',
+    unroll('should errback correctly for result #result',
         function (next, testArgs) {
           var driver;
 
@@ -359,9 +344,10 @@ describe('WebDriverIO', function() {
       expect(driver.ctxt.moveToObject).to.have.been.calledWith('.selector');
     });
 
-    unroll('should throw error correctly for result #result',
+    unroll('should errback correctly for result #result',
         function (next, testArgs) {
           var driver;
+
 
           driver = new WebDriverIO(config);
           driver.ctxt = contextStub;
@@ -396,7 +382,7 @@ describe('WebDriverIO', function() {
       expect(driver.ctxt.submitForm).to.have.been.calledWith('.selector');
     });
 
-    unroll('should throw error correctly for result #result',
+    unroll('should errback correctly for result #result',
         function (next, testArgs) {
           var driver;
 
@@ -433,7 +419,7 @@ describe('WebDriverIO', function() {
       expect(driver.ctxt.clearElement).to.have.been.calledWith('.selector');
     });
 
-    unroll('should throw error correctly for result #result',
+    unroll('should errback correctly for result #result',
         function (next, testArgs) {
           var driver;
 
@@ -470,7 +456,7 @@ describe('WebDriverIO', function() {
       expect(driver.ctxt.getAttribute).to.have.been.calledWith('.selector', 'attrName');
     });
 
-    unroll('should throw error correctly for result #result',
+    unroll('should errback correctly for result #result',
         function (next, testArgs) {
           var driver;
 
@@ -507,7 +493,7 @@ describe('WebDriverIO', function() {
       expect(driver.ctxt.isSelected).to.have.been.calledWith('.selector');
     });
 
-    unroll('should throw error correctly for result #result',
+    unroll('should errback correctly for result #result',
         function (next, testArgs) {
           var driver;
 
@@ -545,7 +531,7 @@ describe('WebDriverIO', function() {
       expect(driver.ctxt.isSelected).to.have.been.calledWith('.selector');
     });
 
-    unroll('should throw error correctly for result #result',
+    unroll('should errback correctly for result #result',
         function (next, testArgs) {
           var driver;
 
@@ -582,7 +568,7 @@ describe('WebDriverIO', function() {
       expect(driver.ctxt.getText).to.have.been.calledWith('.selector');
     });
 
-    unroll('should throw error correctly for result #result',
+    unroll('should errback correctly for result #result',
         function (next, testArgs) {
           var driver;
 
@@ -619,7 +605,7 @@ describe('WebDriverIO', function() {
       expect(driver.ctxt.getTagName).to.have.been.calledWith('.selector');
     });
 
-    unroll('should throw error correctly for result #result',
+    unroll('should errback correctly for result #result',
         function (next, testArgs) {
           var driver;
 
@@ -656,7 +642,7 @@ describe('WebDriverIO', function() {
       expect(driver.ctxt.getLocation).to.have.been.calledWith('.selector');
     });
 
-    unroll('should throw error correctly for result #result',
+    unroll('should errback correctly for result #result',
         function (next, testArgs) {
           var driver;
 
@@ -695,7 +681,7 @@ describe('WebDriverIO', function() {
       expect(driver.ctxt.isVisible).to.have.been.calledWith('.selector');
     });
 
-    unroll('should throw error correctly for result #result',
+    unroll('should errback correctly for result #result',
         function (next, testArgs) {
           var driver;
 
@@ -732,7 +718,7 @@ describe('WebDriverIO', function() {
       expect(driver.ctxt.isVisible).to.have.been.calledWith('.selector');
     });
 
-    unroll('should throw error correctly for result #result',
+    unroll('should errback correctly for result #result',
         function (next, testArgs) {
           var driver;
 
@@ -780,7 +766,7 @@ describe('WebDriverIO', function() {
       expect(driver.ctxt.getCssProperty).to.have.been.calledWith('.selector', 'color');
     });
 
-    unroll('should throw error correctly',
+    unroll('should errback correctly',
         function (next, testArgs) {
           var driver;
 
@@ -818,7 +804,7 @@ describe('WebDriverIO', function() {
       expect(driver.ctxt.getCssProperty).to.have.been.calledWith('.selector', 'width');
     });
 
-    unroll('should throw error correctly for #result',
+    unroll('should errback correctly for #result',
         function (next, testArgs) {
           var driver;
 
@@ -854,7 +840,7 @@ describe('WebDriverIO', function() {
       expect(driver.ctxt.getElementSize).to.have.been.calledWith('.selector');
     });
 
-    unroll('should throw error correctly for #result',
+    unroll('should errback correctly for #result',
      function (next, testArgs) {
         var driver;
 
@@ -895,25 +881,23 @@ describe('WebDriverIO', function() {
 
   describe('end()', function () {
     it('should delegate correctly', function () {
-      var driver,
-          callback = function(){};
+      var driver;
 
       driver = new WebDriverIO(config);
       driver.ctxt = contextStub;
-      driver.end(callback);
-      expect(driver.ctxt.end).to.have.been.calledWith(callback);
+      driver.end();
+      expect(driver.ctxt.end).to.have.been.calledWith(sinon.match.func);
     });
   });
 
   describe('endAll()', function () {
     it('should delegate correctly', function () {
-      var driver,
-          callback = function(){};
+      var driver;
 
       driver = new WebDriverIO(config);
       driver.ctxt = contextStub;
-      driver.endAll(callback);
-      expect(driver.ctxt.endAll).to.have.been.calledWith(callback);
+      driver.endAll();
+      expect(driver.ctxt.endAll).to.have.been.calledWith(sinon.match.func);
     });
   });
 
@@ -927,7 +911,7 @@ describe('WebDriverIO', function() {
       expect(driver.ctxt.getTagName).to.have.been.calledWith('#notUsedSelector');
     });
 
-    unroll('should throw error correctly for #result',
+    unroll('should errback correctly for #result',
         function (next, testArgs) {
           var driver;
 
@@ -965,7 +949,7 @@ describe('WebDriverIO', function() {
       expect(driver.ctxt.elements).to.have.been.calledWith('#selector');
     });
 
-    unroll('should throw error correctly for #result',
+    unroll('should errback correctly for #result',
         function (next, testArgs) {
           var driver;
 
@@ -1023,7 +1007,7 @@ describe('WebDriverIO', function() {
       expect(driver.ctxt.getAttribute).to.have.been.calledWith('selector', 'className');
     });
 
-    unroll('should throw error correctly',
+    unroll('should errback correctly',
         function (next, testArgs) {
           var driver;
 
@@ -1061,7 +1045,7 @@ describe('WebDriverIO', function() {
       expect(driver.ctxt.getAttribute).to.have.been.calledWith('selector', 'className');
     });
 
-    unroll('should throw error correctly',
+    unroll('should errback correctly',
         function (next, testArgs) {
           var driver;
 

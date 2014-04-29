@@ -50,7 +50,7 @@ describe('Driver()', function() {
   });
 
   describe('_getExpectationCallback()', function() {
-    unroll('should not throw error when result #result matches expectation #expectation',
+    unroll('should not errback when result #result matches expectation #expectation',
         function(done, testArgs) {
           var result,
               expectationCallback = Driver._getExpectationCallback(
@@ -101,30 +101,34 @@ describe('Driver()', function() {
         ]
     );
 
-    unroll('should throw error when result does not match expectation',
+    unroll('should errback when result does not match expectation',
         function(done, testArgs) {
           var expectationCallback = Driver._getExpectationCallback(
               testArgs.expectation, testArgs.msg, testArgs.keys
           );
 
-          expect(function() {
-            expectationCallback(null, testArgs.result);
-          }).to.throw(sinon.match.string);
-          done();
+          Driver.resolveWith(function(err) {
+            expect(err.message).to.equal(testArgs.errorMessage);
+            expect(err.actual).to.equal(testArgs.result);
+            expect(err.expected).to.equal(testArgs.expectation);
+            done();
+          });
+
+          expectationCallback(null, testArgs.result);
         },
         [
           [
             'result',
-            'exceptionMessage',
+            'errorMessage',
             'expectation',
             'msg',
             'keys'
           ],
           [
             'foo',
-            'Value does not match. Expected bar but got foo',
+            'Value does not match.',
             'bar',
-            'Value does not match. Expected %s but got %s',
+            'Value does not match.',
             null
           ],
           [
@@ -132,23 +136,25 @@ describe('Driver()', function() {
               width: 90,
               height: 50
             },
-            'Value does not match. Expected 100 but got 90',
+            'Value does not match.',
             { width: 100,
               height: 50
             },
-            'Value does not match. Expected %s but got %s',
+            'Value does not match.',
             ['width','height']]
         ]
     );
 
-    unroll('should throw error if there was an error retrieving value',
+    unroll('should errback if there was an error retrieving value',
         function(done,testArgs) {
           var expectationCallback = Driver._getExpectationCallback('foo');
 
-          expect(function() {
-            expectationCallback(testArgs.err, null);
-          }).to.throw(sinon.match.string);
-          done();
+          Driver.resolveWith(function(err) {
+            expect(err.message).to.equal(testArgs.expectation);
+            done();
+          });
+
+          expectationCallback(testArgs.err, null);
         },
         [
           ['err'                              , 'expectation'                ],
@@ -181,7 +187,7 @@ describe('Driver()', function() {
         ]
     );
 
-    it('should throw exception when webdriver class does not exist',
+    it('should errback exception when webdriver class does not exist',
       function() {
         try {
           Driver.getWebDriver('unknown');

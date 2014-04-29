@@ -25,7 +25,9 @@ buster.testCase("my webdriverjs tests", {
   },
 
   'tearDown': function(done) {
-    browser.endAll(done);
+    browser
+        .resolveWith(done)
+        .endAll();
   },
 
   'homepage (with callbacks)': function (done) {
@@ -48,8 +50,9 @@ buster.testCase("my webdriverjs tests", {
                 assert.equals(result.width, 320);
                 assert.equals(result.height, 281);
               });
-          this.end(done);
-        });
+          this.end();
+        })
+        .resolveWith(done);
   },
 
   'homepage (without callbacks)': function(done) {
@@ -70,7 +73,8 @@ buster.testCase("my webdriverjs tests", {
             .field.klick()
             .wait(1000);
 
-          this.end(done);
-        });
+          this.end();
+        })
+        .resolveWith(done);
   }
 });

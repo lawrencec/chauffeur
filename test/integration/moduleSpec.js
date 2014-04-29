@@ -28,11 +28,15 @@ describe('Module', function() {
   });
 
   after(function(done) {
-    browser.endAll(done);
+    browser
+        .resolveWith(done)
+        .endAll();
   });
 
   afterEach(function(done) {
-    browser.end(done);
+    browser
+        .resolveWith(done)
+        .end(done);
   });
 
   describe('when part of a Page definition', function() {
@@ -46,8 +50,9 @@ describe('Module', function() {
             this.table.should.be.an('function');
             this.h1.should.be.an('function');
             this.headingTwos.should.be.an('function');
-            this.end(done);
-          });
+            this.end();
+          })
+          .resolveWith(done);
     });
   });
 
@@ -58,8 +63,9 @@ describe('Module', function() {
           .at(CSSTestPage, function(err) {
             expect(err).to.equal(undefined);
             this.table.rows.text("Table Header 1");
-            this.end(done);
-          });
+            this.end();
+          })
+          .resolveWith(done);
     });
 
     it('when referenced as an function accesses content correctly', function (done) {
@@ -72,8 +78,9 @@ describe('Module', function() {
             this.table.rows(3).text("Division 2");
             this.table.rows(-1).text("Division 3");
             this.table.rows.text("Table Header 1");
-            this.end(done);
-          });
+            this.end();
+          })
+          .resolveWith(done);
     });
   });
 
@@ -87,8 +94,9 @@ describe('Module', function() {
           }
           this.table.rows.should.be.an('function');
           this.table.rows.data.text('Division 1');
-          this.end(done);
-        });
+            this.end();
+        })
+        .resolveWith(done);
     });
   });
 });

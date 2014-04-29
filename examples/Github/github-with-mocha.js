@@ -24,11 +24,15 @@ describe('Github.com', function() {
   });
 
   after(function(done) {
-    browser.endAll(done);
+    browser
+        .resolveWith(done)
+        .endAll();
   });
 
   afterEach(function(done) {
-    browser.end(done);
+    browser
+        .resolveWith(done)
+        .end();
   });
 
   it('homepage (with callbacks)', function(done) {
@@ -51,8 +55,9 @@ describe('Github.com', function() {
             assert.equal(err, null);
             assert.equal(width, '320px');
           });
-        this.end(done);
-      });
+        this.end();
+      })
+      .resolveWith(done);
   });
 
   it('homepage (without callbacks)', function(done) {
@@ -75,7 +80,8 @@ describe('Github.com', function() {
             .klick()
             .wait(1000);
 
-        this.end(done);
-      });
+        this.end();
+      })
+      .resolveWith(done);
   });
 });
