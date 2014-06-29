@@ -1,8 +1,16 @@
 # Chauffeur [![Build Status](https://drone.io/github.com/lawrencec/chauffeur/status.png)](https://drone.io/github.com/lawrencec/chauffeur/latest)
 
-Status: Experimental
 
 A cross browser library for writing functional tests. Based around the page object pattern, it improves the ease of writing functional tests. The general priniciple is that instead of explicity asserting on a specific value, you pass in the values you expect and the assertation is done implicitly. If you prefer callback syntax chauffeur allows that too.
+
+## Dependencies:
+
+Chauffeur requires a webdriver library in order to run tests in a browser. Currently support is for the following of which only one is needed.
+
+* [webdriverio](http://webdriver.io/) [Default]
+* [selenium webdriverjs](http://selenium.googlecode.com/git/docs/api/javascript/index.html) 
+
+# Usage
 
 An example of what a functional test can look like with chauffeur:
 ``` js
@@ -95,38 +103,6 @@ $ cd examples
 $ npm install
 ```
 
-## Github example
-
-The examples/Github directory, following the example given by the webdriverjs project, provides a few examples of how to run tests using various test frameworks. See the following code snippet for information on how to run each:
-
-``` bash
-$ cd Github
-$ node github-with-buster.js 
-$ mocha github-with-jasmine.js
-$ mocha github-with-mocha.js
-$ mocha github-with-mocha-with-chai.js
-```
-
-## Running under other browsers
-
-By default these examples (and the integration tests for chauffeur) will run under phantomjs. Other browsers can be specified using the <code>CHAUFFEUR_BROWSER</code> environment variable.
-
-``` bash
-CHAUFFEUR_BROWSER=firefox grunt test-int
-cd examples
-CHAUFFEUR_BROWSER=firefox grunt github
-```
-
-There is a single command, defined in the scripts section of <code>examples/package.json</code> which will run all the examples in a specific browser(s).
-
-``` bash
-$ cd examples/Github
-$ npm run examples
-$ npm run examples-ff
-$ npm run examples-chrome
-$ npm run examples-all # all the above
-```
-
 ### TodoMVC
 
 The TodoMVC subdirectory is an ported example of the tests that exist for the [TodoMVC](http://todomvc.com/) project. Running the todomvc grunt task runs the tests against the default library, Backbone. At the time of writing, phantomjs does not support localstorage so the tests need to run in something other than phantomjs eg firefox:
@@ -141,6 +117,46 @@ The tests can also be setup to run against another framework supported by the To
 ``` bash
 cd examples/TodoMVC
 CHAUFFEUR_BROWSER=firefox mvcLib=mvcLib=architecture-examples/angularjs/ grunt todomvc
+```
+
+### Github example
+
+The examples/Github directory, following the example given by the webdriverjs project, provides a few examples of how to run tests using various test frameworks. See the following code snippet for information on how to run each:
+
+``` bash
+$ cd Github
+$ node github-with-buster.js 
+$ mocha github-with-jasmine.js
+$ mocha github-with-mocha.js
+$ mocha github-with-mocha-with-chai.js
+```
+
+There is a single command, defined in the scripts section of <code>examples/package.json</code> which will run all the examples in a specific browser(s).
+
+``` bash
+$ cd examples/Github
+$ npm run examples
+$ npm run examples-ff
+$ npm run examples-chrome
+$ npm run examples-all # all the above
+```
+
+## Running under other browsers
+
+By default these examples (and the integration tests for chauffeur) will run under phantomjs. Other browsers can be specified using the <code>CHAUFFEUR_BROWSER</code> environment variable.
+
+``` bash
+CHAUFFEUR_BROWSER=firefox grunt test-int
+cd examples
+CHAUFFEUR_BROWSER=firefox grunt github
+```
+
+## Specifying different webdriver library
+
+Chauffeur can switch which webdriver library it uses via a env var called `CHAUFFEUR_WEBDRIVER_LIB`. The valid values for this var is `webdriverio` or `webdriverjs`. The default is webdriverio.
+
+``` bash
+CHAUFFEUR_BROWSER=firefox CHAUFFEUR_WEBDRIVER_LIB=webdriverjs grunt test-int
 ```
 
 ## API
@@ -228,6 +244,6 @@ $ grunt coverage
 ## Todo
 
 - Provide CucumberJS examples
-- Provide alternative to webdriverjs.io (selenium webdriverjs)
+- <del>Provide alternative to webdriverjs.io (selenium webdriverjs)</del>
 
 
