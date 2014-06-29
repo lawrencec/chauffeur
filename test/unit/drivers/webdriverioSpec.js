@@ -3,28 +3,26 @@ var sinonChai   = require('sinon-chai'),
     sinon       = require('sinon'),
     expect      = chai.expect,
     unroll      = require('unroll'),
-    webdriver = require('webdriverjs'),
     Driver      = require('../../../lib/driver.js');
-    WebDriverIO = require('../../../lib/drivers/webdriverio.js');
+    WebDriverIO = require('../../../lib/drivers/webdriverio.js'),
+    expectedError = require('../../testConfig').expectedError;
+    expectToFailWithError = require('../../testConfig').expectToFailWithError;
 
 chai.use(sinonChai);
 
-function expectToFailWithError(action, expectations) {
-  Driver.resolveWith(expectations);
-  action();
-}
 
-function expectedError(message, expected, actual) {
-  var error = new Error(message);
-  error.expected = expected;
-  error.actual = actual;
-  return error;
-}
+
 
 describe('WebDriverIO', function() {
   var config = {},
       webdriverStub,
       contextStub;
+
+  function setUpWebDriver() {
+    var driver = new WebDriverIO(config);
+    driver.ctxt = contextStub;
+    return driver;
+  }
 
   describe('should implement Driver interface so', function() {
     //dynamically determine methods to test
@@ -117,78 +115,34 @@ describe('WebDriverIO', function() {
   });
 
   describe('value()', function() {
-    it('should delegate correctly when getting value', function() {
-      var driver;
+    var driver;
 
-      driver = new WebDriverIO(config);
-      driver.ctxt = contextStub;
+    beforeEach(function() {
+      driver = setUpWebDriver();
+    });
+
+    it('should delegate correctly when getting value', function() {
+
       driver.value('.selector');
       expect(driver.ctxt.getValue).to.have.been.calledWith('.selector');
     });
-
-    it('should delegate correctly when setting value', function() {
-      var driver;
-
-      driver = new WebDriverIO(config);
-      driver.ctxt = contextStub;
-      driver.value('.selector', 'newValue', null, null, true);
-      expect(driver.ctxt.addValue).to.have.been.calledWith('.selector', 'newValue');
-    });
-
-  });
-  describe('hasValue()', function () {
-    it('should delegate correctly', function() {
-        var driver;
-
-        driver = new WebDriverIO(config);
-        driver.ctxt = contextStub;
-        driver.hasValue('.selector', 'newValue');
-        expect(driver.ctxt.getValue).to.have.been.calledWith('.selector');
-    });
-
-    unroll('should errback correctly for result #result',
-        function (next, testArgs) {
-          var driver;
-
-          driver = new WebDriverIO(config);
-          driver.ctxt = contextStub;
-          expectToFailWithError(
-              function () {
-                driver.value('.selector', 'aValue');
-                driver.ctxt.getValue.yield(null, testArgs.result);
-              },
-
-              function (error) {
-                expect(error.message).to.equal(testArgs.expectation.message);
-                expect(error.expected).to.equal(testArgs.expectation.expected);
-                expect(error.actual).to.equal(testArgs.expectation.actual);
-                next();
-              }
-          );
-        },
-        [
-          ['result'   , 'expectation'],
-          ['incorrect' , expectedError('Value does not match for selector ".selector".', 'aValue', 'incorrect')]
-        ]
-    );
   });
 
   describe('setValue()', function () {
-    it('should delegate correctly when called', function () {
-      var driver;
+    var driver;
 
-      driver = new WebDriverIO(config);
-      driver.ctxt = contextStub;
+    beforeEach(function() {
+      driver = setUpWebDriver();
+    });
+
+    it('should delegate correctly when called', function () {
       driver.setValue('.selector','enteredInput');
       expect(driver.ctxt.setValue).to.have.been.calledWith('.selector', 'enteredInput');
     });
 
     unroll('should errback correctly for result #result',
         function (next, testArgs) {
-          var driver;
 
-          driver = new WebDriverIO(config);
-          driver.ctxt = contextStub;
           expectToFailWithError(
               function () {
                 driver.setValue('.selector', null);
@@ -205,7 +159,7 @@ describe('WebDriverIO', function() {
         },
         [
           ['result'   , 'expectation'],
-          [{status:1} , expectedError('Entered value does not match for ".selector".', true, false)]
+          [{status:1} , expectedError('Value does not match for selector ".selector".', true, false)]
         ]
     );
   });
@@ -222,21 +176,19 @@ describe('WebDriverIO', function() {
   });
 
   describe('klick()', function () {
-    it('should delegate correctly', function () {
-      var driver;
+    var driver;
 
-      driver = new WebDriverIO(config);
-      driver.ctxt = contextStub;
+    beforeEach(function() {
+      driver = setUpWebDriver();
+    });
+
+    it('should delegate correctly', function () {
       driver.klick('.selector');
       expect(driver.ctxt.click).to.have.been.calledWith('.selector');
     });
 
     unroll('should errback correctly for result #result',
         function (next, testArgs) {
-          var driver;
-
-          driver = new WebDriverIO(config);
-          driver.ctxt = contextStub;
           expectToFailWithError(
               function () {
                 driver.klick('.selector', null);
@@ -245,26 +197,28 @@ describe('WebDriverIO', function() {
 
               function (error) {
                 expect(error.message).to.equal(testArgs.expectation.message);
-                expect(error.expected).to.equal(testArgs.expectation.expected);
-                expect(error.actual).to.equal(testArgs.expectation.actual);
+                expect(error.expected).to.eql(testArgs.expectation.expected);
+                expect(error.actual).to.eql(testArgs.expectation.actual);
                 next();
               }
           );
         },
         [
           ['result'                                                                       , 'expectation'],
-          [{status:1} , expectedError('Element with ".selector" not clicked successfully.', true, false)]
+          [{status:1} , expectedError('Click unsuccessful for element with selector ".selector".', true, false)]
         ]
     );
 
   });
 
   describe('doubleklick()', function () {
-    it('should delegate correctly', function () {
-      var driver;
+    var driver;
 
-      driver = new WebDriverIO(config);
-      driver.ctxt = contextStub;
+    beforeEach(function() {
+      driver = setUpWebDriver();
+    });
+
+    it('should delegate correctly', function () {
       driver.doubleklick('.selector');
       expect(driver.ctxt.doubleClick).to.have.been.calledWith('.selector');
       driver.ctxt.doubleClick.yield(null, {status:0, orgStatusMessage:'The command executed successfully.'});
@@ -272,10 +226,7 @@ describe('WebDriverIO', function() {
 
     unroll('should errback correctly for result #result',
         function (next, testArgs) {
-          var driver;
 
-          driver = new WebDriverIO(config);
-          driver.ctxt = contextStub;
           expectToFailWithError(
               function () {
                 driver.doubleklick('.selector', null);
@@ -292,27 +243,26 @@ describe('WebDriverIO', function() {
         },
         [
           ['result'                                                                              , 'expectation'],
-          [{status:1} , expectedError('Element with ".selector" not double-clicked successfully.', true, false)]
+          [{status:1} , expectedError('Double click unsuccessful for element with selector ".selector".', true, false)]
         ]
     );
   });
 
   describe('moveTo()', function () {
-    it('should delegate correctly', function () {
-      var driver;
+    var driver;
 
-      driver = new WebDriverIO(config);
-      driver.ctxt = contextStub;
+    beforeEach(function() {
+      driver = setUpWebDriver();
+    });
+
+
+    it('should delegate correctly', function () {
       driver.moveTo('.selector');
       expect(driver.ctxt.moveToObject).to.have.been.calledWith('.selector');
     });
 
     unroll('should errback correctly for result #result',
         function (next, testArgs) {
-          var driver;
-
-          driver = new WebDriverIO(config);
-          driver.ctxt = contextStub;
           expectToFailWithError(
               function () {
                 driver.moveTo('.selector', null);
@@ -335,22 +285,19 @@ describe('WebDriverIO', function() {
   });
 
   describe('hover()', function () {
-    it('should delegate correctly', function () {
-      var driver;
+    var driver;
 
-      driver = new WebDriverIO(config);
-      driver.ctxt = contextStub;
+    beforeEach(function() {
+      driver = setUpWebDriver();
+    });
+
+    it('should delegate correctly', function () {
       driver.hover('.selector');
       expect(driver.ctxt.moveToObject).to.have.been.calledWith('.selector');
     });
 
     unroll('should errback correctly for result #result',
         function (next, testArgs) {
-          var driver;
-
-
-          driver = new WebDriverIO(config);
-          driver.ctxt = contextStub;
           expectToFailWithError(
               function () {
                 driver.moveTo('.selector', null);
@@ -373,21 +320,19 @@ describe('WebDriverIO', function() {
   });
 
   describe('submit()', function () {
-    it('should delegate correctly', function () {
-      var driver;
+    var driver;
 
-      driver = new WebDriverIO(config);
-      driver.ctxt = contextStub;
+    beforeEach(function() {
+      driver = setUpWebDriver();
+    });
+
+    it('should delegate correctly', function () {
       driver.submit('.selector');
       expect(driver.ctxt.submitForm).to.have.been.calledWith('.selector');
     });
 
     unroll('should errback correctly for result #result',
         function (next, testArgs) {
-          var driver;
-
-          driver = new WebDriverIO(config);
-          driver.ctxt = contextStub;
           expectToFailWithError(
               function () {
                 driver.submit('.selector', null);
@@ -404,27 +349,25 @@ describe('WebDriverIO', function() {
         },
         [
           ['result'    , 'expectation'],
-          [{status:1}  , expectedError('Form not submitted successfully with selector ".selector".', true, false)]
+          [{status:1}  , expectedError('Submit unsuccessful for element with selector ".selector".', true, false)]
         ]
     );
   });
 
   describe('clear()', function () {
-    it('should delegate correctly', function () {
-      var driver;
+    var driver;
 
-      driver = new WebDriverIO(config);
-      driver.ctxt = contextStub;
+    beforeEach(function() {
+      driver = setUpWebDriver();
+    });
+
+    it('should delegate correctly', function () {
       driver.clear('.selector');
       expect(driver.ctxt.clearElement).to.have.been.calledWith('.selector');
     });
 
     unroll('should errback correctly for result #result',
         function (next, testArgs) {
-          var driver;
-
-          driver = new WebDriverIO(config);
-          driver.ctxt = contextStub;
           expectToFailWithError(
               function () {
                 driver.clear('.selector', null);
@@ -447,21 +390,20 @@ describe('WebDriverIO', function() {
   });
 
   describe('attr()', function () {
-    it('should delegate correctly', function () {
-      var driver;
+    var driver;
 
-      driver = new WebDriverIO(config);
-      driver.ctxt = contextStub;
+    beforeEach(function() {
+      driver = setUpWebDriver();
+    });
+
+
+    it('should delegate correctly', function () {
       driver.attr('.selector', 'attrName');
       expect(driver.ctxt.getAttribute).to.have.been.calledWith('.selector', 'attrName');
     });
 
     unroll('should errback correctly for result #result',
         function (next, testArgs) {
-          var driver;
-
-          driver = new WebDriverIO(config);
-          driver.ctxt = contextStub;
           expectToFailWithError(
               function () {
                 driver.attr('.selector', 'attrName', 'expectedValue');
@@ -478,27 +420,25 @@ describe('WebDriverIO', function() {
         },
         [
           ['result' , 'expectation'],
-          ['aValue' , expectedError('Attribute value does not match for selector ".selector".', 'expectedValue', 'aValue')]
+          ['aValue' , expectedError('Expected attribute with selector ".selector" to exist.', 'expectedValue', 'aValue')]
         ]
     );
   });
 
   describe('selected()', function () {
-    it('should delegate correctly', function () {
-      var driver;
+    var driver;
 
-      driver = new WebDriverIO(config);
-      driver.ctxt = contextStub;
+    beforeEach(function() {
+      driver = setUpWebDriver();
+    });
+
+    it('should delegate correctly', function () {
       driver.selected('.selector');
       expect(driver.ctxt.isSelected).to.have.been.calledWith('.selector');
     });
 
     unroll('should errback correctly for result #result',
         function (next, testArgs) {
-          var driver;
-
-          driver = new WebDriverIO(config);
-          driver.ctxt = contextStub;
           expectToFailWithError(
               function () {
                 driver.selected('.selector', null, null);
@@ -515,28 +455,26 @@ describe('WebDriverIO', function() {
         },
         [
           ['result' , 'expectation'],
-          [false     , expectedError('Element with selector ".selector" was expected to be selected. It was not.', true, false)]
+          [false     , expectedError('Expected element with selector ".selector" to be selected.', true, false)]
         ]
     );
   });
 
 
   describe('unselected()', function () {
-    it('should delegate correctly', function () {
-      var driver;
+    var driver;
 
-      driver = new WebDriverIO(config);
-      driver.ctxt = contextStub;
+    beforeEach(function() {
+      driver = setUpWebDriver();
+    });
+
+    it('should delegate correctly', function () {
       driver.selected('.selector');
       expect(driver.ctxt.isSelected).to.have.been.calledWith('.selector');
     });
 
     unroll('should errback correctly for result #result',
         function (next, testArgs) {
-          var driver;
-
-          driver = new WebDriverIO(config);
-          driver.ctxt = contextStub;
           expectToFailWithError(
               function () {
                 driver.unselected('.selector', null, null);
@@ -553,27 +491,25 @@ describe('WebDriverIO', function() {
         },
         [
           ['result' , 'expectation'],
-          [true     , expectedError('Element with selector ".selector" was expected to be unselected. It was not.', false, true)]
+          [true     , expectedError('Expected element with selector ".selector" to be unselected.', false, true)]
         ]
     );
   });
 
   describe('text()', function () {
-    it('should delegate correctly', function () {
-      var driver;
+    var driver;
 
-      driver = new WebDriverIO(config);
-      driver.ctxt = contextStub;
+    beforeEach(function() {
+      driver = setUpWebDriver();
+    });
+
+    it('should delegate correctly', function () {
       driver.text('.selector');
       expect(driver.ctxt.getText).to.have.been.calledWith('.selector');
     });
 
     unroll('should errback correctly for result #result',
         function (next, testArgs) {
-          var driver;
-
-          driver = new WebDriverIO(config);
-          driver.ctxt = contextStub;
           expectToFailWithError(
               function () {
                 driver.text('.selector', 'text', null, null);
@@ -590,27 +526,25 @@ describe('WebDriverIO', function() {
         },
         [
           ['result'             , 'expectation'],
-          ['someincorrectText'  , expectedError('Text does not match for selector ".selector".', 'text', 'someincorrectText')]
+          ['someincorrectText'  , expectedError('Text values do not match for selector ".selector".', 'text', 'someincorrectText')]
         ]
     );
   });
 
   describe('nodeName()', function () {
-    it('should delegate correctly', function () {
-      var driver;
+    var driver;
 
-      driver = new WebDriverIO(config);
-      driver.ctxt = contextStub;
+    beforeEach(function() {
+      driver = setUpWebDriver();
+    });
+
+    it('should delegate correctly', function () {
       driver.nodeName('.selector');
       expect(driver.ctxt.getTagName).to.have.been.calledWith('.selector');
     });
 
     unroll('should errback correctly for result #result',
         function (next, testArgs) {
-          var driver;
-
-          driver = new WebDriverIO(config);
-          driver.ctxt = contextStub;
           expectToFailWithError(
               function () {
                 driver.nodeName('.selector', 'nodeName', null, null);
@@ -627,27 +561,25 @@ describe('WebDriverIO', function() {
         },
         [
           ['result'             , 'expectation'],
-          ['incorrectNodeName'  , expectedError('Node name does not match for selector ".selector".', 'nodeName', 'incorrectNodeName')]
+          ['incorrectNodeName'  , expectedError('Node name does not match selector ".selector".', 'nodeName', 'incorrectNodeName')]
         ]
     );
   });
 
   describe('location()', function () {
-    it('should delegate correctly', function () {
-      var driver;
+    var driver;
 
-      driver = new WebDriverIO(config);
-      driver.ctxt = contextStub;
+    beforeEach(function() {
+      driver = setUpWebDriver();
+    });
+
+    it('should delegate correctly', function () {
       driver.location('.selector');
       expect(driver.ctxt.getLocation).to.have.been.calledWith('.selector');
     });
 
     unroll('should errback correctly for result #result',
         function (next, testArgs) {
-          var driver;
-
-          driver = new WebDriverIO(config);
-          driver.ctxt = contextStub;
           expectToFailWithError(
               function () {
                 driver.location('.selector', {x:3,y:43}, null, null);
@@ -664,29 +596,27 @@ describe('WebDriverIO', function() {
         },
         [
           ['result'   , 'expectation'],
-          [{x:0,y:0}  , expectedError('Location values for selector ".selector" do not match.', {x:3,y:43}, {x:0,y:0})],
-          [{x:3,y:0}  , expectedError('Location values for selector ".selector" do not match.', {x:3,y:43}, {x:3,y:0})],
-          [{x:0,y:43} , expectedError('Location values for selector ".selector" do not match.', {x:3,y:43}, {x:0,y:43})]
+          [{x:0,y:0}  , expectedError('Location values do not match for selector ".selector".', {x:3,y:43}, {x:0,y:0})],
+          [{x:3,y:0}  , expectedError('Location values do not match for selector ".selector".', {x:3,y:43}, {x:3,y:0})],
+          [{x:0,y:43} , expectedError('Location values do not match for selector ".selector".', {x:3,y:43}, {x:0,y:43})]
         ]
     );
   });
 
   describe('visible()', function () {
-    it('should delegate correctly', function () {
-      var driver;
+    var driver;
 
-      driver = new WebDriverIO(config);
-      driver.ctxt = contextStub;
+    beforeEach(function() {
+      driver = setUpWebDriver();
+    });
+
+    it('should delegate correctly', function () {
       driver.visible('.selector');
       expect(driver.ctxt.isVisible).to.have.been.calledWith('.selector');
     });
 
     unroll('should errback correctly for result #result',
         function (next, testArgs) {
-          var driver;
-
-          driver = new WebDriverIO(config);
-          driver.ctxt = contextStub;
           expectToFailWithError(
               function () {
                 driver.visible('.selector', null, null, null);
@@ -703,27 +633,25 @@ describe('WebDriverIO', function() {
         },
         [
           ['result'  , 'expectation'],
-          [false     , expectedError('Element with selector ".selector" was expected to be visible. It was not.', true, false)]
+          [false     , expectedError('Visibility values do not match for selector ".selector".', true, false)]
         ]
     );
   });
 
   describe('invisible()', function () {
-    it('should delegate correctly', function () {
-      var driver;
+    var driver;
 
-      driver = new WebDriverIO(config);
-      driver.ctxt = contextStub;
+    beforeEach(function() {
+      driver = setUpWebDriver();
+    });
+
+    it('should delegate correctly', function () {
       driver.invisible('.selector');
       expect(driver.ctxt.isVisible).to.have.been.calledWith('.selector');
     });
 
     unroll('should errback correctly for result #result',
         function (next, testArgs) {
-          var driver;
-
-          driver = new WebDriverIO(config);
-          driver.ctxt = contextStub;
           expectToFailWithError(
               function () {
                 driver.invisible('.selector', null, null, null);
@@ -740,7 +668,7 @@ describe('WebDriverIO', function() {
         },
         [
           ['result'  , 'expectation'],
-          [ true     , expectedError('Element with selector ".selector" was expected to be invisible. It was not.', false, true)]
+          [ true     , expectedError('Invisibility values do not match for selector \".selector\".', false, true)]
         ]
     );
   });
@@ -757,21 +685,19 @@ describe('WebDriverIO', function() {
   });
 
   describe('color()', function () {
-    it('should delegate correctly', function () {
-      var driver;
+    var driver;
 
-      driver = new WebDriverIO(config);
-      driver.ctxt = contextStub;
+    beforeEach(function() {
+      driver = setUpWebDriver();
+    });
+
+    it('should delegate correctly', function () {
       driver.color('.selector');
       expect(driver.ctxt.getCssProperty).to.have.been.calledWith('.selector', 'color');
     });
 
     unroll('should errback correctly',
         function (next, testArgs) {
-          var driver;
-
-          driver = new WebDriverIO(config);
-          driver.ctxt = contextStub;
           expectToFailWithError(
               function () {
                 driver.color('.selector', '#fff', null, null);
@@ -795,21 +721,19 @@ describe('WebDriverIO', function() {
   });
 
   describe('width()', function () {
-    it('should delegate correctly', function () {
-      var driver;
+    var driver;
 
-      driver = new WebDriverIO(config);
-      driver.ctxt = contextStub;
+    beforeEach(function() {
+      driver = setUpWebDriver();
+    });
+
+    it('should delegate correctly', function () {
       driver.width('.selector');
       expect(driver.ctxt.getCssProperty).to.have.been.calledWith('.selector', 'width');
     });
 
     unroll('should errback correctly for #result',
         function (next, testArgs) {
-          var driver;
-
-          driver = new WebDriverIO(config);
-          driver.ctxt = contextStub;
           expectToFailWithError(
               function() {
                 driver.width('.selector', '100', null, null);
@@ -831,21 +755,19 @@ describe('WebDriverIO', function() {
   });
 
   describe('size()', function () {
-    it('should delegate correctly', function () {
-      var driver;
+    var driver;
 
-      driver = new WebDriverIO(config);
-      driver.ctxt = contextStub;
+    beforeEach(function() {
+      driver = setUpWebDriver();
+    });
+
+    it('should delegate correctly', function () {
       driver.size('.selector', {width: "100", height: "90"}, null, null);
       expect(driver.ctxt.getElementSize).to.have.been.calledWith('.selector');
     });
 
     unroll('should errback correctly for #result',
      function (next, testArgs) {
-        var driver;
-
-        driver = new WebDriverIO(config);
-        driver.ctxt = contextStub;
         expectToFailWithError(
           function() {
             driver.size('.selector', {width: '100', height: '200'}, null, null);
@@ -902,21 +824,19 @@ describe('WebDriverIO', function() {
   });
 
   describe('exists()', function () {
-    it('should delegate correctly', function () {
-      var driver;
+    var driver;
 
-      driver = new WebDriverIO(config);
-      driver.ctxt = contextStub;
+    beforeEach(function() {
+      driver = setUpWebDriver();
+    });
+
+    it('should delegate correctly', function () {
       driver.exists('#notUsedSelector', false);
       expect(driver.ctxt.getTagName).to.have.been.calledWith('#notUsedSelector');
     });
 
     unroll('should errback correctly for #result',
         function (next, testArgs) {
-          var driver;
-
-          driver = new WebDriverIO(config);
-          driver.ctxt = contextStub;
           expectToFailWithError(
               function() {
                 driver.exists('#notUsedSelector', testArgs.mustExist);
@@ -932,29 +852,27 @@ describe('WebDriverIO', function() {
         },
         [
           ['mustExist'  , 'result'    ,   'expected'],
-          [false        , 'aTagName'  ,   expectedError('Element with selector "#notUsedSelector" not expected to exist but does.', false, true)],
-          [true         , null  ,   expectedError('Element with selector "#notUsedSelector" expected to exist but does not.', true, false)],
-          [undefined    , null  ,   expectedError('Element with selector "#notUsedSelector" expected to exist but does not.', true, false)]
+          [false        , 'aTagName'  ,   expectedError('Expected element with selector "#notUsedSelector" to not exist.', false, true)],
+          [true         , null  ,   expectedError('Expected element with selector "#notUsedSelector" to exist.', true, false)],
+          [undefined    , null  ,   expectedError('Expected element with selector "#notUsedSelector" to exist.', true, false)]
         ]
     );
   });
 
   describe('elements()', function () {
-    it('should delegate correctly', function () {
-      var driver;
+    var driver;
 
-      driver = new WebDriverIO(config);
-      driver.ctxt = contextStub;
+    beforeEach(function() {
+      driver = setUpWebDriver();
+    });
+
+    it('should delegate correctly', function () {
       driver.elements('#selector');
       expect(driver.ctxt.elements).to.have.been.calledWith('#selector');
     });
 
     unroll('should errback correctly for #result',
         function (next, testArgs) {
-          var driver;
-
-          driver = new WebDriverIO(config);
-          driver.ctxt = contextStub;
           expectToFailWithError(
               function() {
                 driver.elements('.selector', 2);
@@ -998,21 +916,19 @@ describe('WebDriverIO', function() {
   });
 
   describe('hasClass()', function () {
-    it('should delegate correctly', function () {
-      var driver;
+    var driver;
 
-      driver = new WebDriverIO(config);
-      driver.ctxt = contextStub;
+    beforeEach(function() {
+      driver = setUpWebDriver();
+    });
+
+    it('should delegate correctly', function () {
       driver.hasClass('selector');
       expect(driver.ctxt.getAttribute).to.have.been.calledWith('selector', 'className');
     });
 
     unroll('should errback correctly',
         function (next, testArgs) {
-          var driver;
-
-          driver = new WebDriverIO(config);
-          driver.ctxt = contextStub;
           expectToFailWithError(
               function () {
                 driver.hasClass('.selector', '.className', null, null);
@@ -1029,28 +945,26 @@ describe('WebDriverIO', function() {
         },
         [
           ['result'          , 'expectation'],
-          [".incorrect"      , expectedError('Class name does not exist for selector ".selector".',true, false)],
-          [".incorrect .foo" , expectedError('Class name does not exist for selector ".selector".',true, false)]
+          [".incorrect"      , expectedError('Expected class with selector ".selector" to exist.',true, false)],
+          [".incorrect .foo" , expectedError('Expected class with selector ".selector" to exist.',true, false)]
         ]
     );
   });
 
   describe('hasntClass()', function () {
-    it('should delegate correctly', function () {
-      var driver;
+    var driver;
 
-      driver = new WebDriverIO(config);
-      driver.ctxt = contextStub;
+    beforeEach(function() {
+      driver = setUpWebDriver();
+    });
+
+    it('should delegate correctly', function () {
       driver.hasntClass('selector');
       expect(driver.ctxt.getAttribute).to.have.been.calledWith('selector', 'className');
     });
 
     unroll('should errback correctly',
         function (next, testArgs) {
-          var driver;
-
-          driver = new WebDriverIO(config);
-          driver.ctxt = contextStub;
           expectToFailWithError(
               function () {
                 driver.hasntClass('.selector', '.className', null, null);
@@ -1067,8 +981,8 @@ describe('WebDriverIO', function() {
         },
         [
           ['result'                 , 'expectation'],
-          [".className"             , expectedError('Class name exists for selector ".selector".', true, false)],
-          [".incorrect .className"  , expectedError('Class name exists for selector ".selector".', true, false)]
+          [".className"             , expectedError('Expected class with selector ".selector" to not exist.', true, false)],
+          [".incorrect .className"  , expectedError('Expected class with selector ".selector" to not exist.', true, false)]
         ]
     );
   });

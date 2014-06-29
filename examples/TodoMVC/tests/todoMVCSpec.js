@@ -3,7 +3,8 @@ var chai        = require('chai'),
     Browser     = require('../../../').Browser,
     Keys        = Browser.Keys,
     TodoMVCPage = require('../pages/TodoMVCPage'),
-    browserName = process.env.CHAUFFEUR_BROWSER || 'phantomjs';
+    browserName = process.env.CHAUFFEUR_BROWSER || 'firefox';
+    webdriverLibName = process.env.CHAUFFEUR_WEBDRIVER_LIB || 'webdriverio';
 
 describe('TodoMVC', function() {
   var browser,
@@ -27,7 +28,7 @@ describe('TodoMVC', function() {
 
   beforeEach(function(done){
     var config = {
-      webDriverClass: 'webdriverio',
+      webDriverClass: webdriverLibName,
       webDriverConfig: {
         desiredCapabilities: {
           browserName:  browserName,
@@ -98,7 +99,7 @@ describe('TodoMVC', function() {
                 done(err);
               }
               this.newTodo.setValue(TODO_ITEM_ONE + Keys.RETURN);
-              this.newTodo.hasValue('');
+              this.newTodo.value('');
               this.end();
             })
             .resolveWith(done);
