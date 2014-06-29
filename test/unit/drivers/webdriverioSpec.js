@@ -221,7 +221,7 @@ describe('WebDriverIO', function() {
     it('should delegate correctly', function () {
       driver.doubleklick('.selector');
       expect(driver.ctxt.doubleClick).to.have.been.calledWith('.selector');
-      driver.ctxt.doubleClick.yield(null, {status:0, orgStatusMessage:'The command executed successfully.'});
+      driver.ctxt.doubleClick.yield(null, {status:0, state:'success'});
     });
 
     unroll('should errback correctly for result #result',

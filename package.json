@@ -37,6 +37,7 @@
   },
   "dependencies": {
     "webdriverjs": "~1.5.1",
+    "selenium-webdriver": "~2.42.1",
     "chai": "1.9.0",
     "sinon-chai": "~2.5.0",
     "mocha": "~1.19.0",
@@ -51,8 +52,7 @@
     "grunt-cli": "~0.1.13",
     "istanbul": "~0.2.6",
     "grunt-contrib-connect": "~0.7.1",
-    "grunt-selenium-webdriver": "~0.2.392",
-    "grunt-mocha-istanbul": "~1.2.0",
-    "selenium-webdriver": "~2.41.0"
+    "grunt-selenium-webdriver": "~0.2.420",
+    "grunt-mocha-istanbul": "~1.2.0"
   }
 }
