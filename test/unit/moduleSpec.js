@@ -40,14 +40,6 @@ describe('Module', function () {
     ]
   );
 
-  describe('getIndex()', function () {
-    it('should return correctly', function () {
-      var mod = new Module();
-      mod.childSelectorIndex = 1;
-      expect(mod.getIndex()).to.equal(1);
-    });
-  });
-
   describe('count()', function () {
     it('should return correctly', function () {
       var mod = new Module();

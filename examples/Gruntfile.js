@@ -12,7 +12,7 @@ module.exports = function (grunt) {
       all: [
         'Gruntfile.js',
         'Github/**/*.js',
-        'TodoMVC/**/*.js',
+        'TodoMVC/**/*.js'
       ],
       options: {
         jshintrc: ".jshintrc"

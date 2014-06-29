@@ -41,6 +41,9 @@ function CssTestPage() {
     },
     'notUsedElement': {
       selector: '#notUsedSelector'
+    },
+    testLink: {
+      selector: 'a[title="test link"]'
     }
   };
 }

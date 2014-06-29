@@ -14,7 +14,7 @@ chai.use(sinonChai);
 
 describe('Browser()', function() {
   var config = {
-        webDriverClass: 'webdriverio',
+        webDriverClass: 'a webdriver lib',
         webDriverConfig: {
           'foo': 'blah'
         }

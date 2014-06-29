@@ -109,8 +109,8 @@ describe('Driver()', function() {
 
           Driver.resolveWith(function(err) {
             expect(err.message).to.equal(testArgs.errorMessage);
-            expect(err.actual).to.equal(testArgs.result);
-            expect(err.expected).to.equal(testArgs.expectation);
+            expect(err.actual).to.eql(testArgs.result);
+            expect(err.expected).to.eql(testArgs.expectation);
             done();
           });
 
