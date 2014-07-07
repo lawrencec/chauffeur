@@ -207,4 +207,30 @@ describe('Browser()', function() {
         }
     );
   });
+
+  describe('setSize', function () {
+      it('should set window size correctly', function (done) {
+        var driverStub,
+            browser,
+            callback;
+
+        driverStub =  stub({
+          setSize: function setWindowSize() {}
+        });
+        callback = function() {};
+        browser = new Browser(config);
+        browser._driver = driverStub;
+
+        browser.setSize({
+            width: 1000,
+            height: 1000
+          },
+          callback);
+
+        expect(driverStub.setSize).to.have.been.calledOnce;
+        expect(driverStub.setSize).to.have.been.calledWithExactly({width:1000, height: 1000}, callback);
+        done();
+
+      });
+  });
 });

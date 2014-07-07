@@ -6,6 +6,7 @@ var sinonChai   = require('sinon-chai'),
     Driver      = require('../../../lib/driver.js');
     WebDriverJS = require('../../../lib/drivers/webdriverjs.js'),
     seleniumWD  = require('selenium-webdriver'),
+    seleniumWindow = seleniumWD.WebDriver.Window,
     expectedError = require('../../testConfig').expectedError;
     expectToFailWithError = require('../../testConfig').expectToFailWithError;
 
@@ -35,7 +36,8 @@ describe('WebDriverJS', function() {
       wait:         function() {},
       findElement:  function() {},
       findElements: function() {},
-      executeScript:function() {}
+      executeScript:function() {},
+      setSize:      function() {}
     });
 
   });
@@ -1006,5 +1008,53 @@ describe('WebDriverJS', function() {
           ['anError']
         ]
     );
+  });
+
+  describe('setSize()', function () {
+    var driver,
+        windowStub;
+
+    beforeEach(function () {
+      driver = new WebDriverJS(config);
+      driver._remoteDriver = webdriverStub;
+      windowStub = {
+        setSize: sinon.stub().returns(seleniumWD.promise.fulfilled(undefined))
+      };
+    });
+
+    it('should delegate correctly', function () {
+      var driver;
+
+      driver = new WebDriverJS(config);
+      driver._remoteDriver = webdriverStub;
+      driver.getWindow = sinon.stub().returns(windowStub);
+      driver.setSize({width: 1000, height: 1000});
+
+      expect(windowStub.setSize).to.have.been.calledWithExactly(1000, 1000);
+    });
+  });
+
+  describe('getSize()', function () {
+    var driver,
+        windowStub;
+
+    beforeEach(function () {
+      driver = new WebDriverJS(config);
+      driver._remoteDriver = webdriverStub;
+      windowStub = {
+        getSize: sinon.stub().returns(seleniumWD.promise.fulfilled({width: 1000, height: 1000}))
+      };
+    });
+
+    it('should delegate correctly', function () {
+      var driver,
+          callback = sinon.spy();
+
+      driver = new WebDriverJS(config);
+      driver._remoteDriver = webdriverStub;
+      driver.getWindow = sinon.stub().returns(windowStub);
+      driver.getSize(callback);
+      expect(callback).to.have.been.calledOnce;
+    });
   });
 });

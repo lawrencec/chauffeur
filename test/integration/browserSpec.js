@@ -2,9 +2,8 @@ var chai        = require('chai'),
     expect      = chai.expect,
     testConfig  = require('../testConfig.js'),
     Browser     = require('../../lib/browser.js'),
-    CSSTestPage = require('./../fixtures/CSSTest/pages/cssTestPage.js');
+    CSSTestPage = require('./../fixtures/CSSTest/pages/cssTestPage.js'),
     JsTestPage = require('./../fixtures/CSSTest/pages/jsTestPage.js');
-
 
 testConfig.withDrivers(
     'Browser',
@@ -64,6 +63,22 @@ testConfig.withDrivers(
               .resolveWith(done);
         });
       });
+
+//      describe('window sizes', function() {
+//        it('should set and get the size of the browser window correctly', function (done) {
+//          browser
+//            .setSize({width: 1000, height: 500})
+//            .getSize(function(err, result) {
+//              expect(result.width).to.equal(1000);
+//            })
+//            .to(JsTestPage)
+//            .at(CSSTestPage, function (err) {
+//              this.end();
+//            })
+//            .resolveWith(done);
+//
+//        });
+//      });
     };
   }
 );

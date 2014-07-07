@@ -81,7 +81,8 @@ describe('WebDriverIO', function() {
 
     webdriverStub = sinon.stub({
       init: function() {},
-      url: function() {}
+      url: function() {},
+      windowHandleSize: function() {}
     });
 
   });
@@ -111,6 +112,20 @@ describe('WebDriverIO', function() {
       driver._remoteDriver = webdriverStub;
       driver.goTo(url);
       expect(driver._remoteDriver.url).to.have.been.calledWith(url);
+    });
+  });
+
+  describe('setSize()', function() {
+    var driver;
+    beforeEach(function() {
+      driver = setUpWebDriver();
+    });
+    it('should delegate correctly', function() {
+      driver._remoteDriver = webdriverStub;
+      driver.setSize({width: 1000, height: 1000});
+      expect(driver._remoteDriver.windowHandleSize).to.have.been.calledWith(
+          {width: 1000, height: 1000}
+      );
     });
   });
 

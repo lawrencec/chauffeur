@@ -3,7 +3,8 @@ var chai        = require('chai'),
     testConfig  = require('../testConfig'),
     Browser     = require('../../lib/browser'),
     Driver      = require('../../lib/driver'),
-    CSSTestPage = require('./../fixtures/CSSTest/pages/cssTestPage.js');
+    CSSTestPage = require('./../fixtures/CSSTest/pages/cssTestPage.js'),
+    ScreenshotTestPage = require('./../fixtures/CSSTest/pages/screenshotTestPage.js');
 
 
 testConfig.withDrivers(
@@ -12,7 +13,7 @@ testConfig.withDrivers(
     return function () {
       var browser;
 
-      this.timeout(10000);
+      this.timeout(15000);
 
       beforeEach(function (done) {
         var config = {
@@ -402,6 +403,20 @@ testConfig.withDrivers(
                 this.executeScript('return document.location.hash', '');
                 this.forward();
                 this.executeScript('return document.location.hash', '#foo');
+                this.end();
+              })
+              .resolveWith(done);
+        });
+      });
+
+      describe('takeScreenshot', function() {
+        it('should save screenshot correctly', function (done) {
+          browser
+              .setSize(Browser.sizes.IPHONE)
+              .to(ScreenshotTestPage)
+              .at(ScreenshotTestPage, function (err) {
+                expect(err).to.equal(undefined);
+                this.takeScreenshot('./target/testScreenshot.png');
                 this.end();
               })
               .resolveWith(done);
