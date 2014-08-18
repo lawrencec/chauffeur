@@ -7,8 +7,8 @@ A cross browser library for writing functional tests. Based around the page obje
 
 Chauffeur requires a webdriver library in order to run tests in a browser. Currently support is for the following of which only one is needed.
 
-* [webdriverio](http://webdriver.io/) [Default]
-* [selenium webdriverjs](http://selenium.googlecode.com/git/docs/api/javascript/index.html) 
+* [WebdriverIO](http://webdriver.io/) [Default]
+* [selenium webdriverjs](http://selenium.googlecode.com/git/docs/api/javascript/index.html)
 
 # Usage
 
@@ -125,7 +125,7 @@ The examples/Github directory, following the example given by the webdriverjs pr
 
 ``` bash
 $ cd Github
-$ node github-with-buster.js 
+$ node github-with-buster.js
 $ mocha github-with-jasmine.js
 $ mocha github-with-mocha.js
 $ mocha github-with-mocha-with-chai.js
@@ -194,11 +194,11 @@ The following is an example of the current supported API. This snippet is for do
         this.todoList(1)
             .text('book')
         this.todoList(2)
-            .text('bluray')      
+            .text('bluray')
         this.actionBtn
             .klick()
 	    .wait('500');
-        this.loginForm.submit();     
+        this.loginForm.submit();
             .end(done);
     });
 ```
@@ -222,7 +222,7 @@ The grunt task test-int runs a selenium server (via grunt-selenium-webdriver) pr
 $ npm run test-int
 ```
 
-or 
+or
 ``` bash
 $ grunt test-int
 ```
@@ -244,6 +244,6 @@ $ grunt coverage
 ## Todo
 
 - Provide CucumberJS examples
-- <del>Provide alternative to webdriverjs.io (selenium webdriverjs)</del>
+- <del>Provide alternative to WebdriverIO (selenium webdriverjs)</del>
 
 
