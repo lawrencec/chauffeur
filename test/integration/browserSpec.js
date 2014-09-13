@@ -64,6 +64,7 @@ testConfig.withDrivers(
         });
       });
 
+//      commenting out temporarily because of https://code.google.com/p/selenium/issues/detail?id=7445
 //      describe('window sizes', function() {
 //        it('should set and get the size of the browser window correctly', function (done) {
 //          browser

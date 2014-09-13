@@ -137,7 +137,7 @@ describe('Content', function() {
             ['childSelector'    , 'expectation'             ],
             [undefined          , '.selector'               ],
             [1                  , '.selector:first-child'   ],
-            [2                  , '.selector:nth-child(2)'  ],
+            [2                  , '.selector:nth-of-type(2)'  ],
             [-1                 , '.selector:last-child'    ]
         ]
       );
