@@ -1,0 +1,299 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Chauffeur by lawrencec</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Chauffeur</h1>
+        <p>A library for writing functional tests</p>
+
+        <p class="view"><a href="https://github.com/lawrencec/chauffeur">View the Project on GitHub <small>lawrencec/chauffeur</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/lawrencec/chauffeur/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/lawrencec/chauffeur/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/lawrencec/chauffeur">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1>
+<a name="chauffeur-" class="anchor" href="#chauffeur-"><span class="octicon octicon-link"></span></a>Chauffeur <a href="https://drone.io/github.com/lawrencec/chauffeur/latest"><img src="https://drone.io/github.com/lawrencec/chauffeur/status.png" alt="Build Status"></a>
+</h1>
+
+<p>A cross browser library for writing functional tests. Based around the page object pattern, it improves the ease of writing functional tests. The general priniciple is that instead of explicity asserting on a specific value, you pass in the values you expect and the assertation is done implicitly. If you prefer callback syntax chauffeur allows that too.</p>
+
+<h2>
+<a name="dependencies" class="anchor" href="#dependencies"><span class="octicon octicon-link"></span></a>Dependencies:</h2>
+
+<p>Chauffeur requires a webdriver library in order to run tests in a browser. Currently support is for the following of which only one is needed.</p>
+
+<ul>
+<li>
+<a href="http://webdriver.io/">webdriverio</a> [Default]</li>
+<li>
+<a href="http://selenium.googlecode.com/git/docs/api/javascript/index.html">selenium webdriverjs</a> </li>
+</ul><h1>
+<a name="usage" class="anchor" href="#usage"><span class="octicon octicon-link"></span></a>Usage</h1>
+
+<p>An example of what a functional test can look like with chauffeur:</p>
+
+<div class="highlight highlight-js"><pre> <span class="nx">client</span>
+    <span class="p">.</span><span class="nx">to</span><span class="p">(</span><span class="nx">GithubPage</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">at</span><span class="p">(</span><span class="nx">GithubPage</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">if</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span><span class="p">;</span>
+      <span class="p">}</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">headerLogo</span><span class="p">()</span>
+          <span class="p">.</span><span class="nx">size</span><span class="p">({</span><span class="nx">width</span><span class="o">:</span><span class="mi">89</span><span class="p">,</span> <span class="nx">height</span><span class="o">:</span> <span class="mi">32</span><span class="p">})</span>
+          <span class="p">.</span><span class="nx">width</span><span class="p">(</span><span class="s1">'89px'</span><span class="p">)</span>
+          <span class="p">.</span><span class="nx">color</span><span class="p">(</span><span class="s1">'rgba(51,51,51,1)'</span><span class="p">)</span>
+          <span class="p">.</span><span class="nx">visible</span><span class="p">()</span>
+          <span class="p">.</span><span class="nx">signUpForm</span><span class="p">()</span>
+          <span class="p">.</span><span class="nx">size</span><span class="p">({</span><span class="nx">width</span><span class="o">:</span> <span class="mi">320</span><span class="p">,</span> <span class="nx">height</span><span class="o">:</span> <span class="mi">296</span><span class="p">})</span>
+          <span class="p">.</span><span class="nx">end</span><span class="p">(</span><span class="nx">done</span><span class="p">);</span>
+    <span class="p">});</span>
+</pre></div>
+
+<p>and with callbacks:</p>
+
+<div class="highlight highlight-js"><pre><span class="nx">client</span>
+    <span class="p">.</span><span class="nx">to</span><span class="p">(</span><span class="nx">GithubPage</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">at</span><span class="p">(</span><span class="nx">GithubPage</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">if</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span><span class="p">;</span>
+      <span class="p">}</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">headerLogo</span><span class="p">()</span>
+          <span class="p">.</span><span class="nx">size</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">result</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">expect</span><span class="p">(</span><span class="nx">err</span><span class="p">).</span><span class="nx">to</span><span class="p">.</span><span class="nx">be</span><span class="p">.</span><span class="kc">null</span><span class="p">;</span>
+            <span class="nx">assert</span><span class="p">.</span><span class="nx">strictEqual</span><span class="p">(</span><span class="nx">result</span><span class="p">.</span><span class="nx">height</span> <span class="p">,</span> <span class="mi">32</span><span class="p">);</span>
+            <span class="nx">assert</span><span class="p">.</span><span class="nx">strictEqual</span><span class="p">(</span><span class="nx">result</span><span class="p">.</span><span class="nx">width</span><span class="p">,</span> <span class="mi">89</span><span class="p">);</span>
+          <span class="p">})</span>
+          <span class="p">.</span><span class="nx">width</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">result</span><span class="p">){</span>
+            <span class="nx">expect</span><span class="p">(</span><span class="nx">err</span><span class="p">).</span><span class="nx">to</span><span class="p">.</span><span class="nx">be</span><span class="p">.</span><span class="kc">null</span><span class="p">;</span>
+            <span class="nx">assert</span><span class="p">.</span><span class="nx">strictEqual</span><span class="p">(</span><span class="nx">result</span><span class="p">,</span> <span class="s1">'89px'</span><span class="p">);</span>
+          <span class="p">})</span>
+          <span class="p">.</span><span class="nx">color</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">result</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">expect</span><span class="p">(</span><span class="nx">err</span><span class="p">).</span><span class="nx">to</span><span class="p">.</span><span class="nx">be</span><span class="p">.</span><span class="kc">null</span><span class="p">;</span>
+            <span class="nx">assert</span><span class="p">.</span><span class="nx">strictEqual</span><span class="p">(</span><span class="nx">result</span><span class="p">,</span> <span class="s1">'rgba(51,51,51,1)'</span><span class="p">);</span>
+          <span class="p">})</span>
+          <span class="p">.</span><span class="nx">visible</span><span class="p">()</span>
+          <span class="p">.</span><span class="nx">cssProperty</span><span class="p">(</span><span class="s1">'a[href="/plans"]'</span><span class="p">,</span> <span class="s1">'color'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">result</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">expect</span><span class="p">(</span><span class="nx">err</span><span class="p">).</span><span class="nx">to</span><span class="p">.</span><span class="nx">be</span><span class="p">.</span><span class="kc">null</span><span class="p">;</span>
+            <span class="nx">assert</span><span class="p">.</span><span class="nx">strictEqual</span><span class="p">(</span><span class="nx">result</span><span class="p">,</span> <span class="s1">'rgba(65,131,196,1)'</span><span class="p">);</span>
+          <span class="p">})</span>
+          <span class="p">.</span><span class="nx">getTitle</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">title</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">expect</span><span class="p">(</span><span class="nx">err</span><span class="p">).</span><span class="nx">to</span><span class="p">.</span><span class="nx">be</span><span class="p">.</span><span class="kc">null</span><span class="p">;</span>
+            <span class="nx">assert</span><span class="p">.</span><span class="nx">strictEqual</span><span class="p">(</span><span class="nx">title</span><span class="p">,</span><span class="s1">'GitHub · Build software better, together.'</span><span class="p">);</span>
+          <span class="p">})</span>
+      <span class="p">.</span><span class="nx">signUpForm</span><span class="p">()</span>
+          <span class="p">.</span><span class="nx">size</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">result</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">expect</span><span class="p">(</span><span class="nx">err</span><span class="p">).</span><span class="nx">to</span><span class="p">.</span><span class="nx">be</span><span class="p">.</span><span class="kc">null</span><span class="p">;</span>
+            <span class="nx">assert</span><span class="p">.</span><span class="nx">strictEqual</span><span class="p">(</span><span class="nx">result</span><span class="p">.</span><span class="nx">width</span><span class="p">,</span> <span class="mi">320</span><span class="p">);</span>
+            <span class="nx">assert</span><span class="p">.</span><span class="nx">strictEqual</span><span class="p">(</span><span class="nx">result</span><span class="p">.</span><span class="nx">height</span> <span class="p">,</span> <span class="mi">296</span><span class="p">);</span>
+          <span class="p">})</span>
+          <span class="p">.</span><span class="nx">end</span><span class="p">(</span><span class="nx">done</span><span class="p">);</span>
+    <span class="p">});</span>
+</pre></div>
+
+<h2>
+<a name="installation" class="anchor" href="#installation"><span class="octicon octicon-link"></span></a>Installation</h2>
+
+<p>This module can be installed via npm:</p>
+
+<div class="highlight highlight-bash"><pre><span class="nv">$ </span>npm install page-chauffeur
+</pre></div>
+
+<p>or via a git clone :</p>
+
+<div class="highlight highlight-bash"><pre><span class="nv">$ </span><span class="nb">cd </span>page-chauffeur
+<span class="nv">$ </span>npm install .
+</pre></div>
+
+<p>Once installed, require it like so:</p>
+
+<div class="highlight highlight-js"><pre><span class="kd">var</span> <span class="nx">chauffeur</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'page-chauffeur'</span><span class="p">);</span>
+</pre></div>
+
+<h2>
+<a name="examples" class="anchor" href="#examples"><span class="octicon octicon-link"></span></a>Examples</h2>
+
+<p>The examples are setup with their own package.json file and dependecies. First install the dependencies.</p>
+
+<div class="highlight highlight-bash"><pre><span class="nv">$ </span><span class="nb">cd </span>examples
+<span class="nv">$ </span>npm install
+</pre></div>
+
+<h3>
+<a name="todomvc" class="anchor" href="#todomvc"><span class="octicon octicon-link"></span></a>TodoMVC</h3>
+
+<p>The TodoMVC subdirectory is an ported example of the tests that exist for the <a href="http://todomvc.com/">TodoMVC</a> project. Running the todomvc grunt task runs the tests against the default library, Backbone. At the time of writing, phantomjs does not support localstorage so the tests need to run in something other than phantomjs eg firefox:</p>
+
+<div class="highlight highlight-bash"><pre><span class="nb">cd </span>examples/TodoMVC
+<span class="nv">CHAUFFEUR_BROWSER</span><span class="o">=</span>firefox grunt todomvc
+</pre></div>
+
+<p>The tests can also be setup to run against another framework supported by the TodoMVC project. Just set the <em>mvcLib</em> property to the relevant url (without the domain):</p>
+
+<div class="highlight highlight-bash"><pre><span class="nb">cd </span>examples/TodoMVC
+<span class="nv">CHAUFFEUR_BROWSER</span><span class="o">=</span>firefox <span class="nv">mvcLib</span><span class="o">=</span><span class="nv">mvcLib</span><span class="o">=</span>architecture-examples/angularjs/ grunt todomvc
+</pre></div>
+
+<h3>
+<a name="github-example" class="anchor" href="#github-example"><span class="octicon octicon-link"></span></a>Github example</h3>
+
+<p>The examples/Github directory, following the example given by the webdriverjs project, provides a few examples of how to run tests using various test frameworks. See the following code snippet for information on how to run each:</p>
+
+<div class="highlight highlight-bash"><pre><span class="nv">$ </span><span class="nb">cd </span>Github
+<span class="nv">$ </span>node github-with-buster.js 
+<span class="nv">$ </span>mocha github-with-jasmine.js
+<span class="nv">$ </span>mocha github-with-mocha.js
+<span class="nv">$ </span>mocha github-with-mocha-with-chai.js
+</pre></div>
+
+<p>There is a single command, defined in the scripts section of <code>examples/package.json</code> which will run all the examples in a specific browser(s).</p>
+
+<div class="highlight highlight-bash"><pre><span class="nv">$ </span><span class="nb">cd </span>examples/Github
+<span class="nv">$ </span>npm run examples
+<span class="nv">$ </span>npm run examples-ff
+<span class="nv">$ </span>npm run examples-chrome
+<span class="nv">$ </span>npm run examples-all <span class="c"># all the above</span>
+</pre></div>
+
+<h2>
+<a name="running-under-other-browsers" class="anchor" href="#running-under-other-browsers"><span class="octicon octicon-link"></span></a>Running under other browsers</h2>
+
+<p>By default these examples (and the integration tests for chauffeur) will run under phantomjs. Other browsers can be specified using the <code>CHAUFFEUR_BROWSER</code> environment variable.</p>
+
+<div class="highlight highlight-bash"><pre><span class="nv">CHAUFFEUR_BROWSER</span><span class="o">=</span>firefox grunt <span class="nb">test</span>-int
+<span class="nb">cd </span>examples
+<span class="nv">CHAUFFEUR_BROWSER</span><span class="o">=</span>firefox grunt github
+</pre></div>
+
+<h2>
+<a name="specifying-different-webdriver-library" class="anchor" href="#specifying-different-webdriver-library"><span class="octicon octicon-link"></span></a>Specifying different webdriver library</h2>
+
+<p>Chauffeur can switch which webdriver library it uses via a env var called <code>CHAUFFEUR_WEBDRIVER_LIB</code>. The valid values for this var is <code>webdriverio</code> or <code>webdriverjs</code>. The default is webdriverio.</p>
+
+<div class="highlight highlight-bash"><pre><span class="nv">CHAUFFEUR_BROWSER</span><span class="o">=</span>firefox <span class="nv">CHAUFFEUR_WEBDRIVER_LIB</span><span class="o">=</span>webdriverjs grunt <span class="nb">test</span>-int
+</pre></div>
+
+<h2>
+<a name="api" class="anchor" href="#api"><span class="octicon octicon-link"></span></a>API</h2>
+
+<p>The following is an example of the current supported API. This snippet is for documentation purposes only as the <a href="https://github.com/lawrencec/chauffeur/blob/master/test/integration/contentSpec.js">ContentSpec integration test</a> shows working code example of every method currently supported.</p>
+
+<div class="highlight highlight-js"><pre> <span class="nx">client</span>
+    <span class="p">.</span><span class="nx">to</span><span class="p">(</span><span class="nx">MyOwnPage</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">at</span><span class="p">(</span><span class="nx">MyOwnPage</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">if</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span><span class="p">;</span>
+      <span class="p">}</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">headerLogo</span><span class="p">()</span>
+            <span class="p">.</span><span class="nx">size</span><span class="p">({</span><span class="nx">width</span><span class="o">:</span><span class="mi">89</span><span class="p">,</span> <span class="nx">height</span><span class="o">:</span> <span class="mi">32</span><span class="p">})</span>
+            <span class="p">.</span><span class="nx">width</span><span class="p">(</span><span class="s1">'89px'</span><span class="p">)</span>
+            <span class="p">.</span><span class="nx">color</span><span class="p">(</span><span class="s1">'rgba(51,51,51,1)'</span><span class="p">)</span>
+            <span class="p">.</span><span class="nx">visible</span><span class="p">()</span>
+            <span class="p">.</span><span class="nx">invisible</span><span class="p">()</span>
+            <span class="p">.</span><span class="nx">location</span><span class="p">({</span><span class="nx">x</span><span class="o">:</span><span class="mi">1</span><span class="p">,</span> <span class="nx">y</span><span class="o">:</span><span class="mi">1</span><span class="p">})</span>
+            <span class="p">.</span><span class="nx">nodeName</span><span class="p">(</span><span class="s1">'div'</span><span class="p">);</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">subHeading</span>
+          <span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'text'</span><span class="p">)</span>
+          <span class="p">.</span><span class="nx">exists</span><span class="p">()</span>
+            <span class="p">.</span><span class="nx">exists</span><span class="p">(</span><span class="kc">false</span><span class="p">);</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">checkbox</span>
+            <span class="p">.</span><span class="nx">selected</span><span class="p">()</span>
+           <span class="p">.</span><span class="nx">unselected</span><span class="p">();</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">textField</span>
+            <span class="p">.</span><span class="nx">hasValue</span><span class="p">(</span><span class="s1">'someValue'</span><span class="p">)</span>
+            <span class="p">.</span><span class="nx">value</span><span class="p">(</span><span class="s1">'newValue'</span><span class="p">)</span>
+            <span class="p">.</span><span class="nx">clear</span><span class="p">()</span>
+            <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s1">'id'</span><span class="p">,</span> <span class="s1">'username'</span><span class="p">)</span>
+            <span class="p">.</span><span class="nx">enter</span><span class="p">(</span><span class="s1">'some keys'</span><span class="p">);</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">todoList</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+            <span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'book'</span><span class="p">)</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">todoList</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+            <span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'bluray'</span><span class="p">)</span>      
+        <span class="k">this</span><span class="p">.</span><span class="nx">actionBtn</span>
+            <span class="p">.</span><span class="nx">klick</span><span class="p">()</span>
+        <span class="p">.</span><span class="nx">wait</span><span class="p">(</span><span class="s1">'500'</span><span class="p">);</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">loginForm</span><span class="p">.</span><span class="nx">submit</span><span class="p">();</span>     
+            <span class="p">.</span><span class="nx">end</span><span class="p">(</span><span class="nx">done</span><span class="p">);</span>
+    <span class="p">});</span>
+</pre></div>
+
+<h2>
+<a name="tests" class="anchor" href="#tests"><span class="octicon octicon-link"></span></a>Tests</h2>
+
+<h3>
+<a name="unit-tests" class="anchor" href="#unit-tests"><span class="octicon octicon-link"></span></a>Unit tests</h3>
+
+<div class="highlight highlight-bash"><pre><span class="nv">$ </span>grunt <span class="nb">test</span>
+</pre></div>
+
+<h3>
+<a name="integration-tests" class="anchor" href="#integration-tests"><span class="octicon octicon-link"></span></a>Integration tests</h3>
+
+<p>The integration tests run against a browser using a running instance of selenium server.</p>
+
+<p>The grunt task test-int runs a selenium server (via grunt-selenium-webdriver) prior to running the tests and since npm test-int is 'aliased' to grunt test-int both can be used to run the integration tests:</p>
+
+<div class="highlight highlight-bash"><pre><span class="nv">$ </span>npm run <span class="nb">test</span>-int
+</pre></div>
+
+<p>or </p>
+
+<div class="highlight highlight-bash"><pre><span class="nv">$ </span>grunt <span class="nb">test</span>-int
+</pre></div>
+
+<p>To run the integration tests using a different browser i.e Chrome</p>
+
+<div class="highlight highlight-bash"><pre><span class="nv">$ CHAUFFEUR_BROWSER</span><span class="o">=</span>chrome grunt <span class="nb">test</span>-int
+</pre></div>
+
+<h3>
+<a name="coverage" class="anchor" href="#coverage"><span class="octicon octicon-link"></span></a>Coverage</h3>
+
+<p>A coverage report can be found in target/unit/lcov-report/index.html after the following command (requires global and non-global install of mocha)</p>
+
+<div class="highlight highlight-bash"><pre><span class="nv">$ </span>grunt coverage
+</pre></div>
+
+<h2>
+<a name="todo" class="anchor" href="#todo"><span class="octicon octicon-link"></span></a>Todo</h2>
+
+<ul>
+<li>Provide CucumberJS examples</li>
+<li><del>Provide alternative to webdriverjs.io (selenium webdriverjs)</del></li>
+</ul>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/lawrencec">lawrencec</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+              <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-54773288-1");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+
+  </body>
+</html>
